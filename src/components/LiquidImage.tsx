@@ -7,7 +7,7 @@ interface LiquidImageProps {
   onComplete?: () => void;
 }
 
-type LiquidPhase = 'idle' | 'expand' | 'melt';
+type LiquidPhase = 'idle' | 'expand' | 'melt' | 'completed';
 
 export default function LiquidImage({ 
   imageUrl, 
@@ -55,6 +55,12 @@ export default function LiquidImage({
 
   // Sequence Logic
   useEffect(() => {
+    // Reset phase when inactive so it can trigger again later
+    if (!isActive) {
+      setPhase('idle');
+      return;
+    }
+
     if (isActive && phase === 'idle') {
       // Step 1: Expand
       setPhase('expand');
@@ -62,15 +68,16 @@ export default function LiquidImage({
       // Step 2: Melt after 600ms
       sequenceTimeoutRef.current = window.setTimeout(() => {
         setPhase('melt');
-        animateWarp(250, 2500); // 2.5s melt as requested
+        animateWarp(250, 2500); 
         
         // Step 3: Hold for 3 seconds, then Reset
         sequenceTimeoutRef.current = window.setTimeout(() => {
-          setPhase('idle');
-          animateWarp(0, 1000); // 1s reset
+          setPhase('idle'); // We set to idle here to trigger re-assembly visuals
+          animateWarp(0, 1000); 
           
-          // Wait for reassembly animation to finish, then trigger next
+          // Step 4: Finalize and move to next
           sequenceTimeoutRef.current = window.setTimeout(() => {
+            setPhase('completed'); // Prevents re-triggering while isActive is still true
             if (onComplete) onComplete();
           }, 1100);
         }, 3000);
