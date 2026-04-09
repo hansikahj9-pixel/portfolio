@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from 'react';
 import AxiomeGlobalNav from '../components/AxiomeGlobalNav';
 import ShatterImage from '../components/ShatterImage';
 import LiquidImage from '../components/LiquidImage';
@@ -24,7 +25,38 @@ import dali7 from '../assets/image (13).png';
 import dali8 from '../assets/image (12).png';
 import dali9 from '../assets/image (11).png';
 
+const ERNST_IMAGES = [img2, img3, img4, img5, img6, img7, img8, img9, img10];
+
 export default function ProcessRoute() {
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const ernstSectionRef = useRef<HTMLElement>(null);
+
+  // Intersection Observer for the Ernst Section
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && activeIndex === -1) {
+            setActiveIndex(0); // Start the cinematic sequence
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    if (ernstSectionRef.current) {
+      observer.observe(ernstSectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [activeIndex]);
+
+  const handleShatterComplete = (index: number) => {
+    // Sequence the next image or loop back
+    const nextIndex = (index + 1) % ERNST_IMAGES.length;
+    setActiveIndex(nextIndex);
+  };
+
   return (
     <div className="process-container">
       {/* ── Global Navigation ── */}
@@ -70,7 +102,7 @@ export default function ProcessRoute() {
       </section>
 
       {/* ── Section 2: Max Ernst Structure ── */}
-      <section className="process-section ernst-section">
+      <section ref={ernstSectionRef} className="process-section ernst-section">
         <div className="ernst-left fade-in">
           <h2 className="ernst-heading">Max Ernst</h2>
           <p className="ernst-body">
@@ -80,13 +112,13 @@ export default function ProcessRoute() {
         
         <div className="ernst-right fade-in-delayed">
           <div className="ernst-grid">
-            {[img2, img3, img4, img5, img6, img7, img8, img9, img10].map((img, index) => (
+            {ERNST_IMAGES.map((img, index) => (
               <div key={index} className="ernst-card">
                 <ShatterImage 
                   imageUrl={img} 
                   alt={`Max Ernst inspiration ${index + 1}`} 
-                  autoTrigger={true}
-                  staggerDelay={index * 0.4}
+                  isActive={activeIndex === index}
+                  onComplete={() => handleShatterComplete(index)}
                 />
               </div>
             ))}

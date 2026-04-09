@@ -3,21 +3,21 @@ import { useMemo, useState, useRef, useEffect } from 'react';
 interface ShatterImageProps {
   imageUrl: string;
   alt?: string;
-  autoTrigger?: boolean;
-  staggerDelay?: number;
+  isActive?: boolean;
+  onComplete?: () => void;
 }
+
+type ShatterPhase = 'idle' | 'expand' | 'shatter';
 
 export default function ShatterImage({ 
   imageUrl, 
   alt, 
-  autoTrigger = false, 
-  staggerDelay = 0 
+  isActive = false,
+  onComplete
 }: ShatterImageProps) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isShattering, setIsShattering] = useState(false);
+  const [phase, setPhase] = useState<ShatterPhase>('idle');
   const containerRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<number | null>(null);
-  const autoTimeoutRef = useRef<number | null>(null);
+  const sequenceTimeoutRef = useRef<number | null>(null);
 
   const pieces = useMemo(() => {
     return Array.from({ length: 100 }).map((_, i) => {
@@ -25,16 +25,16 @@ export default function ShatterImage({
       const y = Math.floor(i / 10);
       
       // Phase 2 Random Physics
-      const tZ = Math.random() * 700 + 200; // 200px to 900px
-      const tX = (Math.random() - 0.5) * 600; // scatter X heavily
-      const tY = Math.random() * 700 + 100; // 100px to 800px (tumble downward)
-      const rX = (Math.random() - 0.5) * 360; // extreme random X rotation
-      const rY = (Math.random() - 0.5) * 360; // extreme random Y rotation
-      const rZ = (Math.random() - 0.5) * 180; // extreme random Z rotation
-      const opacity = 0.4 + Math.random() * 0.6; // 0.4 to 1
+      const tZ = Math.random() * 700 + 400; // 400px to 1100px for more depth
+      const tX = (Math.random() - 0.5) * 800; // wider scatter
+      const tY = Math.random() * 600 + 200; // tumble downward
+      const rX = (Math.random() - 0.5) * 720; // more rotation
+      const rY = (Math.random() - 0.5) * 720;
+      const rZ = (Math.random() - 0.5) * 360;
+      const opacity = 0.3 + Math.random() * 0.7;
       
-      // Organic Ripple Transition Delay (0ms to 500ms)
-      const delay = Math.random() * 0.5;
+      // Organic Ripple Transition Delay (0ms to 600ms)
+      const delay = Math.random() * 0.6;
       
       return { x, y, tZ, tX, tY, rX, rY, rZ, opacity, delay };
     });
@@ -43,78 +43,45 @@ export default function ShatterImage({
   // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      if (autoTimeoutRef.current) clearTimeout(autoTimeoutRef.current);
+      if (sequenceTimeoutRef.current) window.clearTimeout(sequenceTimeoutRef.current);
     };
   }, []);
 
-  // Intersection Observer for Auto Trigger
+  // Managed Lifecycle Sequence
   useEffect(() => {
-    if (!autoTrigger || !containerRef.current) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Trigger sequence with stagger delay
-            autoTimeoutRef.current = window.setTimeout(() => {
-              setIsHovered(true);
-              
-              // Phase 2 triggers strictly after 800ms expansion
-              timeoutRef.current = window.setTimeout(() => {
-                setIsShattering(true);
-              }, 800);
-            }, staggerDelay * 1000);
-            
-            // Only trigger once
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    observer.observe(containerRef.current);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [autoTrigger, staggerDelay]);
-
-  const handleMouseEnter = () => {
-    if (autoTrigger) return; // Disable hover when auto-triggered
-    setIsHovered(true);
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    
-    // Phase 2 triggers strictly after 800ms
-    timeoutRef.current = window.setTimeout(() => {
-      setIsShattering(true);
-    }, 800);
-  };
-
-  const handleMouseLeave = () => {
-    if (autoTrigger) return; // Disable hover when auto-triggered
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setIsHovered(false);
-    setIsShattering(false);
-  };
+    if (isActive && phase === 'idle') {
+      // Start: Idle -> Expand
+      setPhase('expand');
+      
+      // Expand -> Shatter after 1s (cinematic pause)
+      sequenceTimeoutRef.current = window.setTimeout(() => {
+        setPhase('shatter');
+        
+        // Shatter -> Idle (Reassemble) after 5 seconds
+        sequenceTimeoutRef.current = window.setTimeout(() => {
+          setPhase('idle');
+          
+          // Reassembly takes ~1s (transition duration), then call onComplete
+          sequenceTimeoutRef.current = window.setTimeout(() => {
+            if (onComplete) onComplete();
+          }, 1200); 
+        }, 5000);
+      }, 1000);
+    }
+  }, [isActive, onComplete, phase]);
 
   return (
     <div 
       ref={containerRef}
       className="shatter-wrapper"
       aria-label={alt}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onTouchStart={handleMouseEnter}
-      onTouchEnd={handleMouseLeave}
       style={{
         position: 'relative',
         width: '100%',
         height: '100%',
-        perspective: '1200px',
+        perspective: '2000px', // Increased perspective for deeper 3D effect
         transformStyle: 'preserve-3d',
-        zIndex: isHovered ? 9999 : 1, // Elevate container aggressively above everything
+        zIndex: phase !== 'idle' ? 9999 : 1, // Stay on top during expansion and shatter
       }}
     >
       <div
@@ -124,10 +91,12 @@ export default function ShatterImage({
           width: '100%',
           height: '100%',
           transformStyle: 'preserve-3d',
-          // Phase 1: Massive Expansion
-          transform: isHovered ? 'scale(2.2)' : 'scale(1)',
-          transition: 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)',
-          boxShadow: isHovered ? '0px 60px 120px rgba(0, 0, 0, 0.95)' : 'none',
+          // Phase: Expand (massive inhalation)
+          transform: phase === 'expand' || phase === 'shatter' ? 'scale(2.2)' : 'scale(1)',
+          transition: phase === 'idle' 
+            ? 'transform 1s cubic-bezier(0.2, 0.8, 0.2, 1)' 
+            : 'transform 0.8s cubic-bezier(0.1, 0.8, 0.2, 1)',
+          boxShadow: phase !== 'idle' ? '0px 60px 120px rgba(0, 0, 0, 0.95)' : 'none',
         }}
       >
         {pieces.map((p, i) => {
@@ -150,18 +119,19 @@ export default function ShatterImage({
                 transformStyle: 'preserve-3d',
                 backfaceVisibility: 'hidden',
                 
-                // Phase 2 Shatter Transitions and Transforms
-                opacity: isShattering ? p.opacity : 1,
-                transform: isShattering 
+                // Visual states
+                opacity: phase === 'shatter' ? p.opacity : 1,
+                transform: phase === 'shatter' 
                   ? `translate3d(${p.tX}px, ${p.tY}px, ${p.tZ}px) rotateX(${p.rX}deg) rotateY(${p.rY}deg) rotateZ(${p.rZ}deg)`
                   : 'translate3d(0, 0, 0) rotateX(0) rotateY(0) rotateZ(0)',
                 
-                // Individual shadows falling dynamically
-                boxShadow: isShattering ? '0px 20px 40px rgba(0,0,0,0.6)' : 'none',
+                // Fragment shadows
+                boxShadow: phase === 'shatter' ? '0px 20px 40px rgba(0,0,0,0.6)' : 'none',
                 
-                transition: isShattering 
-                  ? `all 3s cubic-bezier(0.1, 0.9, 0.2, 1) ${p.delay}s` // Slow-Mo with organic ripple
-                  : 'all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0s', // Smooth snap back, immediate
+                // Movement timing
+                transition: phase === 'shatter' 
+                  ? `all 5s cubic-bezier(0.1, 0.8, 0.2, 1) ${p.delay}s` // Cinematic Floaty Slow-Mo
+                  : 'all 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0s', // Smooth snap back
               }}
             />
           );
