@@ -26,10 +26,14 @@ import dali8 from '../assets/image (12).png';
 import dali9 from '../assets/image (11).png';
 
 const ERNST_IMAGES = [img2, img3, img4, img5, img6, img7, img8, img9, img10];
+const DALI_IMAGES = [dali1, dali2, dali3, dali4, dali5, dali6, dali7, dali8, dali9];
 
 export default function ProcessRoute() {
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [activeDaliIndex, setActiveDaliIndex] = useState(-1);
+  
   const ernstSectionRef = useRef<HTMLElement>(null);
+  const daliSectionRef = useRef<HTMLElement>(null);
 
   // Intersection Observer for the Ernst Section
   useEffect(() => {
@@ -37,28 +41,46 @@ export default function ProcessRoute() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Re-start or continue the sequence
             if (activeIndex === -1) setActiveIndex(0);
           } else {
-            // Pause the animation loop when out of view to save CPU/GPU
             setActiveIndex(-1);
           }
         });
       },
-      { threshold: 0.1 } // Trigger earlier to avoid "sudden visibility"
+      { threshold: 0.1 }
     );
 
-    if (ernstSectionRef.current) {
-      observer.observe(ernstSectionRef.current);
-    }
-
+    if (ernstSectionRef.current) observer.observe(ernstSectionRef.current);
     return () => observer.disconnect();
   }, [activeIndex]);
 
+  // Intersection Observer for the Dali Section
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (activeDaliIndex === -1) setActiveDaliIndex(0);
+          } else {
+            setActiveDaliIndex(-1);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (daliSectionRef.current) observer.observe(daliSectionRef.current);
+    return () => observer.disconnect();
+  }, [activeDaliIndex]);
+
   const handleShatterComplete = (index: number) => {
-    // Sequence the next image or loop back
     const nextIndex = (index + 1) % ERNST_IMAGES.length;
     setActiveIndex(nextIndex);
+  };
+
+  const handleMeltComplete = (index: number) => {
+    const nextIndex = (index + 1) % DALI_IMAGES.length;
+    setActiveDaliIndex(nextIndex);
   };
 
   return (
@@ -131,18 +153,19 @@ export default function ProcessRoute() {
       </section>
 
       {/* ── Section 3: Salvador Dalí Fluidity ── */}
-      <section className="process-section dali-section">
+      <section ref={daliSectionRef} className="process-section dali-section">
         <div className="dali-left fade-in-delayed">
           <div className="dali-grid">
-            <div className="dali-card"><LiquidImage imageUrl={dali1} alt="Dalí inspiration 1" /></div>
-            <div className="dali-card"><LiquidImage imageUrl={dali2} alt="Dalí inspiration 2" /></div>
-            <div className="dali-card"><LiquidImage imageUrl={dali3} alt="Dalí inspiration 3" /></div>
-            <div className="dali-card"><LiquidImage imageUrl={dali4} alt="Dalí inspiration 4" /></div>
-            <div className="dali-card"><LiquidImage imageUrl={dali5} alt="Dalí inspiration 5" /></div>
-            <div className="dali-card"><LiquidImage imageUrl={dali6} alt="Dalí inspiration 6" /></div>
-            <div className="dali-card"><LiquidImage imageUrl={dali7} alt="Dalí inspiration 7" /></div>
-            <div className="dali-card"><LiquidImage imageUrl={dali8} alt="Dalí inspiration 8" /></div>
-            <div className="dali-card"><LiquidImage imageUrl={dali9} alt="Dalí inspiration 9" /></div>
+            {DALI_IMAGES.map((img, index) => (
+              <div key={index} className="dali-card">
+                <LiquidImage 
+                  imageUrl={img} 
+                  alt={`Dalí inspiration ${index + 1}`} 
+                  isActive={activeDaliIndex === index}
+                  onComplete={() => handleMeltComplete(index)}
+                />
+              </div>
+            ))}
           </div>
         </div>
 

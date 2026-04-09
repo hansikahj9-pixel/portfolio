@@ -3,103 +3,99 @@ import { useState, useRef, useEffect } from 'react';
 interface LiquidImageProps {
   imageUrl: string;
   alt?: string;
+  isActive?: boolean;
+  onComplete?: () => void;
 }
 
-export default function LiquidImage({ imageUrl, alt }: LiquidImageProps) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isMelting, setIsMelting] = useState(false);
+type LiquidPhase = 'idle' | 'expand' | 'melt';
+
+export default function LiquidImage({ 
+  imageUrl, 
+  alt, 
+  isActive = false,
+  onComplete 
+}: LiquidImageProps) {
+  const [phase, setPhase] = useState<LiquidPhase>('idle');
   const [warpScale, setWarpScale] = useState(0);
   
   const warpScaleRef = useRef(0);
-  const timeoutRef = useRef<number | null>(null);
+  const sequenceTimeoutRef = useRef<number | null>(null);
   const rafRef = useRef<number | null>(null);
   
-  // Create a unique ID for this instance's SVG filter
   const filterId = useRef(`dali-warp-${Math.random().toString(36).substr(2, 9)}`).current;
 
-  // Handle SVG Warp Scale Interpolation
+  // Cleanup timeouts on unmount
   useEffect(() => {
-    if (!isHovered && !isMelting && warpScaleRef.current === 0) return;
-
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-
-    let start = performance.now();
-    let initialScale = warpScaleRef.current;
-
-    const animate = (time: number) => {
-      let delta = time - start;
-      if (isMelting) {
-        // Melt phase: animate up to 250
-        let progress = Math.min(delta / 4500, 1);
-        let easeProgress = 1 - Math.pow(1 - progress, 3);
-        let newScale = initialScale + (250 - initialScale) * easeProgress;
-        warpScaleRef.current = newScale;
-        setWarpScale(newScale);
-        
-        if (progress < 1) {
-          rafRef.current = requestAnimationFrame(animate);
-        }
-      } else {
-        // Recovery phase: animate back to 0
-        let progress = Math.min(delta / 1000, 1);
-        let easeProgress = 1 - Math.pow(1 - progress, 3);
-        let newScale = initialScale * (1 - easeProgress);
-        
-        if (newScale < 0.1) newScale = 0;
-        
-        warpScaleRef.current = newScale;
-        setWarpScale(newScale);
-        
-        if (progress < 1 && newScale > 0) {
-          rafRef.current = requestAnimationFrame(animate);
-        }
-      }
-    };
-
-    rafRef.current = requestAnimationFrame(animate);
-
     return () => {
+      if (sequenceTimeoutRef.current) window.clearTimeout(sequenceTimeoutRef.current);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [isMelting, isHovered]);
+  }, []);
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = window.setTimeout(() => {
-      setIsMelting(true);
-    }, 600);
+  // Animation Engine for warpScale
+  const animateWarp = (targetScale: number, duration: number) => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    const start = performance.now();
+    const initialScale = warpScaleRef.current;
+
+    const step = (time: number) => {
+      const progress = Math.min((time - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      const current = initialScale + (targetScale - initialScale) * ease;
+      
+      warpScaleRef.current = current;
+      setWarpScale(current);
+
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(step);
+      }
+    };
+    rafRef.current = requestAnimationFrame(step);
   };
 
-  const handleMouseLeave = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setIsHovered(false);
-    setIsMelting(false);
-  };
+  // Sequence Logic
+  useEffect(() => {
+    if (isActive && phase === 'idle') {
+      // Step 1: Expand
+      setPhase('expand');
+      
+      // Step 2: Melt after 800ms
+      sequenceTimeoutRef.current = window.setTimeout(() => {
+        setPhase('melt');
+        animateWarp(250, 4500); // Melt animation
+        
+        // Step 3: Hold for 5 seconds, then Reset
+        sequenceTimeoutRef.current = window.setTimeout(() => {
+          setPhase('idle');
+          animateWarp(0, 1500); // Reset animation
+          
+          // Wait for reassembly animation to finish, then trigger next
+          sequenceTimeoutRef.current = window.setTimeout(() => {
+            if (onComplete) onComplete();
+          }, 1600);
+        }, 5000);
+      }, 800);
+    }
+  }, [isActive, onComplete, phase]);
 
-  const isActive = isHovered || isMelting || warpScale > 0;
+  const isActuallyActive = phase !== 'idle' || warpScale > 0.1;
 
   return (
     <div 
       className="liquid-wrapper"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onTouchStart={handleMouseEnter}
-      onTouchEnd={handleMouseLeave}
       style={{
         position: 'relative',
         width: '100%',
         height: '100%',
-        zIndex: isActive ? 9999 : 1,
+        zIndex: isActuallyActive ? 9999 : 1,
       }}
     >
-      {/* Only render SVG Filter when active to save GPU memory */}
-      {isActive && (
+      {isActuallyActive && (
         <svg style={{ width: 0, height: 0, position: 'absolute', pointerEvents: 'none' }}>
           <filter id={filterId} x="-20%" y="-20%" width="140%" height="140%" colorInterpolationFilters="sRGB">
             <feTurbulence 
               type="fractalNoise" 
-              baseFrequency="0.1 0.005" 
+              baseFrequency="0.07 0.003" 
               numOctaves="3" 
               result="noise" 
             />
@@ -125,17 +121,17 @@ export default function LiquidImage({ imageUrl, alt }: LiquidImageProps) {
         style={{
           width: '100%',
           height: '100%',
-          filter: isActive ? `url(#${filterId})` : 'none',
-          transform: isMelting 
-            ? 'scale(2.2) scaleY(1.8) translateY(80px)' 
-            : (isHovered ? 'scale(2.2)' : 'scale(1) translate(0)'),
-          transition: isMelting 
+          filter: isActuallyActive ? `url(#${filterId})` : 'none',
+          transform: phase === 'melt' 
+            ? 'scale(2.2) scaleY(1.8) translateY(100px)' 
+            : (phase === 'expand' ? 'scale(2.2)' : 'scale(1)'),
+          transition: phase === 'melt' 
             ? 'all 4.5s cubic-bezier(0.25, 0.1, 0.25, 1)' 
-            : 'all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1)',
-          boxShadow: isHovered ? '0px 40px 80px rgba(0,0,0,0.9)' : 'none',
+            : 'all 1s cubic-bezier(0.2, 0.8, 0.2, 1)',
+          boxShadow: phase !== 'idle' ? '0px 40px 80px rgba(0,0,0,0.9)' : 'none',
           transformOrigin: 'top center',
           background: '#111',
-          overflow: 'hidden', // Contain the image inside the scaled container
+          overflow: 'hidden',
         }}
       >
         <img 
@@ -146,7 +142,7 @@ export default function LiquidImage({ imageUrl, alt }: LiquidImageProps) {
             height: '100%',
             objectFit: 'cover',
             display: 'block',
-            opacity: isActive ? 1 : 0.8, // Slight dim when inactive for performance
+            opacity: phase !== 'idle' ? 1 : 0.85,
             transition: 'opacity 0.6s ease',
           }}
         />
