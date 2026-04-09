@@ -36,12 +36,16 @@ export default function ProcessRoute() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && activeIndex === -1) {
-            setActiveIndex(0); // Start the cinematic sequence
+          if (entry.isIntersecting) {
+            // Re-start or continue the sequence
+            if (activeIndex === -1) setActiveIndex(0);
+          } else {
+            // Pause the animation loop when out of view to save CPU/GPU
+            setActiveIndex(-1);
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.1 } // Trigger earlier to avoid "sudden visibility"
     );
 
     if (ernstSectionRef.current) {

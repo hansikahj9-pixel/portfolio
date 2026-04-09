@@ -19,6 +19,8 @@ export default function LiquidImage({ imageUrl, alt }: LiquidImageProps) {
 
   // Handle SVG Warp Scale Interpolation
   useEffect(() => {
+    if (!isHovered && !isMelting && warpScaleRef.current === 0) return;
+
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
 
     let start = performance.now();
@@ -27,7 +29,7 @@ export default function LiquidImage({ imageUrl, alt }: LiquidImageProps) {
     const animate = (time: number) => {
       let delta = time - start;
       if (isMelting) {
-        // Melt phase: animate to 250 over ~4.5 seconds
+        // Melt phase: animate up to 250
         let progress = Math.min(delta / 4500, 1);
         let easeProgress = 1 - Math.pow(1 - progress, 3);
         let newScale = initialScale + (250 - initialScale) * easeProgress;
@@ -38,15 +40,17 @@ export default function LiquidImage({ imageUrl, alt }: LiquidImageProps) {
           rafRef.current = requestAnimationFrame(animate);
         }
       } else {
-        // Recovery phase: animate back to 0 over ~1 second
-        if (initialScale === 0) return;
+        // Recovery phase: animate back to 0
         let progress = Math.min(delta / 1000, 1);
         let easeProgress = 1 - Math.pow(1 - progress, 3);
         let newScale = initialScale * (1 - easeProgress);
+        
+        if (newScale < 0.1) newScale = 0;
+        
         warpScaleRef.current = newScale;
         setWarpScale(newScale);
         
-        if (progress < 1) {
+        if (progress < 1 && newScale > 0) {
           rafRef.current = requestAnimationFrame(animate);
         }
       }
@@ -57,7 +61,7 @@ export default function LiquidImage({ imageUrl, alt }: LiquidImageProps) {
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [isMelting]);
+  }, [isMelting, isHovered]);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -73,6 +77,8 @@ export default function LiquidImage({ imageUrl, alt }: LiquidImageProps) {
     setIsMelting(false);
   };
 
+  const isActive = isHovered || isMelting || warpScale > 0;
+
   return (
     <div 
       className="liquid-wrapper"
@@ -84,42 +90,42 @@ export default function LiquidImage({ imageUrl, alt }: LiquidImageProps) {
         position: 'relative',
         width: '100%',
         height: '100%',
-        zIndex: isHovered ? 9999 : 1, // Phase 1: Jumps to absolute front immediately
+        zIndex: isActive ? 9999 : 1,
       }}
     >
-      {/* Invisible SVG Filter Block */}
-      <svg style={{ width: 0, height: 0, position: 'absolute' }}>
-        <filter id={filterId} x="-20%" y="-20%" width="140%" height="140%" colorInterpolationFilters="sRGB">
-          <feTurbulence 
-            type="fractalNoise" 
-            baseFrequency="0.1 0.005" 
-            numOctaves="3" 
-            result="noise" 
-          />
-          <feColorMatrix 
-            type="matrix" 
-            values="0 0 0 0 0.5  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" 
-            in="noise" 
-            result="verticalNoise" 
-          />
-          <feDisplacementMap 
-            in="SourceGraphic" 
-            in2="verticalNoise" 
-            scale={warpScale} 
-            xChannelSelector="R" 
-            yChannelSelector="G" 
-          />
-        </filter>
-      </svg>
+      {/* Only render SVG Filter when active to save GPU memory */}
+      {isActive && (
+        <svg style={{ width: 0, height: 0, position: 'absolute', pointerEvents: 'none' }}>
+          <filter id={filterId} x="-20%" y="-20%" width="140%" height="140%" colorInterpolationFilters="sRGB">
+            <feTurbulence 
+              type="fractalNoise" 
+              baseFrequency="0.1 0.005" 
+              numOctaves="3" 
+              result="noise" 
+            />
+            <feColorMatrix 
+              type="matrix" 
+              values="0 0 0 0 0.5  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" 
+              in="noise" 
+              result="verticalNoise" 
+            />
+            <feDisplacementMap 
+              in="SourceGraphic" 
+              in2="verticalNoise" 
+              scale={warpScale} 
+              xChannelSelector="R" 
+              yChannelSelector="G" 
+            />
+          </filter>
+        </svg>
+      )}
 
       <div
         className="liquid-image-container"
         style={{
           width: '100%',
           height: '100%',
-          // Apply the SVG filter
-          filter: `url(#${filterId})`,
-          // Phase 2 triggers scaleY and translateY
+          filter: isActive ? `url(#${filterId})` : 'none',
           transform: isMelting 
             ? 'scale(2.2) scaleY(1.8) translateY(80px)' 
             : (isHovered ? 'scale(2.2)' : 'scale(1) translate(0)'),
@@ -128,7 +134,8 @@ export default function LiquidImage({ imageUrl, alt }: LiquidImageProps) {
             : 'all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1)',
           boxShadow: isHovered ? '0px 40px 80px rgba(0,0,0,0.9)' : 'none',
           transformOrigin: 'top center',
-          background: '#000',
+          background: '#111',
+          overflow: 'hidden', // Contain the image inside the scaled container
         }}
       >
         <img 
@@ -138,7 +145,9 @@ export default function LiquidImage({ imageUrl, alt }: LiquidImageProps) {
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            display: 'block'
+            display: 'block',
+            opacity: isActive ? 1 : 0.8, // Slight dim when inactive for performance
+            transition: 'opacity 0.6s ease',
           }}
         />
       </div>
