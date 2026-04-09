@@ -55,9 +55,13 @@ export default function LiquidImage({
 
   // Sequence Logic
   useEffect(() => {
-    // Reset phase when inactive so it can trigger again later
+    // CRITICAL: Clean up and reset when this image is no longer the active one
     if (!isActive) {
+      if (sequenceTimeoutRef.current) window.clearTimeout(sequenceTimeoutRef.current);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
       setPhase('idle');
+      setWarpScale(0);
+      warpScaleRef.current = 0;
       return;
     }
 
@@ -65,27 +69,29 @@ export default function LiquidImage({
       // Step 1: Expand
       setPhase('expand');
       
-      // Step 2: Melt after 600ms
+      // Step 2: Melt after 400ms
       sequenceTimeoutRef.current = window.setTimeout(() => {
         setPhase('melt');
-        animateWarp(250, 2500); 
+        animateWarp(250, 1800); 
         
-        // Step 3: Hold for 3 seconds, then Reset
+        // Step 3: Hold for 2 seconds, then Reset
         sequenceTimeoutRef.current = window.setTimeout(() => {
-          setPhase('idle'); // We set to idle here to trigger re-assembly visuals
+          setPhase('idle'); 
           animateWarp(0, 1000); 
           
           // Step 4: Finalize and move to next
           sequenceTimeoutRef.current = window.setTimeout(() => {
-            setPhase('completed'); // Prevents re-triggering while isActive is still true
+            setPhase('completed'); 
             if (onComplete) onComplete();
-          }, 1100);
-        }, 3000);
-      }, 600);
+          }, 800);
+        }, 2000);
+      }, 400);
     }
   }, [isActive, onComplete, phase]);
 
-  const isActuallyActive = phase !== 'idle' || warpScale > 0.1;
+  const isActuallyAnimating = phase !== 'idle' || warpScale > 0.1;
+  // Use isActive to ensure the SVG is only present when intended
+  const showFilter = isActive || isActuallyAnimating;
 
   return (
     <div 
@@ -94,10 +100,10 @@ export default function LiquidImage({
         position: 'relative',
         width: '100%',
         height: '100%',
-        zIndex: isActuallyActive ? 9999 : 1,
+        zIndex: showFilter ? 9999 : 1,
       }}
     >
-      {isActuallyActive && (
+      {showFilter && (
         <svg style={{ width: 0, height: 0, position: 'absolute', pointerEvents: 'none' }}>
           <filter id={filterId} x="-20%" y="-20%" width="140%" height="140%" colorInterpolationFilters="sRGB">
             <feTurbulence 
@@ -128,7 +134,7 @@ export default function LiquidImage({
         style={{
           width: '100%',
           height: '100%',
-          filter: isActuallyActive ? `url(#${filterId})` : 'none',
+          filter: showFilter ? `url(#${filterId})` : 'none',
           transform: phase === 'melt' 
             ? 'scale(2.2) scaleY(1.8) translateY(100px)' 
             : (phase === 'expand' ? 'scale(2.2)' : 'scale(1)'),

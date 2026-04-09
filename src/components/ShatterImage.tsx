@@ -53,20 +53,20 @@ export default function ShatterImage({
       // Start: Idle -> Expand
       setPhase('expand');
       
-      // Expand -> Shatter after 0.8s
+      // Expand -> Shatter after 0.6s
       sequenceTimeoutRef.current = window.setTimeout(() => {
         setPhase('shatter');
         
-        // Shatter -> Idle (Reassemble) after 3 seconds
+        // Shatter -> Idle (Reassemble) after 2 seconds
         sequenceTimeoutRef.current = window.setTimeout(() => {
           setPhase('idle');
           
-          // Reassembly takes ~1s, then call onComplete
+          // Reassembly takes ~0.8s, then call onComplete
           sequenceTimeoutRef.current = window.setTimeout(() => {
             if (onComplete) onComplete();
-          }, 1000); 
-        }, 3000);
-      }, 800);
+          }, 800); 
+        }, 2000);
+      }, 600);
     }
   }, [isActive, onComplete, phase]);
 
