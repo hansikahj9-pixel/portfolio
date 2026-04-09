@@ -59,22 +59,22 @@ export default function LiquidImage({
       // Step 1: Expand
       setPhase('expand');
       
-      // Step 2: Melt after 800ms
+      // Step 2: Melt after 600ms
       sequenceTimeoutRef.current = window.setTimeout(() => {
         setPhase('melt');
-        animateWarp(250, 4500); // Melt animation
+        animateWarp(250, 2500); // 2.5s melt as requested
         
-        // Step 3: Hold for 5 seconds, then Reset
+        // Step 3: Hold for 3 seconds, then Reset
         sequenceTimeoutRef.current = window.setTimeout(() => {
           setPhase('idle');
-          animateWarp(0, 1500); // Reset animation
+          animateWarp(0, 1000); // 1s reset
           
           // Wait for reassembly animation to finish, then trigger next
           sequenceTimeoutRef.current = window.setTimeout(() => {
             if (onComplete) onComplete();
-          }, 1600);
-        }, 5000);
-      }, 800);
+          }, 1100);
+        }, 3000);
+      }, 600);
     }
   }, [isActive, onComplete, phase]);
 
