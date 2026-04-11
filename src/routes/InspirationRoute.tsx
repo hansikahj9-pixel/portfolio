@@ -1,120 +1,125 @@
-import { useState, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import type { MouseEvent } from 'react';
 import AxiomeGlobalNav from '../components/AxiomeGlobalNav';
-import videoSrc from '../assets/Structure-inspiration.mp4';
-import { motion, AnimatePresence } from 'framer-motion';
 
-const GARMENT_DATA = [
+const ACCORDION_DATA = [
   {
     id: 'spiral-volume',
-    name: 'The Spiral Volume Origami Silhouette',
-    description: "This silhouette serves as a direct mathematical translation of the spiraling rock formations in Ernst's landscape. We have abandoned soft seams in favor of a complex internal scaffolding system, utilizing heavy-gauge internal wiring and multi-layered, stiff fused panels to force a permanent 3D protrusion that defies the traditional laws of gravity."
+    name: 'Spiral Volume Origami',
+    description: "A flowing translation of spiraling rock formations, designed to hold a permanent, gravity-defying silhouette. The invisible architecture beneath the drape."
   },
   {
     id: 'layered-column',
-    name: 'The Layered Sculptural Column',
-    description: "A study in tiered monumental weight, this garment replicates the stratified layers of geological formations. The architectural integrity is maintained through high-density bonding and hidden internal scaffolding concentrated in the high-neck and shoulder regions, allowing the fabric to sit away from the body in heavy, monumental blocks."
+    name: 'Layered Sculptural Column',
+    description: "Replicating the monumental weight of geological strata. A tiered, block-like structure that possesses the perceived permanence of stone."
   },
   {
-    id: 'architectural-bodice',
-    name: 'The Architectural Two-Toned Bodice',
-    description: "Defined by a divergent color-blocking strategy that creates a sharp, visual schism on the torso. Through industrial-grade architectural interfacing, we have created a literal, sharp-edged ridge at the intersection of the fabric panels that juts outward, emphasizing the rigid, non-flowy nature of the Axiomé aesthetic."
+    id: 'two-toned-bodice',
+    name: 'Two-Toned Bodice',
+    description: "Defined by divergent color-blocking and sharp-edged construction, creating a tectonic boundary on the body."
   }
 ];
 
-const MANIFESTO_TEXT = "Axiomé represents a radical tectonic shift in the language of modern tailoring, standing at the precise intersection where the subconscious fluidity of Salvador Dalí meets the rigid, monumental architectures of Max Ernst. We have moved beyond the traditional concept of drape to embrace a methodology of structural defiance, where every silhouette is treated as a three-dimensional manifestation of a surrealist dream. By meticulously deconstructing the geological strata of Ernst’s landscape and the melting logic of Dalí’s visions, we translate these ethereal concepts into the rigorous discipline of the high-fashion atelier. This collection is defined by the invisible tech of construction—heavy fused interfacing, internal wiring, and hidden boning—elements that allow us to architect volume that does not collapse, but rather protrudes and erupts from the body. Axiomé is not merely an aesthetic choice; it is a manifestation of the structural soul.";
-
 export default function InspirationRoute() {
-  const [typedText, setTypedText] = useState("");
-  const [activeGarment, setActiveGarment] = useState<typeof GARMENT_DATA[0] | null>(null);
+  const [activeCardId, setActiveCardId] = useState<string | null>(null);
+  
+  // Spotlight tracking
+  const sectionRef = useRef<HTMLElement>(null);
+  const [mousePos, setMousePos] = useState({ x: '50%', y: '50%' });
 
-  // Typewriter effect
+  // Handle Spotlight coordinates on mouse move
+  const handleMouseMove = (e: MouseEvent<HTMLElement>) => {
+    if (!sectionRef.current) return;
+    const rect = sectionRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setMousePos({ x: `${x}px`, y: `${y}px` });
+  };
+
+  // Ensure scroll is fixed to Top initially
   useEffect(() => {
-    // Delay start until heading finishes blurring in
-    const startDelay = setTimeout(() => {
-      let index = 0;
-      const interval = setInterval(() => {
-        setTypedText(MANIFESTO_TEXT.substring(0, index + 1));
-        index++;
-        if (index >= MANIFESTO_TEXT.length) clearInterval(interval);
-      }, 15); // Fast typewriter speed
-      return () => clearInterval(interval);
-    }, 2800); // 2.5s for heading blur + slight offset
-    
-    return () => clearTimeout(startDelay);
+    // If the top element needs snapping. However, we let native scroll operate smoothly.
+    window.scrollTo(0, 0);
   }, []);
+
+  const toggleCard = (id: string) => {
+    setActiveCardId(prev => prev === id ? null : id);
+  };
 
   return (
     <div className="inspiration-container">
       <AxiomeGlobalNav />
 
-      <main className="inspiration-layout">
-        
-        {/* SVG Filter for Tectonic Typography */}
-        <svg style={{ position: 'absolute', width: 0, height: 0, pointerEvents: 'none' }}>
-          <filter id="tectonic-stone">
-            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-        </svg>
+      {/* ── Section 1: The Global Inspiration Hero ── */}
+      <section className="inspiration-hero">
+        <div className="inspiration-hero-bg" />
+        <div className="hero-content">
+          <h1 className="hero-heading">INSPIRATION</h1>
+          <p className="hero-manifesto">
+            Axiomé represents a tectonic shift in the language of tailoring, standing at the precise intersection where the subconscious fluidity of Salvador Dalí meets the rigid architectures of Max Ernst. We have moved beyond the traditional concept of 'drape' to embrace a methodology of structural defiance.
+          </p>
+        </div>
+      </section>
 
-        <section className="inspiration-left">
-          <h1 className="editorial-heading blur-focus-heading">INSPIRATION</h1>
-          <p className="typewriter-manifesto">{typedText}<span className="cursor" /></p>
+      {/* ── Section 2: "Structure & Shape" Box ── */}
+      <section 
+        className="structure-section" 
+        ref={sectionRef} 
+        onMouseMove={handleMouseMove}
+        style={{
+          // Pass mouse pos to CSS vars for Spotlight glow
+          '--mouse-x': mousePos.x,
+          '--mouse-y': mousePos.y
+        } as React.CSSProperties}
+      >
+        {/* Parallax Layers & Spotlight Glow */}
+        <div className="parallax-strata-1" />
+        <div className="parallax-strata-2" />
+        <div className="cursor-spotlight" />
 
-          <div className="tectonic-section">
-            <h2 className="tectonic-heading">STRUCTURE & SHAPE</h2>
-            
-            <div className="architectural-video-wrapper">
-              <div className="blueprint-frame top-left"></div>
-              <div className="blueprint-frame top-right"></div>
-              <div className="blueprint-frame bottom-left"></div>
-              <div className="blueprint-frame bottom-right"></div>
-              
-              <video 
-                src={videoSrc} 
-                autoPlay 
-                loop 
-                muted 
-                playsInline 
-                className="structure-video"
-              />
-            </div>
+        <div className="architectural-grid">
+          
+          {/* LEFT SIDE (The Anchor) */}
+          <div className="arch-left">
+            <h2 className="arch-heading">STRUCTURE &<br/>SHAPE</h2>
           </div>
-        </section>
 
-        <section className="inspiration-right">
-          <ul className="garment-list">
-            {GARMENT_DATA.map((garment) => (
-              <li 
-                key={garment.id} 
-                className={`garment-item ${activeGarment?.id === garment.id ? 'active' : ''}`}
-                onClick={() => setActiveGarment(activeGarment?.id === garment.id ? null : garment)}
-              >
-                {garment.name}
-              </li>
-            ))}
-          </ul>
-        </section>
+          {/* RIGHT SIDE: The Frosted Glass Sidebar Accordion */}
+          <div className="arch-right">
+            {ACCORDION_DATA.map((card) => {
+              const isActive = activeCardId === card.id;
+              return (
+                <article 
+                  key={card.id}
+                  className={`glass-card ${isActive ? 'active' : ''}`}
+                  onClick={() => toggleCard(card.id)}
+                >
+                  <h3 className="glass-header">{card.name}</h3>
+                  <div className="glass-body-wrapper">
+                    <div className="glass-body-content">
+                      <div className="glass-inner-grid">
+                        <p className="glass-text">{card.description}</p>
+                        <div className="macro-placeholder">
+                          {/* Future macro-photo injection point */}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
 
-        {/* Collapsible Technical Analysis Panel */}
-        <AnimatePresence>
-          {activeGarment && (
-            <motion.aside 
-              className="technical-panel"
-              initial={{ x: '100%', opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: '100%', opacity: 0 }}
-              transition={{ type: 'spring', damping: 20, stiffness: 100 }}
-            >
-              <button className="panel-close" onClick={() => setActiveGarment(null)}>CLOSE [X]</button>
-              <h3 className="panel-title">{activeGarment.name}</h3>
-              <div className="panel-divider" />
-              <p className="panel-description">{activeGarment.description}</p>
-            </motion.aside>
-          )}
-        </AnimatePresence>
+        </div>
+      </section>
 
-      </main>
+      {/* ── Section 3: The Cinematic Climax ── */}
+      <section className="cinematic-video-section">
+        <video className="untouched-video" autoPlay loop muted playsInline>
+          <source src="desktop/portfolio/structure inspiration.mp4" type="video/mp4" />
+        </video>
+      </section>
+
     </div>
   );
 }
