@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import type { MouseEvent } from 'react';
 import AxiomeGlobalNav from '../components/AxiomeGlobalNav';
+import videoSrc from '../assets/Structure-inspiration.mp4';
 
 const ACCORDION_DATA = [
   {
@@ -116,7 +117,7 @@ export default function InspirationRoute() {
       {/* ── Section 3: The Cinematic Climax ── */}
       <section className="cinematic-video-section">
         <video className="untouched-video" autoPlay loop muted playsInline>
-          <source src="desktop/portfolio/structure inspiration.mp4" type="video/mp4" />
+          <source src={videoSrc} type="video/mp4" />
         </video>
       </section>
 
