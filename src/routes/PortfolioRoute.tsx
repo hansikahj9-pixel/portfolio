@@ -40,18 +40,20 @@ export default function PortfolioRoute() {
         </Canvas>
       </div>
 
-      {/* UI Layer */}
-      <Navbar />
-      <HeroSection />
+      {/* UI Layer: Contains natural scroll independent from canvas */}
+      <div className="portfolio-scroll-container">
+        <Navbar />
+        <HeroSection />
 
-      <ProjectList onHover={handleProjectHover} />
+        <ProjectList onHover={handleProjectHover} />
 
-      <footer className="footer">
-        <span className="footer-text">
-          © 2026 Hansika Jain — All Rights Reserved
-        </span>
-        <span className="footer-text">Fashion Design Portfolio</span>
-      </footer>
+        <footer className="footer">
+          <span className="footer-text">
+            © 2026 Hansika Jain — All Rights Reserved
+          </span>
+          <span className="footer-text">Fashion Design Portfolio</span>
+        </footer>
+      </div>
     </>
   );
 }
