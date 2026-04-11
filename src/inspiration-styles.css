@@ -1,22 +1,21 @@
-/* ============ AXIOMÉ BOXED INSPIRATION ROUTE ============ */
+/* ============ AXIOMÉ LUXURY INSPIRATION ROUTE v5.0 ============ */
 
-/* ── Global Background Atmosphere ── */
+/* ── Global Background Atmosphere (Deep Full-Palette Mesh) ── */
 .inspiration-container {
   height: 100vh;
   width: 100vw;
-  background-color: var(--deep-void);
-  /* Slow moving gradient blending extremely dark colors */
-  background: linear-gradient(135deg, rgba(42, 75, 140, 0.2), rgba(74, 107, 77, 0.2), var(--deep-void));
+  /* 4-color gradient that incorporates Haute Red and Pageant Blue over a dark base */
+  background: linear-gradient(135deg, #05070A 0%, #172a50 30%, #5a1118 70%, #05070A 100%);
   background-size: 200% 200%;
-  animation: bgBreathe 15s ease infinite;
-  color: var(--moonstruck);
+  animation: vividMesh 20s ease infinite;
+  color: var(--moonstruck); /* Base bright text */
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-font-smoothing: antialiased;
 }
 
-@keyframes bgBreathe {
+@keyframes vividMesh {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
@@ -33,7 +32,7 @@
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   mix-blend-mode: overlay;
-  opacity: 0.15; /* Not washed out */
+  opacity: 0.2; 
   z-index: 1;
 }
 
@@ -41,7 +40,7 @@
 .inspiration-hero {
   position: relative;
   width: 100vw;
-  padding: 15vh 5vw;
+  padding: 15vh 5vw 5vh 5vw;
   display: flex;
   flex-direction: column;
   align-items: center; /* Center horizontally */
@@ -55,7 +54,7 @@
   color: var(--moonstruck);
   text-transform: uppercase;
   letter-spacing: 0em;
-  margin: 0 0 4rem 0;
+  margin: 0 0 2rem 0;
   text-align: center;
   transform: none; /* Perfectly straight */
 }
@@ -66,21 +65,30 @@
   font-weight: 300;
   line-height: 1.6;
   max-width: 800px;
-  border-left: 4px solid var(--yarrow);
+  border-left: 4px solid #E5BE5E; /* Yarrow */
   padding-left: 30px;
   margin: 0; 
   align-self: center;
   text-align: left;
+  position: relative;
 }
 
-/* ── Section 2: "Structure & Shape" Box ── */
+/* ── Section 2: "Structure & Shape" Architectural Box ── */
 .structure-box-container {
   position: relative;
   width: 85vw;
-  max-width: 1600px;
-  margin: 10vh auto 15vh auto; /* Contains the box */
-  background-color: var(--deep-void); /* Solid core */
-  border: 8px solid var(--jaffa-orange); /* VERY thick border */
+  max-width: 1500px;
+  margin: 15vh auto; /* Contains the box */
+  
+  /* Vivid Travertine & Sycamore Gradient Box Background */
+  background: linear-gradient(160deg, rgba(23, 42, 80, 0.95) 0%, rgba(74, 107, 77, 0.9) 40%, rgba(217, 37, 52, 0.8) 75%, rgba(212, 163, 115, 0.8) 100%);
+  box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+  
+  /* Thick Border + Outline Offset */
+  border: 4px solid var(--jaffa-orange);
+  outline: 1px solid rgba(232, 122, 63, 0.3); 
+  outline-offset: 15px;
+  
   z-index: 5;
   overflow: hidden; /* Contains interior mapping and video */
 }
@@ -110,8 +118,8 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(232, 122, 63, 0.3) 0%, rgba(74, 107, 77, 0.1) 40%, transparent 80%);
-  mix-blend-mode: color-dodge; /* Heavy glowing mode without washing blacks */
+  background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(232, 122, 63, 0.2) 0%, transparent 80%);
+  mix-blend-mode: color-dodge; /* Heavy glowing mode */
   z-index: 1;
 }
 
@@ -121,7 +129,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 60px;
-  padding: 100px;
+  padding: 80px;
   z-index: 2; /* Sits above tracking lights */
 }
 
@@ -140,11 +148,11 @@
   font-size: 5vw;
   font-weight: 400;
   text-transform: uppercase;
-  color: var(--moonstruck);
+  color: #E2DCD0; /* Moonstruck */
   margin: 0;
   transform: none; /* STRICTLY FLAT */
   position: sticky;
-  top: 100px;
+  top: 80px;
 }
 
 /* Solid Accordion Sidebar (TEXT ONLY) */
@@ -155,9 +163,9 @@
 }
 
 .solid-card {
-  background: #11151c; /* Solid layout */
-  border: 2px solid var(--sycamore); /* Vivid boundaries */
-  transition: max-height 0.6s cubic-bezier(0.76, 0, 0.24, 1), background-color 0.4s ease, border-left 0.4s ease;
+  background: #05070A; /* Solid Deep Void layout */
+  border: 1px solid #D4A373; /* Travertine boundaries */
+  transition: max-height 0.6s cubic-bezier(0.76, 0, 0.24, 1), background 0.4s ease, border-left 0.4s ease;
   overflow: hidden;
   cursor: pointer;
   position: relative;
@@ -165,8 +173,8 @@
 
 /* Active State solid modifications */
 .solid-card.active {
-  background-color: #1a1e27; /* Brighter solid shift */
-  border-left: 4px solid var(--yarrow);
+  background: linear-gradient(90deg, #172a50 0%, #05070A 100%); /* Subtle linear shift */
+  border-left: 4px solid #E5BE5E; /* Glowing Yarrow */
 }
 
 .solid-header {
@@ -182,7 +190,7 @@
 
 .solid-card.active .solid-header {
   padding-bottom: 1rem;
-  color: var(--yarrow); /* Glow up text */
+  color: #E5BE5E; 
 }
 
 /* Text-Only layout constraints */
@@ -209,14 +217,14 @@
   margin: 0;
 }
 
-
 /* ── Section 3: Contained Inside Box Video ── */
 .contained-video {
+  /* Video becomes the final element INSIDE the thick boxed grid */
   position: relative;
   width: 100%;
-  display: block; /* Sits flush under grid */
+  display: block; 
+  box-sizing: border-box;
   aspect-ratio: 16/9;
   object-fit: cover;
   z-index: 5;
-  border-top: 2px solid rgba(255, 255, 255, 0.1);
 }
