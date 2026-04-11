@@ -1,85 +1,63 @@
-/* ============ AXIOMÉ LUXURY INSPIRATION ROUTE ============ */
+/* ============ AXIOMÉ BOXED INSPIRATION ROUTE ============ */
 
+/* ── Global Background Atmosphere ── */
 .inspiration-container {
   height: 100vh;
   width: 100vw;
-  background-color: transparent; /* No dark background allowed */
-  color: var(--moonstruck); /* Base bright text */
+  background-color: var(--deep-void);
+  /* Slow moving gradient blending extremely dark colors */
+  background: linear-gradient(135deg, rgba(42, 75, 140, 0.2), rgba(74, 107, 77, 0.2), var(--deep-void));
+  background-size: 200% 200%;
+  animation: bgBreathe 15s ease infinite;
+  color: var(--moonstruck);
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── Section 1: The Global Inspiration Hero ── */
-.inspiration-hero {
-  position: relative;
-  width: 100vw;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-/* Liquid Mesh Background */
-.inspiration-hero-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, var(--pageant-blue), var(--sycamore), var(--pageant-blue));
-  background-size: 200% 200%;
-  animation: fluidMesh 12s ease-in-out infinite;
-  z-index: 0;
-}
-
-@keyframes fluidMesh {
+@keyframes bgBreathe {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-/* CSS Film Grain / Vellum Texture */
-.inspiration-hero::after {
+/* Subtle Film Grain */
+.inspiration-container::after {
   content: '';
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100%;
+  height: 100vh;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   mix-blend-mode: overlay;
-  opacity: 0.3;
+  opacity: 0.15; /* Not washed out */
   z-index: 1;
 }
 
-/* Content Container constraints */
-.hero-content {
+/* ── Section 1: Hero Layout ── */
+.inspiration-hero {
   position: relative;
-  z-index: 2;
-  width: 100%;
-  max-width: 1400px;
-  padding: 0 5vw;
+  width: 100vw;
+  padding: 15vh 5vw;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* left-aligned strictly within flexbox */
+  align-items: center; /* Center horizontally */
+  z-index: 5;
 }
 
 .hero-heading {
   font-family: 'Cormorant Garamond', serif;
   font-size: 8vw;
-  font-weight: 300;
+  font-weight: 400;
   color: var(--moonstruck);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin: 0 0 2rem 0;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid rgba(226, 220, 208, 0.3); /* moonstruck at 30% */
-  width: 100%;
-  transform: none; /* Strictly perfectly horizontal */
+  letter-spacing: 0em;
+  margin: 0 0 4rem 0;
+  text-align: center;
+  transform: none; /* Perfectly straight */
 }
 
 .hero-manifesto {
@@ -88,197 +66,157 @@
   font-weight: 300;
   line-height: 1.6;
   max-width: 800px;
-  border-left: 3px solid var(--yarrow);
+  border-left: 4px solid var(--yarrow);
   padding-left: 30px;
-  color: var(--moonstruck);
-  margin-top: 1rem;
+  margin: 0; 
+  align-self: center;
+  text-align: left;
 }
 
-/* ── Section 2: Structure & Shape Box ── */
-
-.structure-section {
+/* ── Section 2: "Structure & Shape" Box ── */
+.structure-box-container {
   position: relative;
-  width: 100vw;
-  min-height: 100vh;
-  background-color: var(--moonstruck); /* Base bright container so we overlap smoothly with no black */
-  overflow: hidden;
+  width: 85vw;
+  max-width: 1600px;
+  margin: 10vh auto 15vh auto; /* Contains the box */
+  background-color: var(--deep-void); /* Solid core */
+  border: 8px solid var(--jaffa-orange); /* VERY thick border */
   z-index: 5;
+  overflow: hidden; /* Contains interior mapping and video */
 }
 
-/* Atmospheric Parallax Overlays */
-.parallax-strata-1 {
-  position: absolute;
-  top: -10%;
-  left: -10%;
-  width: 120%;
-  height: 120%;
-  background: radial-gradient(circle at 80% 20%, rgba(212, 163, 115, 0.6), transparent 50%); /* travertine */
-  z-index: 0;
-  /* Next element logic for speed implemented in React style transform */
-}
-
-.parallax-strata-2 {
-  position: absolute;
-  bottom: -20%;
-  left: 0%;
-  width: 150%;
-  height: 150%;
-  background: radial-gradient(circle at 20% 80%, rgba(74, 107, 77, 0.5), transparent 60%); /* sycamore */
-  z-index: 0;
-}
-
-/* Global JS Spotlight (tied to mouse custom properties) */
-.cursor-spotlight {
+/* The Contour Map Topography Pattern */
+.topography-layer {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(232, 122, 63, 0.15) 0%, transparent 80%);
+  background-image: repeating-radial-gradient( circle at center, transparent, transparent 10px, rgba(255, 255, 255, 0.05) 11px, transparent 12px );
+  opacity: 1; /* Rendered visible ONLY where the flashlight hits */
+  z-index: 0;
+  
+  /* Mask applied dynamically via Javascript CSS vars */
+  -webkit-mask-image: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black 0%, transparent 80%);
+  mask-image: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black 0%, transparent 80%);
+}
+
+/* Flashlight Glow */
+.box-flashlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(232, 122, 63, 0.3) 0%, rgba(74, 107, 77, 0.1) 40%, transparent 80%);
+  mix-blend-mode: color-dodge; /* Heavy glowing mode without washing blacks */
   z-index: 1;
 }
 
-/* Architectural Grid Configuration */
-.architectural-grid {
+/* Left / Right Architectural Grid */
+.box-grid {
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
   gap: 60px;
-  max-width: 1400px;
-  padding: 15vh 5vw;
-  margin: 0 auto;
-  z-index: 2;
+  padding: 100px;
+  z-index: 2; /* Sits above tracking lights */
 }
 
 @media (min-width: 1024px) {
-  .architectural-grid {
+  .box-grid {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-.arch-left {
+.box-left {
   position: relative;
 }
 
-.arch-heading {
+.box-heading {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(3rem, 5vw, 6rem);
-  font-weight: 300;
+  font-size: 5vw;
+  font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #333333; /* Contrast over the moonstruck backdrop */
+  color: var(--moonstruck);
   margin: 0;
   transform: none; /* STRICTLY FLAT */
   position: sticky;
-  top: 15vh;
+  top: 100px;
 }
 
-/* Glassmorphism Sidebar Accordion */
-.arch-right {
+/* Solid Accordion Sidebar (TEXT ONLY) */
+.box-right {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-.glass-card {
-  background: rgba(255, 255, 255, 0.08); /* Base fallback */
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+.solid-card {
+  background: #11151c; /* Solid layout */
+  border: 2px solid var(--sycamore); /* Vivid boundaries */
+  transition: max-height 0.6s cubic-bezier(0.76, 0, 0.24, 1), background-color 0.4s ease, border-left 0.4s ease;
   overflow: hidden;
-  transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1), background 0.5s ease, border-left 0.3s ease;
   cursor: pointer;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Provide some shadow separation natively */
+  position: relative;
 }
 
-/* Active Glass Card Elevation */
-.glass-card.active {
-  transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.14); /* Deepened opacity */
+/* Active State solid modifications */
+.solid-card.active {
+  background-color: #1a1e27; /* Brighter solid shift */
   border-left: 4px solid var(--yarrow);
 }
 
-.glass-header {
+.solid-header {
   font-family: 'Cormorant Garamond', serif;
   font-size: 2rem;
   font-weight: 400;
   padding: 2rem;
-  color: #111111;
+  color: var(--moonstruck);
   text-transform: uppercase;
   margin: 0;
   user-select: none;
 }
 
-.glass-card.active .glass-header {
+.solid-card.active .solid-header {
   padding-bottom: 1rem;
+  color: var(--yarrow); /* Glow up text */
 }
 
-/* Smooth Accordion Body Transition Container */
-.glass-body-wrapper {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+/* Text-Only layout constraints */
+.solid-body-wrapper {
+  max-height: 0;
+  transition: max-height 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+  overflow: hidden;
 }
 
-.glass-card.active .glass-body-wrapper {
-  grid-template-rows: 1fr;
+.solid-card.active .solid-body-wrapper {
+  max-height: 500px; /* Expands to fit text naturally */
 }
 
-.glass-body-content {
-  overflow: hidden; /* Prevent text spillage during height transition */
-}
-
-/* Exact Internal Layout Split */
-.glass-inner-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
+.solid-text-content {
   padding: 0 2rem 2rem 2rem;
 }
 
-@media (min-width: 640px) {
-  .glass-inner-grid {
-    grid-template-columns: 1.5fr 1fr;
-  }
-}
-
-.glass-text {
+.solid-text {
   font-family: 'Montserrat', sans-serif;
   font-size: 1.1rem;
   font-weight: 300;
-  font-style: italic;
-  opacity: 0.9;
   line-height: 1.6;
-  color: #222222;
+  color: var(--moonstruck);
   margin: 0;
 }
 
-/* Macro Placeholder Frost Box */
-.macro-placeholder {
-  min-height: 150px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-/* ── Section 3: Cinematic Extinction / Video ── */
-.cinematic-video-section {
+/* ── Section 3: Contained Inside Box Video ── */
+.contained-video {
   position: relative;
-  width: 100vw;
-  margin: 0 auto;
-  padding: 0; /* No margins / full bleed */
-  z-index: 10;
-  background: var(--moonstruck); /* Ensure connection seamless */
-}
-
-.untouched-video {
-  width: 100vw;
+  width: 100%;
+  display: block; /* Sits flush under grid */
   aspect-ratio: 16/9;
   object-fit: cover;
-  display: block; /* Eliminate stray bottom pixel gaps */
+  z-index: 5;
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
 }

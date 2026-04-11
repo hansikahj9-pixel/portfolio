@@ -29,7 +29,8 @@
   --font-serif: 'Playfair Display', 'Georgia', serif;
   --font-sans: 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
 
-  /* Axiomé Bright Color Palette */
+  /* Axiomé Deep & Vivid Palette (100% Opacity) */
+  --deep-void: #05070A;
   --haute-red: #D92534;
   --pageant-blue: #2A4B8C;
   --yarrow: #E5BE5E;
