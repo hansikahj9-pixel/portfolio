@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import type { MouseEvent } from 'react';
 import AxiomeGlobalNav from '../components/AxiomeGlobalNav';
+import LiquidDiamondMesh from '../components/LiquidDiamondMesh';
 import videoSrc from '../assets/Structure-inspiration.mp4';
 
 const ACCORDION_DATA = [
@@ -23,12 +24,12 @@ const ACCORDION_DATA = [
 
 export default function InspirationRoute() {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
-  
-  // Spotlight tracking strictly within the Box
+
+  // Box spotlight tracking
   const boxRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: '50%', y: '50%' });
 
-  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+  const handleBoxMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     if (!boxRef.current) return;
     const rect = boxRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -46,6 +47,9 @@ export default function InspirationRoute() {
 
   return (
     <div className="inspiration-container">
+      {/* WebGL Liquid Diamond Background — fixed behind everything */}
+      <LiquidDiamondMesh />
+
       <AxiomeGlobalNav />
 
       {/* ── Section 1: The Global Inspiration Hero ── */}
@@ -56,33 +60,32 @@ export default function InspirationRoute() {
         </p>
       </section>
 
-      {/* ── Section 2 & 3: The Thick Contained Box ── */}
-      <div 
-        className="structure-box-container" 
-        ref={boxRef} 
-        onMouseMove={handleMouseMove}
+      {/* ── Section 2 & 3: The Architectural Box ── */}
+      <div
+        className="structure-box-container"
+        ref={boxRef}
+        onMouseMove={handleBoxMouseMove}
         style={{
           '--mouse-x': mousePos.x,
           '--mouse-y': mousePos.y
         } as React.CSSProperties}
       >
-        {/* Hidden Topography & Javascript Glow */}
+        {/* Interior topography & flashlight */}
         <div className="topography-layer" />
         <div className="box-flashlight" />
 
         <div className="box-grid">
-          
-          {/* LEFT SIDE (The Anchor) */}
+          {/* LEFT SIDE */}
           <div className="box-left">
-            <h2 className="box-heading">STRUCTURE &<br/>SHAPE</h2>
+            <h2 className="box-heading">STRUCTURE &amp;<br />SHAPE</h2>
           </div>
 
-          {/* RIGHT SIDE: Solid Accordion Sidebar (TEXT ONLY) */}
+          {/* RIGHT SIDE: Solid Accordion (TEXT ONLY) */}
           <div className="box-right">
             {ACCORDION_DATA.map((card) => {
               const isActive = activeCardId === card.id;
               return (
-                <article 
+                <article
                   key={card.id}
                   className={`solid-card ${isActive ? 'active' : ''}`}
                   onClick={() => toggleCard(card.id)}
@@ -97,16 +100,13 @@ export default function InspirationRoute() {
               );
             })}
           </div>
-
         </div>
 
-        {/* ── Section 3: The Cinematic Contained Video ── */}
+        {/* ── Section 3: Cinematic Contained Video ── */}
         <video className="contained-video" autoPlay loop muted playsInline>
           <source src={videoSrc} type="video/mp4" />
         </video>
-
       </div>
-
     </div>
   );
 }
