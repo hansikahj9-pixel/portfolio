@@ -1,5 +1,5 @@
 import { useFrame, useThree, Canvas } from '@react-three/fiber';
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useEffect } from 'react';
 import * as THREE from 'three';
 import { moltenMaterialShader } from '../shaders/moltenMaterial';
 
@@ -15,6 +15,29 @@ function MoltenMesh() {
     uResolution: { value: new THREE.Vector2(1, 1) }
   }), []);
 
+  useEffect(() => {
+    // 1. EVENT LISTENING LOGIC (FINAL DIRECTIVE)
+    // Universal standard that captures both mouse movement and finger touch simultaneously
+    const updateMouse = (e: PointerEvent) => {
+      // 2. COORDINATE MAPPING (FINAL DIRECTIVE)
+      const x = e.clientX / window.innerWidth;
+      const y = 1.0 - (e.clientY / window.innerHeight);
+      
+      if (materialRef.current) {
+        // Direct update for better responsiveness
+        materialRef.current.uniforms.uMouse.value.set(x, y);
+      }
+    };
+
+    window.addEventListener('pointermove', updateMouse);
+    window.addEventListener('pointerdown', updateMouse);
+
+    return () => {
+      window.removeEventListener('pointermove', updateMouse);
+      window.removeEventListener('pointerdown', updateMouse);
+    };
+  }, []);
+
   useFrame((state) => {
     if (materialRef.current) {
       // Update time
@@ -22,14 +45,6 @@ function MoltenMesh() {
       
       // Update resolution
       materialRef.current.uniforms.uResolution.value.set(size.width, size.height);
-      
-      // Smoothly update mouse position
-      const targetX = (state.pointer.x + 1) / 2;
-      const targetY = (state.pointer.y + 1) / 2;
-      
-      // Interpolate for organic fluid feel
-      materialRef.current.uniforms.uMouse.value.x += (targetX - materialRef.current.uniforms.uMouse.value.x) * 0.1;
-      materialRef.current.uniforms.uMouse.value.y += (targetY - materialRef.current.uniforms.uMouse.value.y) * 0.1;
     }
   });
 
@@ -41,6 +56,7 @@ function MoltenMesh() {
         fragmentShader={moltenMaterialShader.fragmentShader}
         vertexShader={moltenMaterialShader.vertexShader}
         uniforms={uniforms}
+        transparent
       />
     </mesh>
   );
@@ -55,7 +71,8 @@ export default function MoltenBackground() {
       width: '100vw', 
       height: '100vh', 
       zIndex: -1,
-      pointerEvents: 'none' // Ensure it doesn't block interactions
+      pointerEvents: 'none', // Ensure it doesn't block interactions,
+      touchAction: 'none'    // 3. CSS OVERRIDE (FINAL DIRECTIVE)
     }}>
       <Canvas
         camera={{ position: [0, 0, 1] }}
