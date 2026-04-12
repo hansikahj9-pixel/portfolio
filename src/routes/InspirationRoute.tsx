@@ -70,8 +70,12 @@ export default function InspirationRoute() {
           '--mouse-y': mousePos.y
         } as React.CSSProperties}
       >
-        {/* Interior topography & flashlight */}
-        <div className="topography-layer" />
+        {/* Background Video */}
+        <video className="contained-video" autoPlay loop muted playsInline>
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+
+        {/* Interaction layer */}
         <div className="box-flashlight" />
 
         <div className="box-grid">
@@ -101,11 +105,6 @@ export default function InspirationRoute() {
             })}
           </div>
         </div>
-
-        {/* ── Section 3: Cinematic Contained Video ── */}
-        <video className="contained-video" autoPlay loop muted playsInline>
-          <source src={videoSrc} type="video/mp4" />
-        </video>
       </div>
     </div>
   );
