@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import AxiomeGlobalNav from '../components/AxiomeGlobalNav';
 import ShatterImage from '../components/ShatterImage';
 import LiquidImage from '../components/LiquidImage';
-import LiquidChromeBackground from '../components/LiquidChromeBackground';
+import MoltenBackground from '../components/MoltenBackground';
 
 // Ernst Images
 import img2 from '../assets/image (2).png';
@@ -87,8 +87,8 @@ export default function ProcessRoute() {
 
   return (
     <div className="process-container">
-      {/* ── HD Liquid Chrome Interactive WebGL Layer ── */}
-      <LiquidChromeBackground />
+      {/* ── Mirror-Finish Molten Metallic Interactive WebGL Layer ── */}
+      <MoltenBackground />
 
       {/* ── Global Navigation ── */}
       <AxiomeGlobalNav />
