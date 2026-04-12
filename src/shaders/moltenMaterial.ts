@@ -18,10 +18,11 @@ export const moltenMaterialShader = {
     uniform vec2 uMouse;
     uniform vec2 uResolution;
 
-    // AXIOMÉ METALLIC PALETTE
-    vec3 silver = vec3(0.95, 0.95, 0.98); 
-    vec3 orange = vec3(0.91, 0.48, 0.25); 
-    vec3 red    = vec3(0.85, 0.15, 0.20);
+    // AXIOMÉ METALLIC PALETTE (Dark Jewelry Base + Vibrant Core)
+    vec3 darkSilver = vec3(0.20, 0.20, 0.24); // Oxidized dark silver
+    vec3 orange     = vec3(0.91, 0.48, 0.25); // Metallic Jaffa
+    vec3 red        = vec3(0.85, 0.15, 0.20); // Metallic Haute Red
+    vec3 yellow     = vec3(0.90, 0.75, 0.36); // Yarrow Yellow
 
     // ── 3D SIMPLEX NOISE ENGINE ──
     vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -70,15 +71,20 @@ export const moltenMaterialShader = {
       return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
     }
 
-    // HIGH-PRECISION WAVE FUNCTION
-    float getWaves(vec2 p) {
+    // HIGH-VISCOSITY WAVE FUNCTION (Pinterest Swirl)
+    float getWaves(vec2 p, vec2 mouseCoord) {
+        // 1. Fluid Drag: The cursor pulls the space around it
+        float dist = distance(p, mouseCoord);
+        float dragForce = exp(-dist * 4.5);
+        vec2 warpedP = p - normalize(p - mouseCoord + 0.001) * dragForce * 0.15;
+
+        // 2. Heavy Noise
         float time = uTime * 0.15;
-        float w = snoise(vec3(p * 1.2, time));
-        w += snoise(vec3(p * 2.5, time * 1.1)) * 0.4;
+        float w = snoise(vec3(warpedP * 1.8, time));
+        w += snoise(vec3(warpedP * 3.5, time * 1.2)) * 0.4;
         
-        // Touch Ripple
-        float d = distance(p, uMouse);
-        w += sin(d * 15.0 - uTime * 2.5) * exp(-d * 3.5) * 0.7;
+        // 3. Touch Depression
+        w += sin(dist * 12.0 - uTime * 2.0) * dragForce * 0.5;
         return w;
     }
 
@@ -88,36 +94,36 @@ export const moltenMaterialShader = {
         uv.x *= aspect;
         vec2 mouse = vec2(uMouse.x * aspect, uMouse.y);
 
-        // 1. ANALYTICAL NORMALS (Precision Ridges)
+        // 1. ANALYTICAL NORMALS
         float e = 0.01; 
-        float h = getWaves(uv);
-        float hL = getWaves(uv - vec2(e, 0.0));
-        float hR = getWaves(uv + vec2(e, 0.0));
-        float hD = getWaves(uv - vec2(0.0, e));
-        float hU = getWaves(uv + vec2(0.0, e));
+        float h = getWaves(uv, mouse);
+        float hL = getWaves(uv - vec2(e, 0.0), mouse);
+        float hR = getWaves(uv + vec2(e, 0.0), mouse);
+        float hD = getWaves(uv - vec2(0.0, e), mouse);
+        float hU = getWaves(uv + vec2(0.0, e), mouse);
         
-        vec3 normal = normalize(vec3(hL - hR, hD - hU, 0.15));
+        vec3 normal = normalize(vec3(hL - hR, hD - hU, 0.2));
 
-        // 2. LIGHTING (The Glass-Silver Luster)
-        vec3 lightDir = normalize(vec3(0.5, 0.5, 1.0));
+        // 2. LIGHTING (Controlled Jewelry Shine)
+        vec3 lightDir = normalize(vec3(0.5, 0.6, 1.0));
         vec3 viewDir = vec3(0.0, 0.0, 1.0);
         vec3 halfway = normalize(lightDir + viewDir);
         
-        // Specular (Smooth highlight, Power 32 kills dots)
-        float spec = pow(max(0.0, dot(normal, halfway)), 32.0);
-        // Fresnel (Glass edges)
-        float fresnel = pow(1.0 - max(0.0, dot(normal, viewDir)), 4.0);
+        // Tighter, sharper specular to prevent white blowout
+        float spec = pow(max(0.0, dot(normal, halfway)), 48.0);
+        float fresnel = pow(1.0 - max(0.0, dot(normal, viewDir)), 5.0);
 
-        // 3. COLOR ASSEMBLY
-        // High-end blending: Silver top, Molten core below
-        vec3 color = mix(silver, orange, smoothstep(0.1, 0.5, h));
-        color = mix(color, red, smoothstep(0.6, 0.9, h));
+        // 3. MORE VIBRANT COLOR ASSEMBLY
+        // Expand the smoothstep ranges so the colors show up more than the dark silver
+        vec3 color = mix(darkSilver, orange, smoothstep(0.0, 0.4, h));
+        color = mix(color, red, smoothstep(0.4, 0.65, h));
+        color = mix(color, yellow, smoothstep(0.65, 1.0, h));
         
-        // 4. FINAL MATERIAL
-        vec3 reflection = vec3(1.0) * spec * 2.5;
-        vec3 glassEdge = vec3(1.0) * fresnel * 1.5;
+        // 4. FINAL OUTPUT
+        vec3 reflection = vec3(1.0) * spec * 1.5; // Reduced intensity
+        vec3 glassEdge = vec3(0.8, 0.8, 0.9) * fresnel * 0.8; // Subtle edge
         
-        vec3 finalOutput = (color * 0.85) + reflection + glassEdge;
+        vec3 finalOutput = color + reflection + glassEdge;
         
         gl_FragColor = vec4(finalOutput, 1.0);
     }
