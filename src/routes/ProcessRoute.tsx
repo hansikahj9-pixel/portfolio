@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import AxiomeGlobalNav from '../components/AxiomeGlobalNav';
 import ShatterImage from '../components/ShatterImage';
 import LiquidImage from '../components/LiquidImage';
+import MoltenBackground from '../components/MoltenBackground';
 
 // Ernst Images
 import img2 from '../assets/image (2).png';
@@ -86,6 +87,9 @@ export default function ProcessRoute() {
 
   return (
     <div className="process-container">
+      {/* ── Molten Silver Interactive WebGL Layer ── */}
+      <MoltenBackground />
+
       {/* ── Global Navigation ── */}
       <AxiomeGlobalNav />
 
