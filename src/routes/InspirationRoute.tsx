@@ -1,30 +1,10 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import type { MouseEvent } from 'react';
 import AxiomeGlobalNav from '../components/AxiomeGlobalNav';
 import LiquidDiamondMesh from '../components/LiquidDiamondMesh';
 import videoSrc from '../assets/Structure-inspiration.mp4';
 
-const ACCORDION_DATA = [
-  {
-    id: 'spiral-volume',
-    name: 'Spiral Volume Origami',
-    description: "A flowing translation of spiraling rock formations, designed to hold a permanent, gravity-defying silhouette. The invisible architecture beneath the drape."
-  },
-  {
-    id: 'layered-column',
-    name: 'Layered Sculptural Column',
-    description: "Replicating the monumental weight of geological strata. A tiered, block-like structure that possesses the perceived permanence of stone."
-  },
-  {
-    id: 'two-toned-bodice',
-    name: 'Two-Toned Bodice',
-    description: "Defined by divergent color-blocking and sharp-edged construction, creating a tectonic boundary on the body."
-  }
-];
-
 export default function InspirationRoute() {
-  const [activeCardId, setActiveCardId] = useState<string | null>(null);
-
   // Box spotlight tracking
   const boxRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: '50%', y: '50%' });
@@ -40,10 +20,6 @@ export default function InspirationRoute() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const toggleCard = (id: string) => {
-    setActiveCardId(prev => prev === id ? null : id);
-  };
 
   return (
     <div className="inspiration-container">
@@ -79,33 +55,15 @@ export default function InspirationRoute() {
         <div className="box-flashlight" />
 
         <div className="box-grid">
-          {/* LEFT SIDE */}
-          <div className="box-left">
+          {/* CENTERED 3D HEADING */}
+          <div className="box-title-wrapper">
             <h2 className="box-heading">STRUCTURE &amp;<br />SHAPE</h2>
-          </div>
-
-          {/* RIGHT SIDE: Solid Accordion (TEXT ONLY) */}
-          <div className="box-right">
-            {ACCORDION_DATA.map((card) => {
-              const isActive = activeCardId === card.id;
-              return (
-                <article
-                  key={card.id}
-                  className={`solid-card ${isActive ? 'active' : ''}`}
-                  onClick={() => toggleCard(card.id)}
-                >
-                  <h3 className="solid-header">{card.name}</h3>
-                  <div className="solid-body-wrapper">
-                    <div className="solid-text-content">
-                      <p className="solid-text">{card.description}</p>
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+// We need to import useState since it's used for mousePos
+import { useState } from 'react';
