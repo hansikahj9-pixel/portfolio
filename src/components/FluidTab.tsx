@@ -38,19 +38,16 @@ function FluidMesh({ colors }: { colors: [string, string, string] }) {
     mat.uniforms.uMouse.value.copy(smoothMouse.current);
   });
 
-  const handlePointerMove = (e: any) => {
-    const x = e.uv.x;
-    const y = e.uv.y;
-    mouseRef.current.set(x, y);
-  };
-
   return (
     <mesh 
       ref={meshRef} 
-      onPointerMove={handlePointerMove}
-      scale={[viewport.width, viewport.height, 1]}
+      onPointerMove={(e) => {
+        const x = (e.point.x / viewport.width) + 0.5;
+        const y = (e.point.y / viewport.height) + 0.5;
+        mouseRef.current.set(x, y);
+      }}
     >
-      <planeGeometry />
+      <planeGeometry args={[viewport.width, viewport.height]} />
       <shaderMaterial
         vertexShader={fluidVertexShader}
         fragmentShader={gradientFluidFragmentShader}
@@ -78,14 +75,13 @@ export default function FluidTab({ to, label, colors }: FluidTabProps) {
           position: 'absolute', 
           inset: 0, 
           zIndex: 1, 
-          pointerEvents: 'none',
-          opacity: 1 // Force full opacity
+          pointerEvents: 'none'
         }}
       >
         <Canvas
           orthographic
           dpr={[1, 2]}
-          gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+          gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
           style={{ width: '100%', height: '100%' }}
         >
           <FluidMesh colors={colors} />
