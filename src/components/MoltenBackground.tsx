@@ -12,10 +12,14 @@ function MoltenMesh() {
   const uniforms = useMemo(() => ({
     uTime: { value: 0 },
     uMouse: { value: new THREE.Vector2(0.5, 0.5) },
-    uResolution: { value: new THREE.Vector2(1, 1) }
+    uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
   }), []);
 
   useEffect(() => {
+    // Force initial resolution update on mount to avoid 323px-width bug
+    if (materialRef.current) {
+      materialRef.current.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
+    }
     // 1. EVENT LISTENING LOGIC (FINAL DIRECTIVE)
     // Universal standard that captures both mouse movement and finger touch simultaneously
     const updateMouse = (e: PointerEvent) => {
@@ -75,9 +79,11 @@ export default function MoltenBackground() {
       touchAction: 'none'    // 3. CSS OVERRIDE (FINAL DIRECTIVE)
     }}>
       <Canvas
+        key="molten-canvas-global"
         camera={{ position: [0, 0, 1] }}
         dpr={[1, 2]} // High-resolution handle
-        gl={{ antialias: true, alpha: true }}
+        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}
       >
         <MoltenMesh />
       </Canvas>
