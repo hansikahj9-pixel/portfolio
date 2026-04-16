@@ -1,5 +1,6 @@
 import { useRef, useMemo, useState } from 'react';
-import { useFrame, Canvas } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
+import { View, OrthographicCamera } from '@react-three/drei';
 import { Link } from 'react-router-dom';
 import * as THREE from 'three';
 import { fluidVertexShader, gradientFluidFragmentShader } from '../shaders/fluidShader';
@@ -41,7 +42,6 @@ function FluidMesh({ colors }: { colors: [string, string, string] }) {
     <mesh 
       ref={meshRef} 
       onPointerMove={(e) => {
-        // Use UV coordinates for 0-1 mapping, robust against any aspect ratio
         if (e.uv) {
           mouseRef.current.set(e.uv.x, e.uv.y);
         }
@@ -74,22 +74,16 @@ export default function FluidTab({ to, label, colors }: FluidTabProps) {
         style={{ 
           position: 'absolute', 
           inset: 0, 
-          zIndex: 1, 
+          zIndex: 0, 
           pointerEvents: 'none'
         }}
       >
-        <Canvas
-          key={to}
-          orthographic
-          camera={{ left: -1, right: 1, top: 1, bottom: -1, near: 0, far: 1 }}
-          dpr={[1, 2]}
-          gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
-          style={{ width: '240px', height: '64px', position: 'absolute', top: 0, left: 0 }}
-        >
+        <View style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}>
+          <OrthographicCamera makeDefault left={-1} right={1} top={1} bottom={-1} near={0} far={1} position={[0, 0, 1]} />
           <FluidMesh colors={colors} />
-        </Canvas>
+        </View>
       </div>
-      <span className="fluid-tab-label">{label}</span>
+      <span className="fluid-tab-label" style={{ position: 'relative', zIndex: 10, mixBlendMode: 'difference' }}>{label}</span>
       <div className="fluid-tab-border" />
     </Link>
   );

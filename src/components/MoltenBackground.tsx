@@ -1,5 +1,6 @@
-import { useFrame, useThree, Canvas } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { useRef, useMemo, useEffect } from 'react';
+import { View } from '@react-three/drei';
 import * as THREE from 'three';
 import { moltenMaterialShader } from '../shaders/moltenMaterial';
 
@@ -16,19 +17,12 @@ function MoltenMesh() {
   }), []);
 
   useEffect(() => {
-    // Force initial resolution update on mount to avoid 323px-width bug
-    if (materialRef.current) {
-      materialRef.current.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
-    }
-    // 1. EVENT LISTENING LOGIC (FINAL DIRECTIVE)
-    // Universal standard that captures both mouse movement and finger touch simultaneously
+    // 1. EVENT LISTENING LOGIC
     const updateMouse = (e: PointerEvent) => {
-      // 2. COORDINATE MAPPING (FINAL DIRECTIVE)
       const x = e.clientX / window.innerWidth;
       const y = 1.0 - (e.clientY / window.innerHeight);
       
       if (materialRef.current) {
-        // Direct update for better responsiveness
         materialRef.current.uniforms.uMouse.value.set(x, y);
       }
     };
@@ -44,10 +38,7 @@ function MoltenMesh() {
 
   useFrame((state) => {
     if (materialRef.current) {
-      // Update time
       materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
-      
-      // Update resolution
       materialRef.current.uniforms.uResolution.value.set(size.width, size.height);
     }
   });
@@ -74,19 +65,13 @@ export default function MoltenBackground() {
       left: 0, 
       width: '100vw', 
       height: '100vh', 
-      zIndex: -10, // Deep background
+      zIndex: -1, // Underlying layer
       pointerEvents: 'none',
       touchAction: 'none'
     }}>
-      <Canvas
-        key="molten-canvas-global"
-        camera={{ position: [0, 0, 1] }}
-        dpr={[1, 2]} // High-resolution handle
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-        style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}
-      >
+      <View style={{ width: '100%', height: '100%' }}>
         <MoltenMesh />
-      </Canvas>
+      </View>
     </div>
   );
 }
