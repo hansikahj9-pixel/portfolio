@@ -1,5 +1,7 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import { Canvas } from '@react-three/fiber';
+import { View } from '@react-three/drei';
 import PortfolioRoute from './routes/PortfolioRoute';
 import AxiomeRoute from './routes/AxiomeRoute';
 import ProcessRoute from './routes/ProcessRoute';
@@ -23,6 +25,19 @@ function App() {
           </Routes>
         </AnimatePresence>
       </div>
+
+      {/* Global Shared WebGL Header Canvas */}
+      <div className="global-shared-canvas-container">
+        <Canvas
+          dpr={[1, 2]}
+          camera={{ position: [0, 0, 1] }}
+          gl={{ antialias: true, alpha: true }}
+          style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', pointerEvents: 'none', zIndex: 100 }}
+        >
+          <View.Port />
+        </Canvas>
+      </div>
+
       {/* Custom Cursor stays global */}
       <CustomCursor />
     </>

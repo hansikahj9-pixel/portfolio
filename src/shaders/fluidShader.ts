@@ -160,15 +160,15 @@ export const gradientFluidFragmentShader = /* glsl */ `
       color = mix(uColor2, uColor3, (intensity - 0.5) * 2.0);
     }
 
-    // Add metallic/neon punch
-    color *= (0.8 + flowField * 0.4);
+    // Add metallic/neon punch - INCREASED BRIGHTNESS
+    color *= (1.2 + flowField * 0.6);
     
-    // Mouse glow area
-    float glow = smoothstep(0.35, 0.0, dist) * 0.4;
-    color += uColor2 * glow * (1.0 + mouseRipple);
+    // Mouse glow area - MORE VIVID
+    float glow = smoothstep(0.3, 0.0, dist) * 0.6;
+    color += uColor2 * glow * (1.5 + mouseRipple);
 
-    // Subtle vignette
-    float vignette = 1.0 - smoothstep(0.4, 1.1, length(uv - 0.5) * 1.3);
+    // Subtle vignette - REDUCED to keep edges bright
+    float vignette = 1.0 - smoothstep(0.6, 1.2, length(uv - 0.5) * 1.2);
     color *= vignette;
 
     gl_FragColor = vec4(color, 1.0);
