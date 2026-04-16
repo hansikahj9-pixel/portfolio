@@ -1,5 +1,5 @@
 import { useRef, useMemo, useState } from 'react';
-import { useFrame, useThree, Canvas } from '@react-three/fiber';
+import { useFrame, Canvas } from '@react-three/fiber';
 import { Link } from 'react-router-dom';
 import * as THREE from 'three';
 import { fluidVertexShader, gradientFluidFragmentShader } from '../shaders/fluidShader';
@@ -14,12 +14,11 @@ function FluidMesh({ colors }: { colors: [string, string, string] }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const mouseRef = useRef(new THREE.Vector2(0.5, 0.5));
   const smoothMouse = useRef(new THREE.Vector2(0.5, 0.5));
-  const { size, viewport } = useThree();
 
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
-      uResolution: { value: new THREE.Vector2(size.width, size.height) },
+      uResolution: { value: new THREE.Vector2(1, 1) },
       uMouse: { value: new THREE.Vector2(0.5, 0.5) },
       uColor1: { value: new THREE.Color(colors[0]) },
       uColor2: { value: new THREE.Color(colors[1]) },
@@ -28,7 +27,7 @@ function FluidMesh({ colors }: { colors: [string, string, string] }) {
     [colors]
   );
 
-  useFrame(({ clock }) => {
+  useFrame(({ clock, size }) => {
     if (!meshRef.current) return;
     const mat = meshRef.current.material as THREE.ShaderMaterial;
     mat.uniforms.uTime.value = clock.getElapsedTime();
@@ -42,12 +41,13 @@ function FluidMesh({ colors }: { colors: [string, string, string] }) {
     <mesh 
       ref={meshRef} 
       onPointerMove={(e) => {
-        const x = (e.point.x / viewport.width) + 0.5;
-        const y = (e.point.y / viewport.height) + 0.5;
-        mouseRef.current.set(x, y);
+        // Use UV coordinates for 0-1 mapping, robust against any aspect ratio
+        if (e.uv) {
+          mouseRef.current.set(e.uv.x, e.uv.y);
+        }
       }}
     >
-      <planeGeometry args={[viewport.width, viewport.height]} />
+      <planeGeometry args={[2, 2]} />
       <shaderMaterial
         vertexShader={fluidVertexShader}
         fragmentShader={gradientFluidFragmentShader}
@@ -80,6 +80,7 @@ export default function FluidTab({ to, label, colors }: FluidTabProps) {
       >
         <Canvas
           orthographic
+          camera={{ left: -1, right: 1, top: 1, bottom: -1, near: 0, far: 1 }}
           dpr={[1, 2]}
           gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
           style={{ width: '100%', height: '100%' }}
