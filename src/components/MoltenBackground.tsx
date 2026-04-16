@@ -68,15 +68,15 @@ function MoltenMesh() {
 
 export default function MoltenBackground() {
   return (
-    <div style={{ 
+    <div className="molten-background-container" style={{ 
       position: 'fixed', 
       top: 0, 
       left: 0, 
       width: '100vw', 
       height: '100vh', 
-      zIndex: -1,
-      pointerEvents: 'none', // Ensure it doesn't block interactions,
-      touchAction: 'none'    // 3. CSS OVERRIDE (FINAL DIRECTIVE)
+      zIndex: -10, // Deep background
+      pointerEvents: 'none',
+      touchAction: 'none'
     }}>
       <Canvas
         key="molten-canvas-global"
