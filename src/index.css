@@ -465,14 +465,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .fluid-tab-label {
   position: relative;
-  z-index: 120; /* Above the fixed canvas (z-index 100) */
+  z-index: 120;
   font-family: var(--font-sans);
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.3em;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.35em;
   color: #FFFFFF;
   text-transform: uppercase;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.9);
   pointer-events: none;
 }
 

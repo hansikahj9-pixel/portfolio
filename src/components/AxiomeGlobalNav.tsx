@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import FluidTab from './FluidTab';
 
 export default function AxiomeGlobalNav() {
-  const tabColors: [string, string, string] = ['#FF5F1F', '#C0C0C0', '#50C878'];
+  const tabColors: [string, string, string] = ['#F0F0F0', '#A0A0A0', '#333333'];
 
   return (
     <header className="axiome-header">
