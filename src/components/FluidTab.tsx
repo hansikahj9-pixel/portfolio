@@ -64,7 +64,6 @@ function FluidMesh({ colors }: { colors: [string, string, string] }) {
 
 export default function FluidTab({ to, label, colors }: FluidTabProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const viewRef = useRef<HTMLDivElement>(null);
 
   return (
     <Link 
@@ -72,15 +71,26 @@ export default function FluidTab({ to, label, colors }: FluidTabProps) {
       className={`fluid-tab-box ${isHovered ? 'hovered' : ''}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      style={{ isolation: 'isolate' }}
     >
       <div 
-        ref={viewRef}
         className="fluid-tab-canvas-wrapper" 
-        style={{ position: 'absolute', inset: 0, zIndex: 0 }}
+        style={{ 
+          position: 'absolute', 
+          inset: 0, 
+          zIndex: 1, 
+          pointerEvents: 'none',
+          opacity: 1 // Force full opacity
+        }}
       >
-        <View track={viewRef as any}>
+        <Canvas
+          orthographic
+          dpr={[1, 2]}
+          gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+          style={{ width: '100%', height: '100%' }}
+        >
           <FluidMesh colors={colors} />
-        </View>
+        </Canvas>
       </div>
       <span className="fluid-tab-label">{label}</span>
       <div className="fluid-tab-border" />

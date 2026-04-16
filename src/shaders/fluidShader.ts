@@ -152,7 +152,7 @@ export const gradientFluidFragmentShader = /* glsl */ `
     // Gradient palette blend
     float intensity = smoothstep(-0.6, 0.8, flowField);
     
-    // Mix between 3 colors based on intensity
+    // Mix between 3 colors based on intensity - VIBRANT MODE
     vec3 color;
     if (intensity < 0.5) {
       color = mix(uColor1, uColor2, intensity * 2.0);
@@ -160,15 +160,15 @@ export const gradientFluidFragmentShader = /* glsl */ `
       color = mix(uColor2, uColor3, (intensity - 0.5) * 2.0);
     }
 
-    // Add metallic/neon punch - INCREASED BRIGHTNESS
-    color *= (1.2 + flowField * 0.6);
+    // Add metallic/neon punch - EXTREME BRIGHTNESS
+    color *= (1.8 + flowField * 1.0);
     
-    // Mouse glow area - MORE VIVID
-    float glow = smoothstep(0.3, 0.0, dist) * 0.6;
-    color += uColor2 * glow * (1.5 + mouseRipple);
+    // Mouse glow area - HIGH INTENSITY
+    float glow = smoothstep(0.3, 0.0, dist) * 0.8;
+    color += uColor2 * glow * (2.0 + mouseRipple);
 
-    // Subtle vignette - REDUCED to keep edges bright
-    float vignette = 1.0 - smoothstep(0.6, 1.2, length(uv - 0.5) * 1.2);
+    // Subtle vignette - REDUCED
+    float vignette = 1.0 - smoothstep(0.7, 1.3, length(uv - 0.5) * 1.5);
     color *= vignette;
 
     gl_FragColor = vec4(color, 1.0);
