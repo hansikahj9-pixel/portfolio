@@ -1,9 +1,6 @@
 import { Link } from 'react-router-dom';
-import FluidTab from './FluidTab';
 
 export default function AxiomeGlobalNav() {
-  const tabColors: [string, string, string] = ['#FF5F1F', '#C0C0C0', '#50C878'];
-
   return (
     <header className="axiome-header">
       <Link to="/" className="axiome-back-link">
@@ -11,10 +8,10 @@ export default function AxiomeGlobalNav() {
         Back to Home
       </Link>
 
-      <nav className="axiome-menu-tabs">
-        <FluidTab to="/axiome/process" label="THE PROCESS" colors={tabColors} />
-        <FluidTab to="/axiome/maison" label="LA MAISON" colors={tabColors} />
-        <FluidTab to="/axiome/collection" label="THE COLLECTION" colors={tabColors} />
+      <nav className="axiome-menu-tabs" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+        <Link to="/axiome/process" className="axiome-tab">THE PROCESS</Link>
+        <Link to="/axiome/maison" className="axiome-tab">LA MAISON</Link>
+        <Link to="/axiome/collection" className="axiome-tab">THE COLLECTION</Link>
       </nav>
     </header>
   );
