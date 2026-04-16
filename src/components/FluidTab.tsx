@@ -79,6 +79,7 @@ export default function FluidTab({ to, label, colors }: FluidTabProps) {
         }}
       >
         <Canvas
+          key={to}
           orthographic
           camera={{ left: -1, right: 1, top: 1, bottom: -1, near: 0, far: 1 }}
           dpr={[1, 2]}
