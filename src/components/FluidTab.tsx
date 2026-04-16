@@ -1,6 +1,6 @@
 import { useRef, useMemo, useState } from 'react';
 import { View } from '@react-three/drei';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useFrame, useThree, Canvas } from '@react-three/fiber';
 import { Link } from 'react-router-dom';
 import * as THREE from 'three';
 import { fluidVertexShader, gradientFluidFragmentShader } from '../shaders/fluidShader';
