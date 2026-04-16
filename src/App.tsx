@@ -52,7 +52,7 @@ function App() {
 
       {/* Custom Cursor stays global */}
       <CustomCursor />
-    </>
+    </div>
   );
 }
 
