@@ -83,7 +83,7 @@ export default function FluidTab({ to, label, colors }: FluidTabProps) {
           camera={{ left: -1, right: 1, top: 1, bottom: -1, near: 0, far: 1 }}
           dpr={[1, 2]}
           gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
-          style={{ width: '100%', height: '100%' }}
+          style={{ width: '240px', height: '64px', position: 'absolute', top: 0, left: 0 }}
         >
           <FluidMesh colors={colors} />
         </Canvas>
