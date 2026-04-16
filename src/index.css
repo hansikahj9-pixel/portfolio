@@ -477,8 +477,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .fluid-tab-box:hover .fluid-tab-border {
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+}
+
+/* Absolute Top Layer for Navigation */
+.axiome-header {
+  z-index: 2000 !important;
 }
 
 .axiome-back-link {

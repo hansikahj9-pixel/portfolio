@@ -1,7 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
-import { Canvas } from '@react-three/fiber';
-import { View } from '@react-three/drei';
 import PortfolioRoute from './routes/PortfolioRoute';
 import AxiomeRoute from './routes/AxiomeRoute';
 import ProcessRoute from './routes/ProcessRoute';
