@@ -33,7 +33,10 @@ function FluidMesh({ colors }: { colors: [string, string, string] }) {
     if (!meshRef.current) return;
     const mat = meshRef.current.material as THREE.ShaderMaterial;
     mat.uniforms.uTime.value = clock.getElapsedTime();
-    mat.uniforms.uResolution.value.set(size.width, size.height);
+    mat.uniforms.uResolution.value.set(
+      Math.max(size.width, 1.0),
+      Math.max(size.height, 1.0)
+    );
 
     smoothMouse.current.lerp(mouseRef.current, 0.1);
     mat.uniforms.uMouse.value.copy(smoothMouse.current);

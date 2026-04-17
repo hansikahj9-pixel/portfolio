@@ -39,7 +39,10 @@ function MoltenMesh() {
   useFrame((state) => {
     if (materialRef.current) {
       materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
-      materialRef.current.uniforms.uResolution.value.set(state.size.width, state.size.height);
+      materialRef.current.uniforms.uResolution.value.set(
+        Math.max(state.size.width, 1.0), 
+        Math.max(state.size.height, 1.0)
+      );
     }
   });
 
