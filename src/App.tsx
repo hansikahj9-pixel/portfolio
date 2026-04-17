@@ -20,17 +20,17 @@ function App() {
     <div ref={containerRef} className="app-root-container" style={{ position: 'relative' }}>
       {/* ── Surgical Global WebGL Context ── */}
       {/* Required to prevent "Too many active WebGL contexts" crashes */}
-      <div className="global-webgl-canvas" style={{ 
-        position: 'fixed', 
-        top: 0, 
-        left: 0, 
-        width: '100vw', 
-        height: '100vh', 
+      <div className="global-webgl-canvas" style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
         zIndex: -1, // Strictly behind all content
-        pointerEvents: 'none' 
+        pointerEvents: 'none'
       }}>
-        <Canvas 
-          eventSource={containerRef as React.RefObject<HTMLElement>} 
+        <Canvas
+          eventSource={containerRef as React.RefObject<HTMLElement>}
           key="global-canvas"
           dpr={[1, 2]}
           gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
