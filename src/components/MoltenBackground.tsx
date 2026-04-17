@@ -7,7 +7,7 @@ import { moltenMaterialShader } from '../shaders/moltenMaterial';
 function MoltenMesh() {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
-  const { size, viewport } = useThree();
+  const { size } = useThree();
 
   // Initialize uniforms with the actual size from the start
   const uniforms = useMemo(() => ({
