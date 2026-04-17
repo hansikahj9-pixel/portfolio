@@ -9,16 +9,23 @@ function MoltenMesh() {
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const { size, viewport } = useThree();
 
-  // Memoize uniforms to prevent unnecessary re-creations
+  // Initialize uniforms with the actual size from the start
   const uniforms = useMemo(() => ({
     uTime: { value: 0 },
     uMouse: { value: new THREE.Vector2(0.5, 0.5) },
-    uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
-  }), []);
+    uResolution: { value: new THREE.Vector2(size.width, size.height) }
+  }), []); // Only initialize once
+
+  // Ensure uResolution is always in sync with R3F's internal size state
+  useEffect(() => {
+    if (materialRef.current) {
+      materialRef.current.uniforms.uResolution.value.set(size.width, size.height);
+    }
+  }, [size.width, size.height]);
 
   useEffect(() => {
-    // 1. EVENT LISTENING LOGIC
     const updateMouse = (e: PointerEvent) => {
+      // Use window coordinates for global tracking, but normalized to current viewport
       const x = e.clientX / window.innerWidth;
       const y = 1.0 - (e.clientY / window.innerHeight);
       
@@ -39,12 +46,12 @@ function MoltenMesh() {
   useFrame((state) => {
     if (materialRef.current) {
       materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
-      materialRef.current.uniforms.uResolution.value.set(size.width, size.height);
     }
   });
 
   return (
     <mesh ref={meshRef}>
+      {/* Use dynamic viewport sizing to prevent initial stretching */}
       <planeGeometry args={[viewport.width, viewport.height]} />
       <shaderMaterial
         ref={materialRef}

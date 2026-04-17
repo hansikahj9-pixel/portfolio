@@ -15,11 +15,12 @@ function FluidMesh({ colors }: { colors: [string, string, string] }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const mouseRef = useRef(new THREE.Vector2(0.5, 0.5));
   const smoothMouse = useRef(new THREE.Vector2(0.5, 0.5));
+  const { size } = useThree();
 
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
-      uResolution: { value: new THREE.Vector2(1, 1) },
+      uResolution: { value: new THREE.Vector2(size.width, size.height) },
       uMouse: { value: new THREE.Vector2(0.5, 0.5) },
       uColor1: { value: new THREE.Color(colors[0]) },
       uColor2: { value: new THREE.Color(colors[1]) },
@@ -28,11 +29,18 @@ function FluidMesh({ colors }: { colors: [string, string, string] }) {
     [colors]
   );
 
-  useFrame(({ clock, size }) => {
+  // Sync resolution during first few frames
+  useEffect(() => {
+    if (meshRef.current) {
+      const mat = meshRef.current.material as THREE.ShaderMaterial;
+      mat.uniforms.uResolution.value.set(size.width, size.height);
+    }
+  }, [size.width, size.height]);
+
+  useFrame(({ clock }) => {
     if (!meshRef.current) return;
     const mat = meshRef.current.material as THREE.ShaderMaterial;
     mat.uniforms.uTime.value = clock.getElapsedTime();
-    mat.uniforms.uResolution.value.set(size.width, size.height);
 
     smoothMouse.current.lerp(mouseRef.current, 0.1);
     mat.uniforms.uMouse.value.copy(smoothMouse.current);
@@ -83,7 +91,7 @@ export default function FluidTab({ to, label, colors }: FluidTabProps) {
           <FluidMesh colors={colors} />
         </View>
       </div>
-      <span className="fluid-tab-label" style={{ position: 'relative', zIndex: 10, mixBlendMode: 'difference' }}>{label}</span>
+      <span className="fluid-tab-label" style={{ position: 'relative', zIndex: 10 }}>{label}</span>
       <div className="fluid-tab-border" />
     </Link>
   );
