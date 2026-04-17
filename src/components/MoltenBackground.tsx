@@ -63,19 +63,19 @@ function MoltenMesh() {
 export default function MoltenBackground() {
   return (
     <div className="molten-background-container" style={{ 
-      position: 'fixed', 
+      position: 'absolute', 
       top: 0, 
       left: 0, 
-      width: '100vw', 
-      height: '100vh', 
-      zIndex: -1, // Underlying layer
+      width: '100%', 
+      height: '100%', 
+      zIndex: 0,
       pointerEvents: 'none',
-        touchAction: 'none'
+      touchAction: 'none'
     }}>
       {/* Direct Canvas isolates the WebGL context */}
       <Canvas
         dpr={[1, 2]}
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        gl={{ antialias: true, alpha: true }}
         style={{ width: '100%', height: '100%' }}
       >
         <OrthographicCamera makeDefault left={-1} right={1} top={1} bottom={-1} near={0} far={1} position={[0, 0, 1]} />
