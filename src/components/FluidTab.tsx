@@ -29,18 +29,11 @@ function FluidMesh({ colors }: { colors: [string, string, string] }) {
     [colors]
   );
 
-  // Sync resolution during first few frames
-  useEffect(() => {
-    if (meshRef.current) {
-      const mat = meshRef.current.material as THREE.ShaderMaterial;
-      mat.uniforms.uResolution.value.set(size.width, size.height);
-    }
-  }, [size.width, size.height]);
-
-  useFrame(({ clock }) => {
+  useFrame(({ clock, size }) => {
     if (!meshRef.current) return;
     const mat = meshRef.current.material as THREE.ShaderMaterial;
     mat.uniforms.uTime.value = clock.getElapsedTime();
+    mat.uniforms.uResolution.value.set(size.width, size.height);
 
     smoothMouse.current.lerp(mouseRef.current, 0.1);
     mat.uniforms.uMouse.value.copy(smoothMouse.current);

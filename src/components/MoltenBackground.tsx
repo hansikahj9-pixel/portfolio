@@ -16,13 +16,6 @@ function MoltenMesh() {
     uResolution: { value: new THREE.Vector2(size.width, size.height) }
   }), []); // Only initialize once
 
-  // Ensure uResolution is always in sync with R3F's internal size state
-  useEffect(() => {
-    if (materialRef.current) {
-      materialRef.current.uniforms.uResolution.value.set(size.width, size.height);
-    }
-  }, [size.width, size.height]);
-
   useEffect(() => {
     const updateMouse = (e: PointerEvent) => {
       // Use window coordinates for global tracking, but normalized to current viewport
@@ -46,6 +39,7 @@ function MoltenMesh() {
   useFrame((state) => {
     if (materialRef.current) {
       materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
+      materialRef.current.uniforms.uResolution.value.set(state.size.width, state.size.height);
     }
   });
 
