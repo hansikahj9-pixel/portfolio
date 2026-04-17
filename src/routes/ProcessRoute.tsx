@@ -107,21 +107,17 @@ export default function ProcessRoute() {
             <div className="dream-orb"></div>
             
             <div className="process-right-content">
-              <h3 className="inspiration-heading">THE INSPIRATION.</h3>
-              <p className="process-body">
-                Rooted in a deep understanding of dreams and the unconscious, every silhouette 
-                challenges conventional norms. Inspired by the melting, viscous realities of 
-                Salvador Dalí and the meticulous, biomorphic structures of Max Ernst, the 
-                collection blurs the lines between fantasy and reality.
-              </p>
-
-              {/* ── Gateway Portal ── */}
-              <Link to="/axiome/inspiration" className="gateway-portal">
-                <span className="portal-text">INSPIRATION</span>
-                <svg className="architectural-arrow" viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg">
-                  <line className="arrow-shaft" x1="0" y1="10" x2="90" y2="10" stroke="currentColor" strokeWidth="1" />
-                  <polyline className="arrow-head" points="80,5 90,10 80,15" fill="none" stroke="currentColor" strokeWidth="1" />
-                </svg>
+              <Link to="/axiome/inspiration" style={{ textDecoration: 'none', display: 'block' }}>
+                <div className="inspiration-card-box">
+                  <div className="inspiration-tab-notch">VIEW INSPIRATION</div>
+                  <h3 className="inspiration-heading">THE INSPIRATION.</h3>
+                  <p className="process-body">
+                    Rooted in a deep understanding of dreams and the unconscious, every silhouette 
+                    challenges conventional norms. Inspired by the melting, viscous realities of 
+                    Salvador Dalí and the meticulous, biomorphic structures of Max Ernst, the 
+                    collection blurs the lines between fantasy and reality.
+                  </p>
+                </div>
               </Link>
             </div>
           </section>
