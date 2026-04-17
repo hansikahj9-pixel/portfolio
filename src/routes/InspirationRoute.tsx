@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react';
 import type { MouseEvent } from 'react';
 import AxiomeGlobalNav from '../components/AxiomeGlobalNav';
 import LiquidDiamondMesh from '../components/LiquidDiamondMesh';
-import videoSrc from '../assets/Structure-inspiration.mp4';
+
 
 export default function InspirationRoute() {
   // Box spotlight tracking
@@ -28,39 +28,7 @@ export default function InspirationRoute() {
 
       <AxiomeGlobalNav />
 
-      {/* ── Section 1: The Global Inspiration Hero ── */}
-      <section className="inspiration-hero">
-        <h1 className="hero-heading">INSPIRATION</h1>
-        <p className="hero-manifesto">
-          Axiomé represents a tectonic shift in the language of tailoring, standing at the precise intersection where the subconscious fluidity of Salvador Dalí meets the rigid architectures of Max Ernst. We have moved beyond the traditional concept of 'drape' to embrace a methodology of structural defiance.
-        </p>
-      </section>
 
-      {/* ── Section 2 & 3: The Architectural Box ── */}
-      <div
-        className="structure-box-container"
-        ref={boxRef}
-        onMouseMove={handleBoxMouseMove}
-        style={{
-          '--mouse-x': mousePos.x,
-          '--mouse-y': mousePos.y
-        } as React.CSSProperties}
-      >
-        {/* Background Video */}
-        <video className="contained-video" autoPlay loop muted playsInline>
-          <source src={videoSrc} type="video/mp4" />
-        </video>
-
-        {/* Interaction layer */}
-        <div className="box-flashlight" />
-
-        <div className="box-grid">
-          {/* CENTERED 3D HEADING */}
-          <div className="box-title-wrapper">
-            <h2 className="box-heading">STRUCTURE &amp;<br />SHAPE</h2>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
