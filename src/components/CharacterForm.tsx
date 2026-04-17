@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { v4 as uuidv4 } from 'uuid';
-import { supabase } from '../supabase/client';
 import { useLocation } from 'react-router-dom';
 
 interface FormData {
@@ -12,12 +10,8 @@ interface FormData {
     is_ready_to_join: boolean;
 }
 
-interface CharacterFormProps {
-    dispatch: React.Dispatch<any>;
-}
-
-const CharacterForm: React.FC<CharacterFormProps> = ({ dispatch }) => {
-    // Define stable default values using useMemo
+const CharacterForm: React.FC = () => {
+    // Define stable default values
     const defaultValues = useMemo(() => ({
         alias: '',
         motive: '',
@@ -42,42 +36,13 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ dispatch }) => {
         reset(defaultValues);
     }, [location.pathname, reset, defaultValues]);
 
-    const onSubmit = async (data: FormData) => {
+    const onSubmit = (data: FormData) => {
         console.log("Form submitted with data: ", data);
-        await createProfile(data);
+        
+        // THE FIX: Explicitly reset to defaultValues to clear inputs reliably
+        reset(defaultValues);
+        console.log("Form reset successfully");
     };
-
-    async function createProfile(data: FormData) {
-        try {
-            const userId = uuidv4();
-            const { data: profile, error } = await supabase
-                .from('profiles')
-                .insert({
-                    id: userId,
-                    alias: data.alias,
-                    motive: data.motive,
-                    experience: data.experience,
-                    specialization: data.specialization,
-                    is_ready_to_join: data.is_ready_to_join,
-                })
-                .select()
-                .single();
-
-            if (error) {
-                console.error("Error creating profile:", error.message);
-                return;
-            }
-
-            // Dispatch to update global state
-            dispatch({ type: 'SET_CHARACTER_INFO', payload: profile });
-
-            // CRITICAL FIX: Explicitly reset to defaultValues AFTER async work completes
-            reset(defaultValues);
-            console.log("Form reset called and completed");
-        } catch (err) {
-            console.error("Unexpected error during profile creation:", err);
-        }
-    }
 
     return (
         <div className="card shadow-lg p-6 bg-white w-full max-w-md">
@@ -163,9 +128,9 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ dispatch }) => {
                     <button 
                         type="submit" 
                         disabled={isSubmitting}
-                        className={`btn btn-primary w-full text-lg uppercase tracking-wider ${isSubmitting ? 'loading' : ''}`}
+                        className="btn btn-primary w-full text-lg uppercase tracking-wider"
                     >
-                        {isSubmitting ? 'Submitting...' : 'Submit Profile'}
+                        Submit Profile
                     </button>
                 </div>
             </form>
