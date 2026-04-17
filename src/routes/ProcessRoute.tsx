@@ -90,9 +90,6 @@ export default function ProcessRoute() {
       {/* ── Mirror-Finish Molten Metallic Interactive WebGL Layer ── */}
       <MoltenBackground />
 
-      {/* ── Global Navigation ── */}
-      <AxiomeGlobalNav />
-
       {/* ── Section 1: Split Screen Manifesto ── */}
       <section className="process-section">
         <main className="process-grid">

@@ -50,6 +50,9 @@ function App() {
         </AnimatePresence>
       </div>
 
+      {/* ── Truly Global Header Overlay ── */}
+      <AxiomeGlobalNav />
+
       {/* Custom Cursor stays global */}
       <CustomCursor />
     </div>
@@ -57,4 +60,3 @@ function App() {
 }
 
 export default App;
-// Deployment Trigger: v13-Final-Restore-Confirmed
