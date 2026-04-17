@@ -9,11 +9,10 @@ function MoltenMesh() {
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const { size } = useThree();
 
-  // Initialize uniforms with the actual size from the start
   const uniforms = useMemo(() => ({
     uTime: { value: 0 },
     uMouse: { value: new THREE.Vector2(0.5, 0.5) },
-    uResolution: { value: new THREE.Vector2(size.width, size.height) }
+    uResolution: { value: new THREE.Vector2(Math.max(size.width, 1.0), Math.max(size.height, 1.0)) }
   }), []); // Only initialize once
 
   useEffect(() => {

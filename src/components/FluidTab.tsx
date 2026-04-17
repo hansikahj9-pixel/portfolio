@@ -20,7 +20,7 @@ function FluidMesh({ colors }: { colors: [string, string, string] }) {
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
-      uResolution: { value: new THREE.Vector2(size.width, size.height) },
+      uResolution: { value: new THREE.Vector2(Math.max(size.width, 1.0), Math.max(size.height, 1.0)) },
       uMouse: { value: new THREE.Vector2(0.5, 0.5) },
       uColor1: { value: new THREE.Color(colors[0]) },
       uColor2: { value: new THREE.Color(colors[1]) },
