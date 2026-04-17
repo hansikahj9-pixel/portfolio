@@ -19,7 +19,9 @@ export default function ShatterImage({
   const containerRef = useRef<HTMLDivElement>(null);
   const sequenceTimeoutRef = useRef<number | null>(null);
 
-  const pieces = useMemo(() => {
+  // Initialize pieces EXACTLY once using a lazy useState.
+  // This satisfies strict React purity rules by preventing Math.random() calls during the render cycle.
+  const [pieces] = useState(() => {
     return Array.from({ length: 100 }).map((_, i) => {
       const x = i % 10;
       const y = Math.floor(i / 10);
@@ -38,7 +40,7 @@ export default function ShatterImage({
       
       return { x, y, tZ, tX, tY, rX, rY, rZ, opacity, delay };
     });
-  }, []);
+  });
 
   // Cleanup timeouts on unmount
   useEffect(() => {
