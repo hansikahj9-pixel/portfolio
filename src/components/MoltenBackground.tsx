@@ -1,5 +1,6 @@
 import { useFrame, useThree, Canvas } from '@react-three/fiber';
 import { useRef, useMemo, useEffect } from 'react';
+import { OrthographicCamera } from '@react-three/drei';
 import * as THREE from 'three';
 import { moltenMaterialShader } from '../shaders/moltenMaterial';
 
@@ -50,8 +51,8 @@ function MoltenMesh() {
 
   return (
     <mesh ref={meshRef}>
-      {/* Use dynamic viewport sizing to prevent initial stretching */}
-      <planeGeometry args={[viewport.width, viewport.height]} />
+      {/* Use static 2x2 sizing paired with OrthographicCamera to prevent layout lag */}
+      <planeGeometry args={[2, 2]} />
       <shaderMaterial
         ref={materialRef}
         fragmentShader={moltenMaterialShader.fragmentShader}
@@ -79,9 +80,9 @@ export default function MoltenBackground() {
       <Canvas
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-        camera={{ position: [0, 0, 1] }}
         style={{ width: '100%', height: '100%' }}
       >
+        <OrthographicCamera makeDefault left={-1} right={1} top={1} bottom={-1} near={0} far={1} position={[0, 0, 1]} />
         <MoltenMesh />
       </Canvas>
     </div>
