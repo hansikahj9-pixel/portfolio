@@ -92,16 +92,8 @@ export default function FluidTab({ to, label, colors }: FluidTabProps) {
           <FluidMesh colors={colors} />
         </Canvas>
       </div>
-      <span className="fluid-tab-label" style={{ 
-        position: 'relative', 
-        zIndex: 10,
-        textShadow: '0 2px 4px rgba(0,0,0,0.5)' // Subtle shadow for legibility over moving background
-      }}>{label}</span>
-      <div className="fluid-tab-border" style={{
-        border: `1px solid ${isHovered ? 'rgba(255, 255, 255, 0.6)' : 'rgba(255, 255, 255, 0.1)'}`, // Razor-thin border
-        boxShadow: isHovered ? '0 0 25px rgba(255, 255, 255, 0.15)' : 'none',
-        transition: 'all 0.4s ease'
-      }} />
+      <span className="fluid-tab-label" style={{ position: 'relative', zIndex: 10 }}>{label}</span>
+      <div className="fluid-tab-border" />
     </Link>
   );
 }
