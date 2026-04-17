@@ -9,13 +9,20 @@ import InspirationRoute from './routes/InspirationRoute';
 import CustomCursor from './components/CustomCursor';
 import MotionPageFlip from './components/MotionPageFlip';
 import AxiomeGlobalNav from './components/AxiomeGlobalNav';
+import MoltenBackground from './components/MoltenBackground';
 
 function App() {
   const location = useLocation();
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Only show background on process page
+  const showMoltenBg = location.pathname === '/axiome/process';
+
   return (
     <div ref={containerRef} className="app-root-container" style={{ position: 'relative' }}>
+      {/* ── Molten Background: OUTSIDE perspective container so position:fixed works ── */}
+      {showMoltenBg && <MoltenBackground />}
+
       {/* 3D Global Perspective Container for Page Flips */}
       <div className="global-perspective-container">
         <AnimatePresence mode="wait">

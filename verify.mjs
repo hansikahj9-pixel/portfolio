@@ -11,7 +11,7 @@ page.on('pageerror', err => console.log('PAGE ERROR:', err.message));
 await page.setViewport({ width: 1440, height: 900 });
 
 console.log('Navigating to /axiome/process...');
-await page.goto('http://localhost:4173/axiome/process', { waitUntil: 'networkidle0', timeout: 15000 });
+await page.goto('http://localhost:4174/axiome/process', { waitUntil: 'networkidle0', timeout: 15000 });
 
 // Wait for WebGL to render
 await new Promise(r => setTimeout(r, 3000));

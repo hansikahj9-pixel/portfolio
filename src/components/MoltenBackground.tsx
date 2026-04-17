@@ -63,12 +63,12 @@ function MoltenMesh() {
 export default function MoltenBackground() {
   return (
     <div className="molten-background-container" style={{ 
-      position: 'absolute', 
+      position: 'fixed', 
       top: 0, 
       left: 0, 
       width: '100vw', 
       height: '100vh', 
-      zIndex: 0,
+      zIndex: -1,
       pointerEvents: 'none',
       touchAction: 'none'
     }}>
