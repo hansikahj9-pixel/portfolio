@@ -86,10 +86,15 @@ export default function FluidTab({ to, label, colors }: FluidTabProps) {
           pointerEvents: 'none'
         }}
       >
-        <View style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}>
+        {/* Direct Canvas eliminates View portal measurement lag */}
+        <Canvas 
+          style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}
+          dpr={[1, 2]}
+          gl={{ antialias: true, alpha: true }}
+        >
           <OrthographicCamera makeDefault left={-1} right={1} top={1} bottom={-1} near={0} far={1} position={[0, 0, 1]} />
           <FluidMesh colors={colors} />
-        </View>
+        </Canvas>
       </div>
       <span className="fluid-tab-label" style={{ position: 'relative', zIndex: 10 }}>{label}</span>
       <div className="fluid-tab-border" />

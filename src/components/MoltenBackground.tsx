@@ -76,9 +76,15 @@ export default function MoltenBackground() {
       pointerEvents: 'none',
       touchAction: 'none'
     }}>
-      <View style={{ width: '100%', height: '100%' }}>
+      {/* Direct Canvas eliminates View portal measurement lag */}
+      <Canvas
+        dpr={[1, 2]}
+        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        camera={{ position: [0, 0, 1] }}
+        style={{ width: '100%', height: '100%' }}
+      >
         <MoltenMesh />
-      </View>
+      </Canvas>
     </div>
   );
 }
