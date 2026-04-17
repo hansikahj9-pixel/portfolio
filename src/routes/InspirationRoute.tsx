@@ -7,8 +7,10 @@ import LiquidDiamondMesh from '../components/LiquidDiamondMesh';
 export default function InspirationRoute() {
   // Box spotlight tracking
   const boxRef = useRef<HTMLDivElement>(null);
+  // @ts-ignore - Preserving for future artifact integration
   const [mousePos, setMousePos] = useState({ x: '50%', y: '50%' });
 
+  // @ts-ignore - Preserving for future artifact integration
   const handleBoxMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     if (!boxRef.current) return;
     const rect = boxRef.current.getBoundingClientRect();
