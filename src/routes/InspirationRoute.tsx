@@ -2,10 +2,14 @@ import { useRef, useEffect } from 'react';
 import type { MouseEvent } from 'react';
 import AxiomeGlobalNav from '../components/AxiomeGlobalNav';
 import LiquidDiamondMesh from '../components/LiquidDiamondMesh';
-
+import CharacterForm from '../components/CharacterForm';
+import { useCharacter } from '../context/CharacterContext';
+import { useState } from 'react';
 
 export default function InspirationRoute() {
-  // Box spotlight tracking
+  const { dispatch } = useCharacter();
+
+  // Box spotlight tracking — MANDATORY PRESERVATION
   const boxRef = useRef<HTMLDivElement>(null);
   // @ts-ignore - Preserving for future artifact integration
   const [mousePos, setMousePos] = useState({ x: '50%', y: '50%' });
@@ -30,10 +34,11 @@ export default function InspirationRoute() {
 
       <AxiomeGlobalNav />
 
-
+      {/* Main Content Area — The "Clean Slate" Void Integration */}
+      <main className="relative z-10 min-h-screen flex items-center justify-center p-4">
+        <CharacterForm dispatch={dispatch} />
+      </main>
     </div>
   );
 }
 
-// We need to import useState since it's used for mousePos
-import { useState } from 'react';
