@@ -1,6 +1,5 @@
-import { useFrame, useThree } from '@react-three/fiber';
+import { useFrame, useThree, Canvas } from '@react-three/fiber';
 import { useRef, useMemo, useEffect } from 'react';
-import { View } from '@react-three/drei';
 import * as THREE from 'three';
 import { moltenMaterialShader } from '../shaders/moltenMaterial';
 

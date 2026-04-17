@@ -1,6 +1,6 @@
 import { useRef, useMemo, useState, useEffect } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
-import { View, OrthographicCamera } from '@react-three/drei';
+import { useFrame, useThree, Canvas } from '@react-three/fiber';
+import { OrthographicCamera } from '@react-three/drei';
 import { Link } from 'react-router-dom';
 import * as THREE from 'three';
 import { fluidVertexShader, gradientFluidFragmentShader } from '../shaders/fluidShader';
