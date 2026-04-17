@@ -1,6 +1,6 @@
-import { useFrame, useThree, Canvas } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { useRef, useMemo, useEffect } from 'react';
-import { OrthographicCamera } from '@react-three/drei';
+import { OrthographicCamera, View } from '@react-three/drei';
 import * as THREE from 'three';
 import { moltenMaterialShader } from '../shaders/moltenMaterial';
 
@@ -74,17 +74,13 @@ export default function MoltenBackground() {
       height: '100vh', 
       zIndex: -1, // Underlying layer
       pointerEvents: 'none',
-      touchAction: 'none'
+        touchAction: 'none'
     }}>
-      {/* Direct Canvas eliminates View portal measurement lag */}
-      <Canvas
-        dpr={[1, 2]}
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-        style={{ width: '100%', height: '100%' }}
-      >
+      {/* Routing through global context to avoid WebGL crash, retaining Orthographic scaling fix */}
+      <View style={{ width: '100%', height: '100%' }}>
         <OrthographicCamera makeDefault left={-1} right={1} top={1} bottom={-1} near={0} far={1} position={[0, 0, 1]} />
         <MoltenMesh />
-      </Canvas>
+      </View>
     </div>
   );
 }
