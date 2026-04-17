@@ -10,6 +10,7 @@ import ProcessRoute from './routes/ProcessRoute';
 import InspirationRoute from './routes/InspirationRoute';
 import CustomCursor from './components/CustomCursor';
 import MotionPageFlip from './components/MotionPageFlip';
+import AxiomeGlobalNav from './components/AxiomeGlobalNav';
 
 function App() {
   const location = useLocation();

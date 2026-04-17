@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import AxiomeGlobalNav from '../components/AxiomeGlobalNav';
 import ShatterImage from '../components/ShatterImage';
 import LiquidImage from '../components/LiquidImage';
 import MoltenBackground from '../components/MoltenBackground';
