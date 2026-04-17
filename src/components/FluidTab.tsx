@@ -1,5 +1,5 @@
-import { useRef, useMemo, useState } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useRef, useMemo, useState, useEffect } from 'react';
+import { useFrame, useThree, Canvas } from '@react-three/fiber';
 import { View, OrthographicCamera } from '@react-three/drei';
 import { Link } from 'react-router-dom';
 import * as THREE from 'three';
