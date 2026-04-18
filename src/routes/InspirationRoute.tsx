@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import type { MouseEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import AxiomeGlobalNav from '../components/AxiomeGlobalNav';
 import LiquidDiamondMesh from '../components/LiquidDiamondMesh';
 
 // Absolute Asset Mapping
@@ -46,12 +45,17 @@ const PillarArtifact = ({ data, isActive, hasActiveSibling, onClick }: PillarPro
     // Handle video play safely
     useEffect(() => {
         if (phase === 3 && videoRef.current) {
-            const playPromise = videoRef.current.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
+            // Attempt playback with extra robustness
+            const playVideo = async () => {
+                try {
+                    if (videoRef.current) {
+                        await videoRef.current.play();
+                    }
+                } catch (error) {
                     console.log("Video playback interrupted or failed:", error);
-                });
-            }
+                }
+            };
+            playVideo();
         }
     }, [phase]);
 
@@ -93,7 +97,7 @@ const PillarArtifact = ({ data, isActive, hasActiveSibling, onClick }: PillarPro
                     onClick();
                 }
             }}
-            className={`mercury-chrome ${isActive ? 'fixed inset-0 z-50' : 'relative'}`}
+            className={`mercury-chrome ${isActive ? 'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50' : 'relative'}`}
             style={{ 
                 border: phase === 3 ? '1px solid white' : '1px solid rgba(255, 255, 255, 0.2)',
                 borderRadius: '0px'
@@ -120,7 +124,7 @@ const PillarArtifact = ({ data, isActive, hasActiveSibling, onClick }: PillarPro
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="relative w-full h-full flex items-center justify-center p-8 bg-black/40 backdrop-blur-3xl"
+                        className="relative w-screen h-screen flex items-center justify-center p-8 bg-black/40 backdrop-blur-3xl"
                         onClick={(e) => {
                             e.stopPropagation();
                             onClick(); // Close on background click
@@ -135,6 +139,7 @@ const PillarArtifact = ({ data, isActive, hasActiveSibling, onClick }: PillarPro
                                 src={data.video}
                                 loop
                                 muted
+                                autoPlay
                                 playsInline
                                 className="w-full h-full object-contain"
                             />
@@ -178,14 +183,12 @@ export default function InspirationRoute() {
     }, []);
 
     return (
-        <div className="inspiration-container">
+        <div className="inspiration-container w-screen min-h-screen overflow-x-hidden">
             {/* WebGL Liquid Diamond Background */}
             <LiquidDiamondMesh />
 
-            <AxiomeGlobalNav />
-
             {/* Main Content Area */}
-            <main className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center gap-10 p-4">
+            <main className="relative z-10 w-screen min-h-screen flex flex-col items-center justify-center gap-10 p-4 pt-40 pb-20">
                 {PILLAR_DATA.map(pillar => (
                     <PillarArtifact
                         key={pillar.id}
