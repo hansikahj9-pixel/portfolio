@@ -60,8 +60,8 @@ const PillarArtifact = ({ data, isActive, hasActiveSibling, onClick }: PillarPro
 
     const variants: any = {
         phase1: {
-            width: '80vw',
-            height: '10vh',
+            width: 'min(800px, 70vw)',
+            height: '8vh',
             opacity: hasActiveSibling ? 0.1 : 1,
             pointerEvents: hasActiveSibling ? 'none' : 'auto',
             transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
@@ -188,16 +188,17 @@ export default function InspirationRoute() {
             {/* WebGL Liquid Diamond Background */}
             <LiquidDiamondMesh />
 
-            {/* Main Content Area */}
-            <main className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center gap-10 p-4 pt-40 pb-20">
+            {/* Centered Monolith Container */}
+            <main className="inspiration-monolith-container">
                 {PILLAR_DATA.map(pillar => (
-                    <PillarArtifact
-                        key={pillar.id}
-                        data={pillar}
-                        isActive={activePillarId === pillar.id}
-                        hasActiveSibling={activePillarId !== null && activePillarId !== pillar.id}
-                        onClick={() => setActivePillarId(activePillarId === pillar.id ? null : pillar.id)}
-                    />
+                    <div key={pillar.id} className="pillar-wrapper">
+                        <PillarArtifact
+                            data={pillar}
+                            isActive={activePillarId === pillar.id}
+                            hasActiveSibling={activePillarId !== null && activePillarId !== pillar.id}
+                            onClick={() => setActivePillarId(activePillarId === pillar.id ? null : pillar.id)}
+                        />
+                    </div>
                 ))}
             </main>
         </div>

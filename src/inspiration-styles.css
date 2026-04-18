@@ -63,3 +63,24 @@
   pointer-events: none;
 }
 
+/* ── Centered Monolith Container ── */
+.inspiration-monolith-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem; /* Tighter clustering for monolith feel */
+  padding: 2rem;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.pillar-wrapper {
+  pointer-events: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
