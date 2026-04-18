@@ -1,69 +1,36 @@
-/* ============ AXIOMÉ DIAMOND MESH INSPIRATION v9.0 ============ */
+/* ═══════════════════════════════════════════════════════════════════════════
+   AXIOMÉ | INSPIRATION — MELTING MONOLITH SYSTEM v3.0
+   "Subconscious Imprisoned in Structure"
+   Dalí × Ernst  |  Lead Digital Architect @ Axiomé
+   Scope: InspirationRoute only. All classes namespaced here.
+   DO NOT edit index.css or process-styles.css from this file.
+═══════════════════════════════════════════════════════════════════════════ */
 
-/* ── Global Container ── */
+/* ─── Root Container ──────────────────────────────────────────────────────── */
 .inspiration-container {
   width: 100vw;
   height: 100vh;
   position: relative;
-  overflow-x: hidden;
-  overflow-y: auto;
-  background: #020403; /* near-black fallback while GL loads */
-  color: #E2DCD0;
+  overflow: hidden;
+  background: #050505;
+  color: #e2dcd0;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Film Grain over everything ── */
+/* Film grain overlay — cinematic texture over everything */
 .inspiration-container::after {
   content: '';
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   mix-blend-mode: overlay;
-  opacity: 0.15;
-  z-index: 100;
+  opacity: 0.13;
+  z-index: 500;
 }
 
-/* ============ 5-PILLAR ARTIFACT SYSTEM (REVISED) ============ */
-
-/* Mercury Chrome Material */
-.mercury-chrome {
-  background: linear-gradient(135deg, 
-    #e0e0e0 0%, 
-    #ffffff 45%, 
-    #8e8e8e 50%, 
-    #ffffff 55%, 
-    #a1a1a1 100%
-  );
-  background-size: 200% 200%;
-  animation: moltenLiquid 12s ease-in-out infinite;
-  backdrop-filter: blur(25px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-}
-
-@keyframes moltenLiquid {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-.artifact-text-lifted {
-  color: #FFFFFF;
-  font-weight: 700;
-  letter-spacing: 0.5em; /* Brand Authority tracking */
-  text-shadow: 0px 10px 20px rgba(0, 0, 0, 0.8), 0px 4px 10px rgba(0, 0, 0, 1);
-  text-align: center;
-  pointer-events: none;
-}
-
-/* ── Centered Monolith Container ── */
+/* ─── Monolith Container: Perfect Viewport Center ─────────────────────────── */
 .inspiration-monolith-container {
   position: fixed;
   inset: 0;
@@ -71,16 +38,166 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem; /* Tighter clustering for monolith feel */
-  padding: 2rem;
+  gap: 3.5rem;       /* Expensive architectural gap between pillars */
+  padding: 1.5rem 2rem;
   z-index: 10;
+  pointer-events: none;
+  overflow: hidden;  /* Clips slivered siblings cleanly */
+}
+
+/* ─── Pillar Wrapper ─────────────────────────────────────────────────────── */
+.pillar-wrapper {
+  pointer-events: auto;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* ─── THE MONOLITH FRAME (Phase 1 — The List) ─────────────────────────────── */
+/* Max-width safeguard so 61vw never exceeds 760px on wide monitors */
+.monolith-frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  max-width: 760px;
+
+  /* Heavy Iron border — Max Ernst structural rigidity */
+  border: 5px solid #1a1a1a;
+
+  /* Ultra Violet inner glow — Dalí subconscious leaking through */
+  box-shadow:
+    inset 0 0  40px rgba(126, 34, 206, 0.22),
+    inset 0 0 100px rgba(0,   0,   0,  0.75),
+          0 0  80px rgba(0,   0,   0,  0.95),
+          0 30px 80px rgba(0, 0,   0,  0.80);
+
+  transition: box-shadow 0.5s ease;
+}
+
+.monolith-frame:hover {
+  box-shadow:
+    inset 0 0  60px rgba(126,  34, 206, 0.38),
+    inset 0 0 120px rgba(  6, 182, 212, 0.07),
+          0 0 100px rgba(126,  34, 206, 0.18),
+          0 30px 80px rgba(0,  0,   0,  0.90);
+}
+
+/* ─── Melt Canvas Interior ────────────────────────────────────────────────── */
+/* Low-res canvas is upscaled by browser → natural "oil paint" blob texture   */
+.melt-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: auto; /* bilinear upscale = viscous paint smear */
+}
+
+/* ─── Pillar Typography ───────────────────────────────────────────────────── */
+.pillar-title {
+  position: relative;
+  z-index: 2;
+  color: #ffffff;
+  font-family: var(--font-sans, 'Inter', 'Helvetica Neue', sans-serif);
+
+  /* Responsive: never breaks the box, never too small to read */
+  font-size: clamp(0.85rem, 1.6vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: 0.55em;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  /* Lifted shadow: text floats above the melt */
+  text-shadow:
+    0 0  60px rgba(0,   0,   0, 1.0),
+    0 4px 16px rgba(0,   0,   0, 0.95),
+    0 0 120px rgba(  6, 182, 212, 0.18);
+
   pointer-events: none;
 }
 
-.pillar-wrapper {
-  pointer-events: auto;
-  width: 100%;
+/* ─── ACT 2: Sliver State ─────────────────────────────────────────────────── */
+/* Applied via Framer Motion — documented here for architectural reference     */
+/* width: 4px | height: 90vh | centered by flexbox parent                     */
+/* No explicit CSS class needed — Framer Motion inlines the style              */
+
+/* ─── ACT 3: Volume Overlay (Phase 3 — The Volume) ───────────────────────── */
+
+/* Full-viewport backdrop — clicking closes the artifact */
+.volume-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2500; /* Above AxiomeGlobalNav (z-index: 2000) for immersive mode */
   display: flex;
+  align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
+/* Frosted dark glass behind the video frame */
+.volume-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 5, 5, 0.88);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+}
+
+/* 16:9 Cinematic Frame — fixed center, uncropped video */
+.volume-frame {
+  position: relative;
+  z-index: 1;
+
+  /* Responsive 16:9: fills 90% of viewport without cropping */
+  width: min(90vw, calc(90vh * (16 / 9)));
+  aspect-ratio: 16 / 9;
+
+  background: #050505;
+  border: 2px solid rgba(126, 34, 206, 0.42);
+  box-shadow:
+    0 0  100px rgba(126,  34, 206, 0.28),
+    0 0  200px rgba(  6, 182, 212, 0.08),
+    0 40px 120px rgba(0,  0,   0,  0.92);
+  overflow: hidden;
+  cursor: default;
+
+  /* scaleX animation origin: center — mimics sliver expanding outward */
+  transform-origin: center center;
+}
+
+/* Full-fit, uncropped video (object-fit: contain per spec) */
+.volume-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: #050505;
+}
+
+/* ESC hint — appears after frame settles */
+.volume-close-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  color: rgba(255, 255, 255, 0.32);
+  font-family: var(--font-sans, 'Inter', sans-serif);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.58em;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  margin: 0;
+  padding: 0;
+}
+
+.volume-close-hint:hover {
+  color: rgba(255, 255, 255, 0.88);
+}
