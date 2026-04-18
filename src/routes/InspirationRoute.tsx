@@ -288,6 +288,47 @@ export default function InspirationRoute() {
 
   return (
     <div className="inspiration-container">
+      {/* ── Dalí Liquify SVG Filter Definition ── */}
+      {/* feTurbulence generates organic noise; feDisplacementMap warps pixels */}
+      {/* Applied ONLY to .melt-canvas via CSS — text is unaffected           */}
+      <svg
+        style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }}
+        aria-hidden="true"
+      >
+        <defs>
+          <filter
+            id="dali-liquify"
+            x="-25%" y="-25%"
+            width="150%" height="150%"
+            colorInterpolationFilters="sRGB"
+          >
+            {/* Base turbulence — frequency animates slowly for living, breathing motion */}
+            <feTurbulence
+              type="turbulence"
+              baseFrequency="0.012 0.018"
+              numOctaves="3"
+              seed="7"
+              result="turbNoise"
+            >
+              <animate
+                attributeName="baseFrequency"
+                dur="14s"
+                values="0.012 0.018;0.024 0.012;0.016 0.028;0.012 0.018"
+                repeatCount="indefinite"
+              />
+            </feTurbulence>
+            {/* Displacement map: turbulence drives pixel warping → liquify effect */}
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="turbNoise"
+              scale="32"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+        </defs>
+      </svg>
+
       {/* ── Background: LiquidDiamondMesh — UNTOUCHED ── */}
       <LiquidDiamondMesh />
 

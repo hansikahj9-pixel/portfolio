@@ -86,6 +86,7 @@
 
 /* ─── Melt Canvas Interior ────────────────────────────────────────────────── */
 /* Low-res canvas is upscaled by browser → natural "oil paint" blob texture   */
+/* feTurbulence + feDisplacementMap warp the colors into Dalí liquification   */
 .melt-canvas {
   position: absolute;
   inset: 0;
@@ -93,6 +94,7 @@
   height: 100%;
   display: block;
   image-rendering: auto; /* bilinear upscale = viscous paint smear */
+  filter: url(#dali-liquify);
 }
 
 /* ─── Pillar Typography ───────────────────────────────────────────────────── */
