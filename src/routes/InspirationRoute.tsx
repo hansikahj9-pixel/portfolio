@@ -42,17 +42,16 @@ const PillarArtifact = ({ data, isActive, hasActiveSibling, onClick }: PillarPro
         }
     }, [isActive]);
 
-    // Handle video play safely
+    // Robust Video Playback Management
     useEffect(() => {
         if (phase === 3 && videoRef.current) {
-            // Attempt playback with extra robustness
             const playVideo = async () => {
                 try {
-                    if (videoRef.current) {
-                        await videoRef.current.play();
-                    }
+                    // Force reload to ensure src is fresh in the DOM
+                    videoRef.current?.load();
+                    await videoRef.current?.play();
                 } catch (error) {
-                    console.log("Video playback interrupted or failed:", error);
+                    console.warn("Artifact video playback blocked or interrupted:", error);
                 }
             };
             playVideo();
@@ -135,12 +134,14 @@ const PillarArtifact = ({ data, isActive, hasActiveSibling, onClick }: PillarPro
                             onClick={(e) => e.stopPropagation()} // Prevent close on video click
                         >
                             <video
+                                key={data.id}
                                 ref={videoRef}
                                 src={data.video}
                                 loop
                                 muted
                                 autoPlay
                                 playsInline
+                                preload="auto"
                                 className="w-full h-full object-contain"
                             />
                         </div>
