@@ -19,7 +19,7 @@ export default function MotionPageFlip({ children, locationKey }: MotionPageFlip
       exit={{ rotateY: -90, opacity: 0 }}
       transition={{ ease: pageFlipEase, duration }}
       style={{
-        originX: 0, // Left edge fixed
+        originX: 0.5, // Center hinge for symmetry
         transformStyle: 'preserve-3d',
         position: 'absolute',
         top: 0,

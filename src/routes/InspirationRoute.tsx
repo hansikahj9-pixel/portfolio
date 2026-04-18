@@ -97,7 +97,7 @@ const PillarArtifact = ({ data, isActive, hasActiveSibling, onClick }: PillarPro
                     onClick();
                 }
             }}
-            className={`mercury-chrome ${isActive ? 'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50' : 'relative'}`}
+            className={`mercury-chrome ${isActive ? 'fixed inset-0 z-50' : 'relative'}`}
             style={{ 
                 border: phase === 3 ? '1px solid white' : '1px solid rgba(255, 255, 255, 0.2)',
                 borderRadius: '0px'
@@ -124,7 +124,7 @@ const PillarArtifact = ({ data, isActive, hasActiveSibling, onClick }: PillarPro
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="relative w-screen h-screen flex items-center justify-center p-8 bg-black/40 backdrop-blur-3xl"
+                        className="fixed inset-0 w-screen h-screen flex items-center justify-center p-8 bg-black/40 backdrop-blur-3xl"
                         onClick={(e) => {
                             e.stopPropagation();
                             onClick(); // Close on background click
@@ -183,12 +183,12 @@ export default function InspirationRoute() {
     }, []);
 
     return (
-        <div className="inspiration-container w-screen min-h-screen overflow-x-hidden">
+        <div className="inspiration-container w-full min-h-screen overflow-x-hidden">
             {/* WebGL Liquid Diamond Background */}
             <LiquidDiamondMesh />
 
             {/* Main Content Area */}
-            <main className="relative z-10 w-screen min-h-screen flex flex-col items-center justify-center gap-10 p-4 pt-40 pb-20">
+            <main className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center gap-10 p-4 pt-40 pb-20">
                 {PILLAR_DATA.map(pillar => (
                     <PillarArtifact
                         key={pillar.id}
