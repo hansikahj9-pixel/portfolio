@@ -18,6 +18,9 @@ function App() {
   // Only show background on process page
   const showMoltenBg = location.pathname === '/axiome/process';
 
+  // Only show Axiomé specific nav within the project context
+  const isAxiomeRoute = location.pathname.startsWith('/axiome');
+
   return (
     <div ref={containerRef} className="app-root-container" style={{ position: 'relative' }}>
       {/* ── Molten Background: OUTSIDE perspective container so position:fixed works ── */}
@@ -35,8 +38,8 @@ function App() {
         </AnimatePresence>
       </div>
 
-      {/* ── Truly Global Header Overlay ── */}
-      <AxiomeGlobalNav />
+      {/* ── Axiomé Project Navigation: Shown only for project pages ── */}
+      {isAxiomeRoute && <AxiomeGlobalNav />}
 
       {/* Custom Cursor stays global */}
       <CustomCursor />
