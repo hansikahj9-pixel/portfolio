@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { cn } from '../utils/cn';
 
 interface FluidTabProps {
   to: string;
@@ -14,13 +13,9 @@ export default function FluidTab({ to, label }: FluidTabProps) {
   return (
     <Link
       to={to}
-      className={cn(
-        "fluid-tab-box outline-none focus-visible:ring-2 focus-visible:ring-white/50",
-        isHovered && 'hovered'
-      )}
+      className={`fluid-tab-box ${isHovered ? 'hovered' : ''}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      aria-label={`Navigate to ${label}`}
     >
       <span className="fluid-tab-label">{label}</span>
       <div className="fluid-tab-border" />

@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ShatterImage from '../components/ShatterImage';
 import LiquidImage from '../components/LiquidImage';
-import Meta from '../components/Meta';
 
 // Ernst Images
 import img2 from '../assets/image (2).png';
@@ -86,13 +85,9 @@ export default function ProcessRoute() {
 
   return (
     <div className="process-container">
-      <Meta 
-        title="Axiomé | The Process" 
-        description="Bridging the gap between fashion and art. Explore the surrealist inspirations of Salvador Dalí and Max Ernst."
-      />
 
       {/* ── Section 1: Split Screen Manifesto ── */}
-      <section className="process-section" role="region" aria-label="Manifesto">
+      <section className="process-section">
         <main className="process-grid">
           {/* ── Left Column: Meaning ── */}
           <section className="process-left fade-in">
@@ -112,11 +107,7 @@ export default function ProcessRoute() {
             <div className="dream-orb"></div>
             
             <div className="process-right-content">
-              <Link 
-                to="/axiome/inspiration" 
-                className="inspiration-link-wrapper focus-visible:ring-2 focus-visible:ring-[var(--focus-ring)] outline-none rounded-lg"
-                aria-label="View Inspiration Page"
-              >
+              <Link to="/axiome/inspiration" style={{ textDecoration: 'none', display: 'block' }}>
                 <div className="inspiration-card-box">
                   <div className="inspiration-tab-notch">VIEW INSPIRATION</div>
                   <h3 className="inspiration-heading">THE INSPIRATION.</h3>
@@ -140,12 +131,7 @@ export default function ProcessRoute() {
       </section>
 
       {/* ── Section 2: Max Ernst Structure ── */}
-      <section 
-        ref={ernstSectionRef} 
-        className="process-section ernst-section"
-        role="region"
-        aria-label="Max Ernst Inspiration"
-      >
+      <section ref={ernstSectionRef} className="process-section ernst-section">
         <div className="ernst-left fade-in">
           <h2 className="ernst-heading">Max Ernst</h2>
           <p className="ernst-body">
@@ -170,12 +156,7 @@ export default function ProcessRoute() {
       </section>
 
       {/* ── Section 3: Salvador Dalí Fluidity ── */}
-      <section 
-        ref={daliSectionRef} 
-        className="process-section dali-section"
-        role="region"
-        aria-label="Salvador Dalí Inspiration"
-      >
+      <section ref={daliSectionRef} className="process-section dali-section">
         <div className="dali-left fade-in-delayed">
           <div className="dali-grid">
             {DALI_IMAGES.map((img, index) => (

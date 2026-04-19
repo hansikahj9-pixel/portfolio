@@ -6,8 +6,8 @@ export default function AxiomeGlobalNav() {
 
   return (
     <header className="axiome-header">
-      <Link to="/" className="axiome-back-link outline-none focus-visible:ring-2 focus-visible:ring-white/40 rounded-sm">
-        <span className="axiome-back-arrow" aria-hidden="true">←</span>
+      <Link to="/" className="axiome-back-link">
+        <span className="axiome-back-arrow">←</span>
         Back to Home
       </Link>
 

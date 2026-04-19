@@ -1,7 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
-import { cn } from '../utils/cn';
 
 interface Project {
   name: string;
@@ -72,30 +71,26 @@ export default function ProjectList({ onHover }: ProjectListProps) {
           <li
             key={project.name}
             ref={(el) => setItemRef(el, i)}
-            className="project-item-wrapper"
+            className="project-item"
+            data-cursor-hover
+            onClick={() => {
+              if (project.name === 'AXIOME') {
+                navigate('/axiome');
+              }
+            }}
+            onMouseEnter={(e) =>
+              onHover(project, e.clientX, e.clientY)
+            }
+            onMouseMove={(e) =>
+              onHover(project, e.clientX, e.clientY)
+            }
+            onMouseLeave={() => onHover(null, 0, 0)}
           >
-            <button
-              className={cn(
-                "project-item w-full text-left outline-none focus-visible:ring-2 focus-visible:ring-accent/50",
-                project.name === 'AXIOME' ? "cursor-pointer" : "cursor-default"
-              )}
-              data-cursor-hover
-              aria-label={`View project: ${project.name}, ${project.details}`}
-              onClick={() => {
-                if (project.name === 'AXIOME') {
-                  navigate('/axiome');
-                }
-              }}
-              onMouseEnter={(e) => onHover(project, e.clientX, e.clientY)}
-              onMouseMove={(e) => onHover(project, e.clientX, e.clientY)}
-              onMouseLeave={() => onHover(null, 0, 0)}
-            >
-              <span className="project-item-index" aria-hidden="true">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <span className="project-item-name">{project.name}</span>
-              <span className="project-item-details">{project.details}</span>
-            </button>
+            <span className="project-item-index">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span className="project-item-name">{project.name}</span>
+            <span className="project-item-details">{project.details}</span>
           </li>
         ))}
       </ul>

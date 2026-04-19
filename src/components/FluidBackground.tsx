@@ -1,4 +1,4 @@
-import { useRef, useMemo, useEffect } from 'react';
+import { useRef, useMemo } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { fluidVertexShader, fluidFragmentShader } from '../shaders/fluidShader';
@@ -16,7 +16,7 @@ export default function FluidBackground() {
       uMouse: { value: new THREE.Vector2(0.5, 0.5) },
       uColor: { value: new THREE.Color('#C3C1B9') },
     }),
-    [size.width, size.height]
+    []
   );
 
   useFrame(({ clock }) => {
@@ -29,7 +29,8 @@ export default function FluidBackground() {
     mat.uniforms.uMouse.value.copy(smoothMouse.current);
   });
 
-  useEffect(() => {
+  // Track mouse globally
+  if (typeof window !== 'undefined') {
     const onMove = (e: MouseEvent) => {
       mouseRef.current.set(
         e.clientX / window.innerWidth,
@@ -37,8 +38,7 @@ export default function FluidBackground() {
       );
     };
     window.addEventListener('mousemove', onMove, { passive: true });
-    return () => window.removeEventListener('mousemove', onMove);
-  }, []);
+  }
 
   return (
     <mesh ref={meshRef} frustumCulled={false}>

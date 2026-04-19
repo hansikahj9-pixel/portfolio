@@ -5,7 +5,6 @@ import HeroSection from '../components/HeroSection';
 import ProjectList, { type Project } from '../components/ProjectList';
 import FluidBackground from '../components/FluidBackground';
 import HoverImagePlane from '../components/HoverImagePlane';
-import Meta from '../components/Meta';
 
 export default function PortfolioRoute() {
   const [hoveredProject, setHoveredProject] = useState<Project | null>(null);
@@ -23,10 +22,6 @@ export default function PortfolioRoute() {
 
   return (
     <>
-      <Meta 
-        title="Hansika Jain — Fashion Portfolio" 
-        description="Fashion Design Portfolio of Hansika Jain. Exploring structural rigidity and fluid subconscious through wearable art."
-      />
       {/* WebGL Canvas - behind everything */}
       <div className="canvas-container">
         <Canvas
