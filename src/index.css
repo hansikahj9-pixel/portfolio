@@ -26,25 +26,31 @@
   --color-text: #FFFFFF;
   --color-accent: #C3C1B9;
   --color-muted: #888888;
+  
   --font-serif: 'Playfair Display', 'Georgia', serif;
   --font-sans: 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
 
-  /* Axiomé Deep & Vivid Palette (100% Opacity) */
-  --deep-void: #05070A;
-  --haute-red: #D92534;
-  --pageant-blue: #2A4B8C;
-  --yarrow: #E5BE5E;
-  --jaffa-orange: #E87A3F;
-  --sycamore: #4A6B4D;
-  --moonstruck: #E2DCD0;
-  --travertine: #D4A373;
+  /* Axiomé Design Tokens */
+  --token-bg-primary: #05070A;
+  --token-text-primary: #FFFFFF;
+  --token-text-secondary: #E2DCD0;
+  --token-accent-red: #D92534;
+  --token-accent-blue: #2A4B8C;
+  --token-accent-gold: #E5BE5E;
+  --token-accent-orange: #E87A3F;
+  --token-accent-green: #4A6B4D;
+  
+  /* Elevation & Glass */
+  --glass-bg: rgba(5, 7, 10, 0.85);
+  --glass-blur: 20px;
+  --focus-ring: rgba(126, 34, 206, 0.5);
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  cursor: none !important;
+  cursor: none; /* Removed !important per audit requirements */
 }
 
 html {
@@ -63,7 +69,7 @@ body {
 a {
   text-decoration: none;
   color: inherit;
-  cursor: none !important;
+  cursor: none;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -539,4 +545,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .axiome-back-link:hover .axiome-back-arrow {
   transform: translateX(-4px);
+}
+
+/* Accessibility: Support for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

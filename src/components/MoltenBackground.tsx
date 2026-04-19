@@ -13,7 +13,7 @@ function MoltenMesh() {
     uTime: { value: 0 },
     uMouse: { value: new THREE.Vector2(0.5, 0.5) },
     uResolution: { value: new THREE.Vector2(Math.max(size.width, 1.0), Math.max(size.height, 1.0)) }
-  }), []); // Only initialize once
+  }), [size.width, size.height]); // Update resolution on resize
 
   useEffect(() => {
     const updateMouse = (e: PointerEvent) => {

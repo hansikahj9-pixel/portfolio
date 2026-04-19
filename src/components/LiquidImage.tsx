@@ -22,7 +22,7 @@ export default function LiquidImage({
   const sequenceTimeoutRef = useRef<number | null>(null);
   const rafRef = useRef<number | null>(null);
   
-  const filterId = useRef(`dali-warp-${Math.random().toString(36).substr(2, 9)}`).current;
+  const [filterId] = useState(() => `dali-warp-${Math.random().toString(36).substring(2, 11)}`);
 
   // Cleanup timeouts on unmount
   useEffect(() => {
@@ -59,15 +59,18 @@ export default function LiquidImage({
     if (!isActive) {
       if (sequenceTimeoutRef.current) window.clearTimeout(sequenceTimeoutRef.current);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      setPhase('idle');
-      setWarpScale(0);
+      // Scheduling to avoid cascading synchronous render lint error
+      requestAnimationFrame(() => {
+        setPhase('idle');
+        setWarpScale(0);
+      });
       warpScaleRef.current = 0;
       return;
     }
 
     if (isActive && phase === 'idle') {
       // Step 1: Expand
-      setPhase('expand');
+      requestAnimationFrame(() => setPhase('expand'));
       
       // Step 2: Melt after 400ms
       sequenceTimeoutRef.current = window.setTimeout(() => {

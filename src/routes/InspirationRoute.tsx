@@ -1,6 +1,8 @@
 import { useRef, useEffect, useState, useCallback, memo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import LiquidDiamondMesh from '../components/LiquidDiamondMesh';
+import Meta from '../components/Meta';
+import { cn } from '../utils/cn';
 
 // ─── Absolute Asset Mapping (exact filenames on disk) ────────────────────────
 import videoStructure   from '../assets/videos/structure and shape.mp4';
@@ -117,21 +119,26 @@ const VideoOverlay = ({
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
+    const video = videoRef.current;
     // Robust promise-guarded play — zero AbortError risk
     (async () => {
-      if (!videoRef.current) return;
+      if (!video) return;
       try {
-        videoRef.current.load();
-        await videoRef.current.play();
+        video.load();
+        await video.play();
       } catch (e) {
         console.warn('Axiomé · Video: playback deferred by browser policy.', e);
       }
     })();
-    return () => { videoRef.current?.pause(); };
+    return () => { video?.pause(); };
   }, []);
 
+  const shouldReduceMotion = useReducedMotion();
+
   return (
-    <motion.div
+    <motion.section
+      role="region"
+      aria-label={`${data.title} cinematic showcase`}
       className="volume-overlay"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -139,15 +146,15 @@ const VideoOverlay = ({
       transition={{ duration: 0.32 }}
       onClick={onClose}
     >
-      {/* Dark backdrop — clicking it closes the artifact */}
-      <div className="volume-backdrop" />
+      {/* Dark backdrop */}
+      <div className="volume-backdrop" aria-hidden="true" />
 
-      {/* 16:9 Cinematic Frame — scaleX expands from sliver origin */}
+      {/* 16:9 Cinematic Frame */}
       <motion.div
         className="volume-frame"
-        initial={{ scaleX: 0.005, opacity: 0.6 }}
-        animate={{ scaleX: 1,     opacity: 1   }}
-        exit={{ scaleX: 0.005,    opacity: 0   }}
+        initial={shouldReduceMotion ? { opacity: 0.6 } : { scaleX: 0.005, opacity: 0.6 }}
+        animate={shouldReduceMotion ? { opacity: 1 } : { scaleX: 1, opacity: 1 }}
+        exit={shouldReduceMotion ? { opacity: 0 } : { scaleX: 0.005, opacity: 0 }}
         transition={{ duration: 0.52, ease: [0.22, 1, 0.36, 1] }}
         onClick={e => e.stopPropagation()}
       >
@@ -160,21 +167,23 @@ const VideoOverlay = ({
           playsInline
           preload="auto"
           className="volume-video"
+          aria-label={`Cinematic video of ${data.title}`}
         />
       </motion.div>
 
-      {/* ESC hint — appears after frame settles */}
-      <motion.p
-        className="volume-close-hint"
+      {/* Close button with keyboard support */}
+      <motion.button
+        className="volume-close-hint focus-visible:ring-2 focus-visible:ring-white outline-none"
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0 }}
         transition={{ delay: 0.55, duration: 0.4 }}
         onClick={onClose}
+        aria-label="Close showcase"
       >
         ESC · CLOSE ARTIFACT
-      </motion.p>
-    </motion.div>
+      </motion.button>
+    </motion.section>
   );
 };
 
@@ -203,9 +212,14 @@ const PillarArtifact = ({
 
   return (
     <div className="pillar-wrapper">
-      <motion.div
+      <motion.button
         layout
-        className="monolith-frame"
+        role="button"
+        aria-label={`Open ${data.title} pillar`}
+        className={cn(
+          "monolith-frame outline-none focus-visible:ring-2 focus-visible:ring-purple-500",
+          !isActive && !isInactive && phase === 1 && "cursor-pointer"
+        )}
         animate={animTarget}
         transition={{
           layout:  { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
@@ -216,7 +230,6 @@ const PillarArtifact = ({
         }}
         style={{
           pointerEvents: isInactive ? 'none' : 'auto',
-          cursor: (!isActive && !isInactive && phase === 1) ? 'pointer' : 'default',
         }}
         whileHover={!isActive && !isInactive && phase === 1 ? { scale: 1.012 } : {}}
         onClick={() => !isActive && !isInactive && phase === 1 && onOpen()}
@@ -243,7 +256,7 @@ const PillarArtifact = ({
             </motion.span>
           )}
         </AnimatePresence>
-      </motion.div>
+      </motion.button>
     </div>
   );
 };
@@ -277,10 +290,16 @@ export default function InspirationRoute() {
     }, 460);
   }, []);
 
-  // ── Escape Key Global Listener ──
+  // ── Escape Key Global Listener with Debounce ──
+  const lastEscTime = useRef(0);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && activePillarId !== null) closePillar();
+      if (e.key === 'Escape' && activePillarId !== null) {
+        const now = Date.now();
+        if (now - lastEscTime.current < 400) return; // 400ms debounce for smoother phase logic
+        lastEscTime.current = now;
+        closePillar();
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -288,6 +307,10 @@ export default function InspirationRoute() {
 
   return (
     <div className="inspiration-container">
+      <Meta 
+        title="Axiomé | Inspiration" 
+        description="Explore the cinematic piliars of structure, flow, contrast, and volume that define the Axiomé aesthetic."
+      />
       {/* ── Dalí Liquify SVG Filter Definition ── */}
       {/* feTurbulence generates organic noise; feDisplacementMap warps pixels */}
       {/* Applied ONLY to .melt-canvas via CSS — text is unaffected           */}

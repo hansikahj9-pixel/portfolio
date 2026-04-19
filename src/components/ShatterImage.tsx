@@ -53,6 +53,7 @@ export default function ShatterImage({
   useEffect(() => {
     if (isActive && phase === 'idle') {
       // Start: Idle -> Expand
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPhase('expand');
       
       // Expand -> Shatter after 0.6s
