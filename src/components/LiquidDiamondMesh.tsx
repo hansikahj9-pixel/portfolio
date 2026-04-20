@@ -93,16 +93,16 @@ void main(){
   // green base (-50% total reduction: 0.7 * 0.8 = 0.56)
   vec3 col = mix(EMERALD * 0.56, TEAL * 0.56, smoothstep(-0.3, 0.4, flow));
   
-  // blue waves (+35% concentration)
+  // blue waves (+35% increase to 1.8225)
   float blueFlow = n2 * 0.5 + n1 * 0.3 + n3 * 0.2;
-  col = mix(col, PAGEANT, clamp(smoothstep(-0.1, 0.7, blueFlow) * 1.35, 0.0, 1.0));
+  col = mix(col, PAGEANT, clamp(smoothstep(-0.1, 0.7, blueFlow) * 1.8225, 0.0, 1.0));
 
   // light reflections: red & orange streaks/waves (+35% concentration for Jaffa)
   float peak = smoothstep(0.35, 0.6, flow + ripple * 0.5);
   float orangeFlow = n3 * 0.5 + n2 * 0.3 + n1 * 0.2;
   
   col = mix(col, HAUTE_RED, peak * 0.35 * smoothstep(0.5, 0.8, n3));
-  col = mix(col, JAFFA, clamp(smoothstep(0.1, 0.9, orangeFlow) * 0.5265, 0.0, 1.0));
+  col = mix(col, JAFFA, clamp(smoothstep(0.1, 0.9, orangeFlow) * 0.6581, 0.0, 1.0));
 
   // ── diamond specular highlight ──
   // compute pseudo-normal from noise gradient for Blinn-Phong
@@ -119,8 +119,8 @@ void main(){
   // apply specular as bright white diamond flare (boosted from 0.7 to 0.85)
   col += spec * 0.85 * vec3(1.0, 0.95, 0.85);
 
-  // ── secondary shimmer on mouse proximity (+30% increase to 0.702) ──
-  float mouseGlow = exp(-dist * 3.0) * u_mouseForce * 0.702;
+  // ── secondary shimmer on mouse proximity (+25% increase to 0.8775) ──
+  float mouseGlow = exp(-dist * 3.0) * u_mouseForce * 0.8775;
   col += mouseGlow * JAFFA;
 
   // ── contrast & saturation boost (increased from 1.4 to 1.7) ──
