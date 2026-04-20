@@ -92,13 +92,17 @@ void main(){
   // base: emerald <-> teal <-> pageant blue
   // green base (-30% concentration)
   vec3 col = mix(EMERALD * 0.7, TEAL * 0.7, smoothstep(-0.3, 0.4, flow));
-  // blue overlay (+35% concentration)
-  col = mix(col, PAGEANT, clamp(smoothstep(0.2, 0.7, n2) * 1.35, 0.0, 1.0));
+  
+  // blue waves (+35% concentration)
+  float blueFlow = n2 * 0.5 + n1 * 0.3 + n3 * 0.2;
+  col = mix(col, PAGEANT, clamp(smoothstep(-0.1, 0.7, blueFlow) * 1.35, 0.0, 1.0));
 
-  // light reflections: red & orange streaks on peaks (+35% concentration for Jaffa)
+  // light reflections: red & orange streaks/waves (+35% concentration for Jaffa)
   float peak = smoothstep(0.35, 0.6, flow + ripple * 0.5);
+  float orangeFlow = n3 * 0.5 + n2 * 0.3 + n1 * 0.2;
+  
   col = mix(col, HAUTE_RED, peak * 0.35 * smoothstep(0.5, 0.8, n3));
-  col = mix(col, JAFFA,     peak * 0.405 * smoothstep(0.4, 0.9, n2 + n3));
+  col = mix(col, JAFFA, clamp(smoothstep(0.1, 0.9, orangeFlow) * 0.405, 0.0, 1.0));
 
   // ── diamond specular highlight ──
   // compute pseudo-normal from noise gradient for Blinn-Phong
