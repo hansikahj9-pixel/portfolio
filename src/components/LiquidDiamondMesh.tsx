@@ -90,13 +90,15 @@ void main(){
 
   // ── colour blending ──
   // base: emerald <-> teal <-> pageant blue
-  vec3 col = mix(EMERALD, TEAL,    smoothstep(-0.3, 0.4, flow));
-       col = mix(col,     PAGEANT, smoothstep(0.2, 0.7, n2));
+  // green base (-30% concentration)
+  vec3 col = mix(EMERALD * 0.7, TEAL * 0.7, smoothstep(-0.3, 0.4, flow));
+  // blue overlay (+35% concentration)
+  col = mix(col, PAGEANT, clamp(smoothstep(0.2, 0.7, n2) * 1.35, 0.0, 1.0));
 
-  // light reflections: red & orange streaks on peaks
+  // light reflections: red & orange streaks on peaks (+35% concentration for Jaffa)
   float peak = smoothstep(0.35, 0.6, flow + ripple * 0.5);
   col = mix(col, HAUTE_RED, peak * 0.35 * smoothstep(0.5, 0.8, n3));
-  col = mix(col, JAFFA,     peak * 0.3  * smoothstep(0.4, 0.9, n2 + n3));
+  col = mix(col, JAFFA,     peak * 0.405 * smoothstep(0.4, 0.9, n2 + n3));
 
   // ── diamond specular highlight ──
   // compute pseudo-normal from noise gradient for Blinn-Phong
@@ -113,8 +115,8 @@ void main(){
   // apply specular as bright white diamond flare
   col += spec * 0.7 * vec3(1.0, 0.95, 0.85);
 
-  // ── secondary shimmer on mouse proximity ──
-  float mouseGlow = exp(-dist * 3.0) * u_mouseForce * 0.4;
+  // ── secondary shimmer on mouse proximity (+35% concentration) ──
+  float mouseGlow = exp(-dist * 3.0) * u_mouseForce * 0.54; // 0.4 * 1.35 = 0.54
   col += mouseGlow * JAFFA;
 
   // ── contrast & saturation boost (no pastels) ──
