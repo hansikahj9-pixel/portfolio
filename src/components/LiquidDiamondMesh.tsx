@@ -90,8 +90,8 @@ void main(){
 
   // ── colour blending ──
   // base: emerald <-> teal <-> pageant blue
-  // green base (-30% concentration)
-  vec3 col = mix(EMERALD * 0.7, TEAL * 0.7, smoothstep(-0.3, 0.4, flow));
+  // green base (-50% total reduction: 0.7 * 0.8 = 0.56)
+  vec3 col = mix(EMERALD * 0.56, TEAL * 0.56, smoothstep(-0.3, 0.4, flow));
   
   // blue waves (+35% concentration)
   float blueFlow = n2 * 0.5 + n1 * 0.3 + n3 * 0.2;
@@ -102,7 +102,7 @@ void main(){
   float orangeFlow = n3 * 0.5 + n2 * 0.3 + n1 * 0.2;
   
   col = mix(col, HAUTE_RED, peak * 0.35 * smoothstep(0.5, 0.8, n3));
-  col = mix(col, JAFFA, clamp(smoothstep(0.1, 0.9, orangeFlow) * 0.405, 0.0, 1.0));
+  col = mix(col, JAFFA, clamp(smoothstep(0.1, 0.9, orangeFlow) * 0.5265, 0.0, 1.0));
 
   // ── diamond specular highlight ──
   // compute pseudo-normal from noise gradient for Blinn-Phong
@@ -116,17 +116,17 @@ void main(){
   vec3 halfDir  = normalize(lightDir + viewDir);
   float spec    = pow(max(dot(normal, halfDir), 0.0), 64.0);
 
-  // apply specular as bright white diamond flare
-  col += spec * 0.7 * vec3(1.0, 0.95, 0.85);
+  // apply specular as bright white diamond flare (boosted from 0.7 to 0.85)
+  col += spec * 0.85 * vec3(1.0, 0.95, 0.85);
 
-  // ── secondary shimmer on mouse proximity (+35% concentration) ──
-  float mouseGlow = exp(-dist * 3.0) * u_mouseForce * 0.54; // 0.4 * 1.35 = 0.54
+  // ── secondary shimmer on mouse proximity (+30% increase to 0.702) ──
+  float mouseGlow = exp(-dist * 3.0) * u_mouseForce * 0.702;
   col += mouseGlow * JAFFA;
 
-  // ── contrast & saturation boost (no pastels) ──
-  col = pow(col, vec3(0.9));                         // gamma
+  // ── contrast & saturation boost (increased from 1.4 to 1.7) ──
+  col = pow(col, vec3(0.8));                         // brighter gamma (0.9 -> 0.8)
   float lum = dot(col, vec3(0.299, 0.587, 0.114));
-  col = mix(vec3(lum), col, 1.4);                    // saturation +40%
+  col = mix(vec3(lum), col, 1.7);                    // saturation boost
   col = clamp(col, 0.0, 1.0);
 
   gl_FragColor = vec4(col, 1.0);
