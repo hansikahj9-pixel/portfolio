@@ -96,7 +96,7 @@ export const liquidSilkShader = {
     }
 
     void main() {
-      float aspect = uResolution.x / uResolution.y;
+      float aspect = uResolution.x / (uResolution.y + 1e-6);
       vec2 p = (vUv - 0.5) * vec2(aspect, 1.0);
       
       // 1. ANALYTICAL NORMALS for realistic lighting

@@ -2,18 +2,33 @@ import LiquidSilkBackground from '../components/LiquidSilkBackground';
 
 export default function ProcessRoute() {
   return (
-    <div className="process-empty-container" style={{ height: '100vh', width: '100vw', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
-      <LiquidSilkBackground />
-      <h1 style={{ 
-        color: 'white', 
-        opacity: 0.3, 
-        letterSpacing: '0.2em', 
+    <div style={{ height: '100vh', width: '100vw', position: 'relative', overflow: 'hidden', background: '#12041c' }}>
+      {/* Background Layer - Isolated */}
+      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}>
+        <LiquidSilkBackground />
+      </div>
+
+      {/* Content Layer */}
+      <div style={{ 
+        position: 'relative', 
         zIndex: 1, 
-        pointerEvents: 'none',
-        textShadow: '0 0 20px rgba(0,0,0,0.5)'
+        width: '100%', 
+        height: '100%', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        pointerEvents: 'none'
       }}>
-        PROCESS · COMING SOON
-      </h1>
+        <h1 style={{ 
+          color: 'white', 
+          opacity: 0.3, 
+          letterSpacing: '0.2em', 
+          textShadow: '0 0 20px rgba(0,0,0,0.5)',
+          fontFamily: 'Inter, sans-serif'
+        }}>
+          PROCESS · COMING SOON
+        </h1>
+      </div>
     </div>
   );
 }
