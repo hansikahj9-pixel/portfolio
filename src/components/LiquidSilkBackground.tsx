@@ -6,7 +6,7 @@ import { liquidSilkShader } from '../shaders/liquidSilkShader';
 function LiquidSilkMesh() {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
-  const { size, viewport } = useThree();
+  const { size } = useThree();
 
   const uniforms = useMemo(() => ({
     uTime: { value: 0 },
