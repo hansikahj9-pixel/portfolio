@@ -16,8 +16,8 @@ function App() {
   const location = useLocation();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Show MoltenBackground on Process page or potentially Inspiration
-  const showMoltenBg = location.pathname === '/process' || location.pathname === '/inspiration';
+  // Show MoltenBackground only on Inspiration page
+  const showMoltenBg = location.pathname === '/inspiration';
 
   // Include /vision in project routes for navigation visibility
   const projectRoutes = ['/inspiration', '/process', '/collection', '/vision'];

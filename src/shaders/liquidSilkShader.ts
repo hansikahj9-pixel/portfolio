@@ -96,17 +96,16 @@ export const liquidSilkShader = {
     }
 
     void main() {
-      vec2 uv = vUv;
       float aspect = uResolution.x / uResolution.y;
-      uv.x *= aspect;
+      vec2 p = (vUv - 0.5) * vec2(aspect, 1.0);
       
       // 1. ANALYTICAL NORMALS for realistic lighting
       float e = 0.005;
-      float h = getSilkFlow(uv);
-      float hL = getSilkFlow(uv - vec2(e, 0.0));
-      float hR = getSilkFlow(uv + vec2(e, 0.0));
-      float hD = getSilkFlow(uv - vec2(0.0, e));
-      float hU = getSilkFlow(uv + vec2(0.0, e));
+      float h = getSilkFlow(p);
+      float hL = getSilkFlow(p - vec2(e, 0.0));
+      float hR = getSilkFlow(p + vec2(e, 0.0));
+      float hD = getSilkFlow(p - vec2(0.0, e));
+      float hU = getSilkFlow(p + vec2(0.0, e));
       
       // Calculate surface normal
       vec3 normal = normalize(vec3(hL - hR, hD - hU, 0.15));

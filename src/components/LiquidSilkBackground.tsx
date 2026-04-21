@@ -28,8 +28,8 @@ function LiquidSilkMesh() {
   });
 
   return (
-    <mesh ref={meshRef}>
-      <planeGeometry args={[viewport.width, viewport.height]} />
+    <mesh ref={meshRef} scale={[1, 1, 1]}>
+      <planeGeometry args={[2, 2]} />
       <shaderMaterial
         ref={materialRef}
         fragmentShader={liquidSilkShader.fragmentShader}
@@ -45,9 +45,10 @@ export default function LiquidSilkBackground() {
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -1 }}>
       <Canvas
-        camera={{ position: [0, 0, 1] }}
+        orthographic
+        camera={{ left: -1, right: 1, top: 1, bottom: -1, near: 0.1, far: 10, position: [0, 0, 1] }}
         dpr={Math.min(window.devicePixelRatio, 2)}
-        gl={{ antialias: true, alpha: true }}
+        gl={{ antialias: false, alpha: true }}
       >
         <LiquidSilkMesh />
       </Canvas>
