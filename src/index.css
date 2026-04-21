@@ -78,6 +78,7 @@ h1, h2, h3, h4, h5, h6 {
 
 ::-webkit-scrollbar {
   width: 4px;
+  height: 6px; /* Horizontal scrollbar height */
 }
 
 ::-webkit-scrollbar-track {
@@ -87,6 +88,15 @@ h1, h2, h3, h4, h5, h6 {
 ::-webkit-scrollbar-thumb {
   background: var(--color-accent);
   border-radius: 2px;
+}
+
+/* Custom Scrollbar for Bifold Viewport */
+.bifold-viewport::-webkit-scrollbar-track {
+  background: #7F8C8D; /* Moonstruck Grey */
+}
+
+.bifold-viewport::-webkit-scrollbar-thumb {
+  background: #B91D1D; /* Haute Red */
 }
 
 /* ============ CUSTOM CURSOR ============ */
@@ -539,4 +549,66 @@ h1, h2, h3, h4, h5, h6 {
 
 .axiome-back-link:hover .axiome-back-arrow {
   transform: translateX(-4px);
+}
+
+/* ============ BIFOLD SYSTEM ============ */
+.bifold-viewport {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bifold-wrapper {
+  display: flex;
+  width: 170vw; /* 2 * 85vw */
+  height: 100vh;
+}
+
+.bifold-column {
+  width: 85vw;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 120px 4vw 80px; /* Offset for global nav */
+  scroll-snap-align: start;
+  scrollbar-width: thin; /* Firefox */
+}
+
+/* Board Asset Styling (100% Fidelity) */
+.bifold-board {
+  width: 60%;
+  margin-bottom: 8vh;
+  position: relative;
+  opacity: 1 !important;
+  filter: none !important;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bifold-board img, 
+.bifold-board video {
+  width: 100%;
+  height: auto;
+  display: block;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+
+.stagger-left {
+  align-self: flex-start;
+  margin-left: 5%;
+}
+
+.stagger-right {
+  align-self: flex-end;
+  margin-right: 5%;
+}
+
+/* Container for Vertical Stacking */
+.column-stack {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }

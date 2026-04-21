@@ -1,28 +1,39 @@
+import mindMap from '../assets/Mind map.png';
+import random from '../assets/Random.png';
+import fabricBoard from '../assets/Fabric board.png';
+import silhouetteBoard from '../assets/Silhoutte board.mp4';
+import moodBoard from '../assets/Mood board.mp4';
+
 export default function ProcessRoute() {
   return (
-    <div style={{ height: '100vh', width: '100vw', position: 'relative', overflow: 'hidden', background: 'transparent' }}>
+    <div className="bifold-viewport">
+      <div className="bifold-wrapper">
+        {/* Left Column: Process (Clinical) */}
+        <section className="bifold-column">
+          <div className="column-stack">
+            <div className="bifold-board stagger-left">
+              <img src={mindMap} alt="Mind Map" />
+            </div>
+            <div className="bifold-board stagger-right">
+              <img src={random} alt="Random Process" />
+            </div>
+            <div className="bifold-board stagger-left">
+              <img src={fabricBoard} alt="Fabric Board" />
+            </div>
+          </div>
+        </section>
 
-
-      {/* Content Layer */}
-      <div style={{ 
-        position: 'relative', 
-        zIndex: 1, 
-        width: '100%', 
-        height: '100%', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center',
-        pointerEvents: 'none'
-      }}>
-        <h1 style={{ 
-          color: 'white', 
-          opacity: 0.3, 
-          letterSpacing: '0.2em', 
-          textShadow: '0 0 20px rgba(0,0,0,0.5)',
-          fontFamily: 'Inter, sans-serif'
-        }}>
-          PROCESS · COMING SOON
-        </h1>
+        {/* Right Column: Inspiration (Pretty) */}
+        <section className="bifold-column">
+          <div className="column-stack">
+            <div className="bifold-board stagger-left">
+              <video src={silhouetteBoard} loop muted autoPlay playsInline />
+            </div>
+            <div className="bifold-board stagger-right">
+              <video src={moodBoard} loop muted autoPlay playsInline />
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );
