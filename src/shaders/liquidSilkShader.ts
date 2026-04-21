@@ -19,12 +19,11 @@ export const liquidSilkShader = {
     uniform vec2 uResolution;
 
     // ── STUDIO LIGHTING COLORS ──
-    const vec3 C_VOID     = vec3(0.10, 0.17, 0.28);  // Pageant Blue  #1A2B48
-    const vec3 C_SILK     = vec3(0.29, 0.42, 0.30);  // Sycamore      #4A6B4D
-    const vec3 C_MID      = vec3(0.50, 0.55, 0.55);  // Moonstruck Grey #7F8C8D
-    const vec3 C_ORCHID   = vec3(0.73, 0.11, 0.11);  // Haute Red     #B91D1D
-    const vec3 C_RIM      = vec3(0.90, 0.49, 0.13);  // Jaffa Orange  #E67E22
-    const vec3 C_SPECULAR = vec3(0.95, 0.77, 0.06);  // Yarrow Yellow #F1C40F
+    const vec3 C_VOID     = vec3(0.10, 0.17, 0.28);  // Pageant Blue   #1A2B48
+    const vec3 C_SILK     = vec3(0.29, 0.42, 0.30);  // Sycamore       #4A6B4D
+    const vec3 C_ORCHID   = vec3(0.73, 0.11, 0.11);  // Haute Red      #B91D1D
+    const vec3 C_RIM      = vec3(0.40, 0.58, 0.42);  // Sycamore Light (rim glow)
+    const vec3 C_SPECULAR = vec3(1.0, 1.0, 1.0);     // Neutral white flare
 
     // ── DISTORTION & NOISE Engine (6 Octaves Optimized) ──
     vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -129,15 +128,14 @@ export const liquidSilkShader = {
       float spec = pow(max(dot(refl, view), 0.0), 128.0);
       
       // ── COLOR COMPOSITION ──
-      // Base mix: Blue shadow -> Green silk -> Grey mid -> Red highlight
-      vec3 color = mix(C_VOID, C_SILK, smoothstep(0.0, 0.4, h));
-      color = mix(color, C_MID, smoothstep(0.25, 0.55, h));
-      color = mix(color, C_ORCHID, smoothstep(0.45, 0.9, h));
+      // Base mix: Pageant Blue shadow -> Sycamore body -> Haute Red highlight
+      vec3 color = mix(C_VOID, C_SILK, smoothstep(0.0, 0.45, h));
+      color = mix(color, C_ORCHID, smoothstep(0.4, 0.9, h));
       
-      // Warm Iridescent Edges (Jaffa Orange)
+      // Sycamore rim glow on edges
       color = mix(color, C_RIM, fresnel * 0.9);
       
-      // Metallic Gloss/Specularity (Yarrow Yellow)
+      // Metallic Gloss/Specularity
       color += C_SPECULAR * spec * 8.0;
       color += C_RIM * pow(fresnel, 2.0) * 2.0;
       
