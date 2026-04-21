@@ -12,9 +12,9 @@ export default function AxiomeGlobalNav() {
       </Link>
 
       <nav className="axiome-menu-tabs">
-        <FluidTab to="/axiome/process" label="THE PROCESS" colors={tabColors} />
-        <FluidTab to="/axiome/maison" label="LA MAISON" colors={tabColors} />
-        <FluidTab to="/axiome/collection" label="THE COLLECTION" colors={tabColors} />
+        <FluidTab to="/inspiration" label="Inspiration" colors={tabColors} />
+        <FluidTab to="/process" label="Process" colors={tabColors} />
+        <FluidTab to="/collection" label="Collection" colors={tabColors} />
       </nav>
     </header>
   );

@@ -16,10 +16,11 @@ function App() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Only show background on process page
-  const showMoltenBg = location.pathname === '/axiome/process';
+  const showMoltenBg = location.pathname === '/process';
 
   // Only show Axiomé specific nav within the project context
-  const isAxiomeRoute = location.pathname.startsWith('/axiome');
+  const projectRoutes = ['/inspiration', '/process', '/collection'];
+  const isAxiomeRoute = projectRoutes.includes(location.pathname);
 
   return (
     <div ref={containerRef} className="app-root-container" style={{ position: 'relative' }}>
@@ -31,9 +32,9 @@ function App() {
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<MotionPageFlip locationKey="/"><PortfolioRoute /></MotionPageFlip>} />
-            <Route path="/axiome" element={<MotionPageFlip locationKey="/axiome"><AxiomeRoute /></MotionPageFlip>} />
-            <Route path="/axiome/process" element={<MotionPageFlip locationKey="/axiome/process"><ProcessRoute /></MotionPageFlip>} />
-            <Route path="/axiome/inspiration" element={<MotionPageFlip locationKey="/axiome/inspiration"><InspirationRoute /></MotionPageFlip>} />
+            <Route path="/inspiration" element={<MotionPageFlip locationKey="/inspiration"><InspirationRoute /></MotionPageFlip>} />
+            <Route path="/process" element={<MotionPageFlip locationKey="/process"><ProcessRoute /></MotionPageFlip>} />
+            <Route path="/collection" element={<MotionPageFlip locationKey="/collection"><AxiomeRoute /></MotionPageFlip>} />
           </Routes>
         </AnimatePresence>
       </div>

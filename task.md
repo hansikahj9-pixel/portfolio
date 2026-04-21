@@ -1,0 +1,7 @@
+- [ ] Generate repository manifest of all files
+- [ ] Run ui-ux-pro-max skill on each file
+- [ ] Run frontend-design skill on each file
+- [ ] Run interactive-portfolio skill on each file
+- [ ] Aggregate per-file reports into master markdown
+- [ ] Verify report completeness and accuracy
+- [ ] Deliver review markdown at review/portfolio_review.md
