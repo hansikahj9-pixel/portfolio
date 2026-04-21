@@ -1,24 +1,8 @@
-import { useState, useCallback } from 'react';
-import { Canvas } from '@react-three/fiber';
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
-import ProjectList, { type Project } from '../components/ProjectList';
-import FluidBackground from '../components/FluidBackground';
-import HoverImagePlane from '../components/HoverImagePlane';
+import ProjectList from '../components/ProjectList';
 
 export default function PortfolioRoute() {
-  const [hoveredProject, setHoveredProject] = useState<Project | null>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-  const handleProjectHover = useCallback(
-    (project: Project | null, mouseX: number, mouseY: number) => {
-      setHoveredProject(project);
-      if (project) {
-        setMousePos({ x: mouseX, y: mouseY });
-      }
-    },
-    []
-  );
 
   return (
     <>
@@ -29,7 +13,7 @@ export default function PortfolioRoute() {
         <Navbar />
         <HeroSection />
 
-        <ProjectList onHover={handleProjectHover} />
+        <ProjectList />
 
         <footer className="footer">
           <span className="footer-text">

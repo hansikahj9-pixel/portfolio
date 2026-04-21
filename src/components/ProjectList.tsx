@@ -27,7 +27,7 @@ const projects: Project[] = [
 ];
 
 interface ProjectListProps {
-  onHover: (project: Project | null, mouseX: number, mouseY: number) => void;
+  onHover?: (project: Project | null, mouseX: number, mouseY: number) => void;
 }
 
 export default function ProjectList({ onHover }: ProjectListProps) {
@@ -79,12 +79,12 @@ export default function ProjectList({ onHover }: ProjectListProps) {
               }
             }}
             onMouseEnter={(e) =>
-              onHover(project, e.clientX, e.clientY)
+              onHover?.(project, e.clientX, e.clientY)
             }
             onMouseMove={(e) =>
-              onHover(project, e.clientX, e.clientY)
+              onHover?.(project, e.clientX, e.clientY)
             }
-            onMouseLeave={() => onHover(null, 0, 0)}
+            onMouseLeave={() => onHover?.(null, 0, 0)}
           >
             <span className="project-item-index">
               {String(i + 1).padStart(2, '0')}
