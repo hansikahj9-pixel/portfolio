@@ -4,6 +4,7 @@ import { OrthographicCamera } from '@react-three/drei';
 import * as THREE from 'three';
 import { liquidSilkShader } from '../shaders/liquidSilkShader';
 
+
 function LiquidSilkMesh() {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
@@ -67,8 +68,13 @@ export default function LiquidSilkBackground() {
       <Canvas 
         className="liquid-silk-container"
         orthographic 
+        dpr={[1, 2]} // High fidelity
         camera={{ position: [0, 0, 1], zoom: 1 }}
-        gl={{ antialias: true, alpha: true }}
+        gl={{ 
+          antialias: true, 
+          alpha: true,
+          powerPreference: "high-performance"
+        }}
         style={{ width: '100%', height: '100%', display: 'block' }}
       >
         <OrthographicCamera makeDefault left={-1} right={1} top={1} bottom={-1} near={0.1} far={10} position={[0, 0, 1]} />
