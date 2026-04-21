@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
 import PortfolioRoute from './routes/PortfolioRoute';
@@ -35,6 +35,12 @@ function App() {
             <Route path="/inspiration" element={<MotionPageFlip locationKey="/inspiration"><InspirationRoute /></MotionPageFlip>} />
             <Route path="/process" element={<MotionPageFlip locationKey="/process"><ProcessRoute /></MotionPageFlip>} />
             <Route path="/collection" element={<MotionPageFlip locationKey="/collection"><AxiomeRoute /></MotionPageFlip>} />
+
+            {/* ── Legacy Redirects to prevent blank screens ── */}
+            <Route path="/axiome" element={<Navigate to="/collection" replace />} />
+            <Route path="/axiome/process" element={<Navigate to="/process" replace />} />
+            <Route path="/axiome/inspiration" element={<Navigate to="/inspiration" replace />} />
+            <Route path="/axiome/*" element={<Navigate to="/collection" replace />} />
           </Routes>
         </AnimatePresence>
       </div>

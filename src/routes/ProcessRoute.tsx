@@ -107,7 +107,7 @@ export default function ProcessRoute() {
             <div className="dream-orb"></div>
             
             <div className="process-right-content">
-              <Link to="/axiome/inspiration" style={{ textDecoration: 'none', display: 'block' }}>
+              <Link to="/inspiration" style={{ textDecoration: 'none', display: 'block' }}>
                 <div className="inspiration-card-box">
                   <div className="inspiration-tab-notch">VIEW INSPIRATION</div>
                   <h3 className="inspiration-heading">THE INSPIRATION.</h3>
