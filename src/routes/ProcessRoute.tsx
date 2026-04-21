@@ -1,12 +1,7 @@
-import LiquidSilkBackground from '../components/LiquidSilkBackground';
-
 export default function ProcessRoute() {
   return (
-    <div style={{ height: '100vh', width: '100vw', position: 'relative', overflow: 'hidden', background: '#12041c' }}>
-      {/* Background Layer - Isolated */}
-      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}>
-        <LiquidSilkBackground />
-      </div>
+    <div style={{ height: '100vh', width: '100vw', position: 'relative', overflow: 'hidden', background: 'transparent' }}>
+
 
       {/* Content Layer */}
       <div style={{ 

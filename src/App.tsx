@@ -10,14 +10,11 @@ import MonolithRoute from './routes/MonolithRoute';
 import CustomCursor from './components/CustomCursor';
 import MotionPageFlip from './components/MotionPageFlip';
 import AxiomeGlobalNav from './components/AxiomeGlobalNav';
-import MoltenBackground from './components/MoltenBackground';
+import BackgroundHub from './components/BackgroundHub';
 
 function App() {
   const location = useLocation();
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Show MoltenBackground only on Inspiration page
-  const showMoltenBg = location.pathname === '/inspiration';
 
   // Include /vision in project routes for navigation visibility
   const projectRoutes = ['/inspiration', '/process', '/collection', '/vision'];
@@ -25,8 +22,8 @@ function App() {
 
   return (
     <div ref={containerRef} className="app-root-container" style={{ position: 'relative' }}>
-      {/* ── Molten Background: Visible on Process and Inspiration ── */}
-      {showMoltenBg && <MoltenBackground />}
+      {/* ── Singleton Background Hub: Unified WebGL Engine ── */}
+      <BackgroundHub />
 
       {/* 3D Global Perspective Container for Page Flips */}
       <div className="global-perspective-container">

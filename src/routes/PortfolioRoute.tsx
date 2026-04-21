@@ -22,23 +22,7 @@ export default function PortfolioRoute() {
 
   return (
     <>
-      {/* WebGL Canvas - behind everything */}
-      <div className="canvas-container">
-        <Canvas
-          camera={{ position: [0, 0, 5], fov: 50 }}
-          dpr={[1, 2]}
-          gl={{ antialias: true, alpha: false }}
-          style={{ background: '#000000' }}
-        >
-          <FluidBackground />
-          <HoverImagePlane
-            visible={hoveredProject !== null}
-            mouseX={mousePos.x}
-            mouseY={mousePos.y}
-            color={hoveredProject?.color ?? '#C3C1B9'}
-          />
-        </Canvas>
-      </div>
+      {/* UI Layer: Contains natural scroll independent from canvas */}
 
       {/* UI Layer: Contains natural scroll independent from canvas */}
       <div className="portfolio-scroll-container">

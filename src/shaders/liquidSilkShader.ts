@@ -18,15 +18,14 @@ export const liquidSilkShader = {
     uniform vec2 uMouse;
     uniform vec2 uResolution;
 
-    // AXIOMÉ COLOR ARCHITECTURE (Refined for High Contrast)
-    vec3 deepShadow = vec3(0.04, 0.01, 0.08); // Near black purple
-    vec3 basePurple = vec3(0.18, 0.04, 0.28); 
-    vec3 orchid     = vec3(0.49, 0.13, 0.81); 
-    vec3 radiant    = vec3(0.75, 0.52, 0.99); 
-    vec3 highlight  = vec3(0.95, 0.95, 1.0);  // Specular white
-    vec3 cyanAccent = vec3(0.02, 0.71, 0.83);
+    // ── STUDIO LIGHTING COLORS ──
+    const vec3 C_VOID     = vec3(0.01, 0.005, 0.05); // Deep midnight purple shadows
+    const vec3 C_SILK     = vec3(0.45, 0.05, 0.85); // Vibrant magenta-purple base
+    const vec3 C_ORCHID   = vec3(1.0, 0.20, 1.0);   // Glowing orchid peak (vibrant pink)
+    const vec3 C_RIM      = vec3(0.0, 0.94, 1.0);   // Electric cyan iridescence
+    const vec3 C_SPECULAR = vec3(1.0, 1.0, 1.0);    // High-energy white flare
 
-    // ── 3D SIMPLEX NOISE ENGINE ──
+    // ── DISTORTION & NOISE Engine (6 Octaves Optimized) ──
     vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
     vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
     vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
@@ -73,96 +72,82 @@ export const liquidSilkShader = {
       return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
     }
 
-    // ── FRACTAL BROWNIAN MOTION (Dimensionality) ──
-    float fbm(vec3 p) {
-      float value = 0.0;
-      float amplitude = 0.5;
-      for (int i = 0; i < 5; i++) {
-        value += amplitude * abs(snoise(p));
-        p *= 2.0;
-        amplitude *= 0.5;
+    float getNoise(vec2 p, float t) {
+      float n = 0.0;
+      float a = 0.5;
+      vec2 shift = vec2(100.0);
+      mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.5));
+      for (int i = 0; i < 6; i++) { 
+        n += a * abs(snoise(vec3(p, t)));
+        p = rot * p * 2.1 + shift;
+        a *= 0.5;
       }
-      return value;
-    }
-
-    float getSilkHeight(vec2 p) {
-      float t = uTime * 0.05;
-      
-      // Multi-stage domain warping for "Thick" folds
-      vec2 noiseCoord = p * 1.5;
-      
-      float warp1 = fbm(vec3(noiseCoord, t));
-      vec2 q = vec2(warp1, fbm(vec3(noiseCoord + vec2(1.2, 4.3), t * 1.1)));
-      
-      float warp2 = fbm(vec3(noiseCoord + q * 1.8, t * 0.7));
-      vec2 r = vec2(warp2, fbm(vec3(noiseCoord + q * 1.5 + vec2(5.1, 1.9), t * 0.9)));
-      
-      float h = fbm(vec3(noiseCoord + r * 2.2, t * 1.2));
-      
-      // Interaction ripples
-      float dist = distance(p, uMouse);
-      h += sin(dist * 12.0 - uTime * 2.5) * exp(-dist * 4.0) * 0.15;
-      
-      return h;
+      return n;
     }
 
     void main() {
-      float aspect = uResolution.x / (uResolution.y + 1e-6);
-      vec2 p = (vUv - 0.5) * vec2(aspect, 1.0);
+      // Use window-relative resolution directly for safety
+      vec2 res = uResolution.xy;
+      vec2 uv = gl_FragCoord.xy / res;
+      float aspect = res.x / res.y;
+      vec2 p = (uv - 0.5) * vec2(aspect, 1.0) * 2.0;
       
-      // Normalize UV for vignettes
-      vec2 uv = vUv;
+      float t = uTime * 0.15;
+      
+      // ── MOUSE INTERACTION ──
+      vec2 mP = (uMouse - 0.5) * vec2(aspect, 1.0) * 2.0;
+      float mD = length(p - mP);
+      float mI = smoothstep(0.8, 0.0, mD) * 0.5;
+      
+      // ── VISCOUS FLUID DYNAMICS (Domain Warping) ──
+      float n1 = getNoise(p * 0.5, t);
+      vec2 q = vec2(getNoise(p + n1 + t*0.05, t*0.2), getNoise(p + vec2(5.2, 1.3) + n1, t*0.3));
+      
+      float n2 = getNoise(p + q*2.5 + mI, t*0.4);
+      vec2 r = vec2(getNoise(p + n2 + vec2(1.7, 9.2), t*0.1), getNoise(p + n2 + vec2(8.3, 2.8), t*0.2));
+      
+      // h is our final "heightmap" or density of the silk
+      float h = getNoise(p + r*1.5 + q*0.5, t*0.5);
+      
+      // ── SURFACE RECONSTRUCTION (Normals) ──
+      float e = 0.005;
+      float hX = getNoise(p + vec2(e, 0.0) + r*1.5, t*0.5);
+      float hY = getNoise(p + vec2(0.0, e) + r*1.5, t*0.5);
+      vec3 normal = normalize(vec3((h - hX)/e, (h - hY)/e, 0.15));
+      
+      // ── LIGHTING MODEL ──
+      vec3 view = vec3(0.0, 0.0, 1.0);
+      vec3 light1 = normalize(vec3(1.0, 1.5, 2.0));  // Main Key
+      vec3 light2 = normalize(vec3(-1.5, -0.5, 1.0)); // Deep side fill
+      
+      float diff = max(dot(normal, light1), 0.0);
+      float fresnel = pow(1.0 - max(dot(normal, view), 0.0), 4.0);
+      
+      // Specular for the metallic sheen
+      vec3 refl = reflect(-light1, normal);
+      float spec = pow(max(dot(refl, view), 0.0), 128.0);
+      
+      // ── COLOR COMPOSITION ──
+      // Base mix: Shadows -> Main Silk -> Orchid Highlight
+      vec3 color = mix(C_VOID, C_SILK, smoothstep(0.0, 0.5, h));
+      color = mix(color, C_ORCHID, smoothstep(0.4, 0.9, h));
+      
+      // Iridescent Edges (Cyan)
+      color = mix(color, C_RIM, fresnel * 0.9);
+      
+      // Metallic Gloss/Specularity
+      color += C_SPECULAR * spec * 8.0;
+      color += C_RIM * pow(fresnel, 2.0) * 2.0;
+      
+      // Enhance depth in folds
+      color *= smoothstep(-0.1, 1.0, h);
+      
+      // Contrast boost
+      color = pow(color, vec3(1.1));
 
-      // ── 1. NORMALS ──
-      float e = 0.003; // Sharper sampling for silk detail
-      float h = getSilkHeight(p);
-      float hL = getSilkHeight(p - vec2(e, 0.0));
-      float hR = getSilkHeight(p + vec2(e, 0.0));
-      float hD = getSilkHeight(p - vec2(0.0, e));
-      float hU = getSilkHeight(p + vec2(0.0, e));
-      
-      vec3 normal = normalize(vec3(hL - hR, hD - hU, 0.08));
-
-      // ── 2. LIGHTING (Blinn-Phong) ──
-      vec3 viewDir = vec3(0.0, 0.0, 1.0);
-      vec3 lightPos1 = vec3(1.2, 1.5, 2.0); // Primary highlight
-      vec3 lightPos2 = vec3(-1.0, -0.5, 1.5); // Rim highlight
-      
-      vec3 lightDir1 = normalize(lightPos1);
-      vec3 lightDir2 = normalize(lightPos2);
-      
-      float diff1 = max(dot(normal, lightDir1), 0.0);
-      float diff2 = max(dot(normal, lightDir2), 0.0);
-      
-      vec3 reflectDir = reflect(-lightDir1, normal);
-      float spec = pow(max(dot(viewDir, reflectDir), 0.0), 128.0); // Tight specular
-      
-      // ── 3. COLOR MAPPING ──
-      // Height-based mixing for base tones
-      vec3 color = mix(deepShadow, basePurple, smoothstep(-0.2, 0.3, h));
-      color = mix(color, orchid, smoothstep(0.3, 0.6, h));
-      color = mix(color, radiant, smoothstep(0.6, 1.0, h));
-
-      // Normal-based iridescence (Cyan edges)
-      float irid = pow(1.0 - max(dot(normal, viewDir), 0.0), 3.0);
-      color = mix(color, cyanAccent, irid * 0.6);
-
-      // ── 4. FINAL COMPOSITION ──
-      // Specular highlights (High power white)
-      vec3 finalColor = color + (highlight * spec * 2.8);
-      
-      // Ambient Occlusion (Darken valleys)
-      finalColor = mix(deepShadow * 0.5, finalColor, smoothstep(0.0, 0.4, h));
-      
-      // Vivid diffuse boosts
-      finalColor += orchid * diff1 * 0.3;
-      finalColor += cyanAccent * diff2 * 0.2;
-
-      // Soft vignette for focus
-      float vignette = smoothstep(1.3, 0.4, length(vUv - 0.5));
-      finalColor *= vignette;
-
-      gl_FragColor = vec4(finalColor, 1.0);
+      gl_FragColor = vec4(color, 1.0);
     }
+
+
   `
 };
