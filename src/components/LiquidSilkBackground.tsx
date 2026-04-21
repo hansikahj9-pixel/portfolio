@@ -55,7 +55,17 @@ export default function LiquidSilkBackground() {
         background: '#12041c' 
       }}
     >
+      <style>{`
+        .liquid-silk-container canvas {
+          width: 100vw !important;
+          height: 100vh !important;
+          position: fixed !important;
+          top: 0;
+          left: 0;
+        }
+      `}</style>
       <Canvas 
+        className="liquid-silk-container"
         orthographic 
         camera={{ position: [0, 0, 1], zoom: 1 }}
         gl={{ antialias: true, alpha: true }}
