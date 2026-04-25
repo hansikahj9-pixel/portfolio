@@ -580,7 +580,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Board Asset Styling (100% Fidelity) */
 .bifold-board {
-  width: 60%;
+  width: 80%;
   margin-bottom: 8vh;
   position: relative;
   opacity: 1 !important;
