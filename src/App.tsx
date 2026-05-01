@@ -1,3 +1,4 @@
+// Vercel deployment trigger: 2026-05-01T20:50:00Z
 import { useRef } from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
