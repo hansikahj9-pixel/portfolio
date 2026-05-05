@@ -1,4 +1,4 @@
-﻿import { useRef, useEffect, useState, useCallback, memo } from 'react';
+import { useRef, useEffect, useState, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import LiquidDiamondMesh from '../components/LiquidDiamondMesh';
 import ShatterImage from '../components/ShatterImage';
@@ -15,7 +15,7 @@ import img8 from '../assets/image (8).png';
 import img9 from '../assets/image (9).png';
 import img10 from '../assets/image (10).png';
 import dali1 from '../assets/clock.jpg';
-import dali2 from '../assets/Salvador Dal├¡.jpg';
+import dali2 from '../assets/Salvador Dalí.jpg';
 import dali3 from '../assets/Salvador Dali - Oil on canvas, signed, artwork.jpg';
 import dali4 from '../assets/download (1).jpg';
 import dali5 from '../assets/Garden but Salvador Dali style.jpg';
