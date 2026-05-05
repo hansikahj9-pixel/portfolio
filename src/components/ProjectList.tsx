@@ -75,7 +75,7 @@ export default function ProjectList({ onHover }: ProjectListProps) {
             data-cursor-hover
             onClick={() => {
               if (project.name === 'AXIOME') {
-                navigate('/collection');
+                navigate('/axiome');
               }
             }}
             onMouseEnter={(e) =>

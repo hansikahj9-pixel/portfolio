@@ -5,6 +5,7 @@ import { AnimatePresence } from 'framer-motion';
 
 import PortfolioRoute from './routes/PortfolioRoute';
 import AxiomeRoute from './routes/AxiomeRoute';
+import CollectionRoute from './routes/CollectionRoute';
 import ProcessRoute from './routes/ProcessRoute';
 import InspirationRoute from './routes/InspirationRoute';
 import MonolithRoute from './routes/MonolithRoute';
@@ -18,7 +19,7 @@ function App() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Include /process and /collection in project routes for navigation visibility
-  const projectRoutes = ['/inspiration', '/process', '/collection', '/vision'];
+  const projectRoutes = ['/inspiration', '/process', '/collection', '/vision', '/axiome'];
   const isAxiomeRoute = projectRoutes.includes(location.pathname);
 
   return (
@@ -33,14 +34,13 @@ function App() {
             <Route path="/" element={<MotionPageFlip locationKey="/"><PortfolioRoute /></MotionPageFlip>} />
             <Route path="/inspiration" element={<MotionPageFlip locationKey="/inspiration"><InspirationRoute /></MotionPageFlip>} />
             <Route path="/process" element={<MotionPageFlip locationKey="/process"><ProcessRoute /></MotionPageFlip>} />
-            <Route path="/collection" element={<MotionPageFlip locationKey="/collection"><AxiomeRoute /></MotionPageFlip>} />
+            <Route path="/collection" element={<MotionPageFlip locationKey="/collection"><CollectionRoute /></MotionPageFlip>} />
+            <Route path="/axiome" element={<MotionPageFlip locationKey="/axiome"><AxiomeRoute /></MotionPageFlip>} />
             <Route path="/vision" element={<MotionPageFlip locationKey="/vision"><MonolithRoute /></MotionPageFlip>} />
 
             {/* ── Legacy Redirects ── */}
-            <Route path="/axiome" element={<Navigate to="/collection" replace />} />
             <Route path="/axiome/process" element={<Navigate to="/process" replace />} />
             <Route path="/axiome/inspiration" element={<Navigate to="/inspiration" replace />} />
-            <Route path="/axiome/*" element={<Navigate to="/collection" replace />} />
           </Routes>
         </AnimatePresence>
       </div>
