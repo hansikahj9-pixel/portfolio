@@ -9,10 +9,9 @@
 /* ─── Root Container ──────────────────────────────────────────────────────── */
 .inspiration-container {
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
   position: relative;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
   background: #050505;
   color: #e2dcd0;
   -webkit-font-smoothing: antialiased;
@@ -41,12 +40,9 @@
   justify-content: center;
   gap: 3.5rem;       /* Expensive architectural gap between pillars */
   padding: 1.5rem 2rem;
-  z-index: 2500;
-  pointer-events: auto;
+  z-index: 10;
+  pointer-events: none;
   overflow: hidden;  /* Clips slivered siblings cleanly */
-  background: rgba(5, 5, 5, 0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
 }
 
 /* ─── Pillar Wrapper ─────────────────────────────────────────────────────── */
