@@ -277,6 +277,7 @@ const PillarArtifact = ({
 export default function InspirationRoute() {
   const [activePillarId, setActivePillarId] = useState<number | null>(null);
   const [phase, setPhase]                   = useState<1 | 2 | 3>(1);
+  const [showMonolith, setShowMonolith]     = useState(false);
   const [activeIndex, setActiveIndex]       = useState(-1);
   const [activeDaliIndex, setActiveDaliIndex] = useState(-1);
   
@@ -344,17 +345,24 @@ export default function InspirationRoute() {
     timerRef.current = setTimeout(() => {
       setPhase(1);
       setActivePillarId(null);
+      setShowMonolith(false);
     }, 460);
   }, []);
 
   // ΓöÇΓöÇ Escape Key Global Listener ΓöÇΓöÇ
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && activePillarId !== null) closePillar();
+      if (e.key === 'Escape') {
+        if (activePillarId !== null) {
+          closePillar();
+        } else if (showMonolith) {
+          setShowMonolith(false);
+        }
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [activePillarId, closePillar]);
+  }, [activePillarId, closePillar, showMonolith]);
 
   return (
     <div className="inspiration-container">
@@ -420,7 +428,14 @@ export default function InspirationRoute() {
             <div className="dream-orb"></div>
             <div className="process-right-content">
               <div className="inspiration-card-box">
-                <div className="inspiration-tab-notch">THE VISION</div>
+                <div
+                  className="inspiration-tab-notch"
+                  onClick={() => setShowMonolith(true)}
+                  style={{ cursor: 'pointer' }}
+                  data-cursor-hover
+                >
+                  VIEW THE VISION
+                </div>
                 <h3 className="inspiration-heading">THE INSPIRATION.</h3>
                 <p className="process-body">
                   Rooted in a deep understanding of dreams and the unconscious, every silhouette 
@@ -433,19 +448,47 @@ export default function InspirationRoute() {
         </main>
       </section>
 
-      {/* ΓöÇΓöÇ Section 2: The 5-Pillar Monolith System ΓöÇΓöÇ */}
-      <div className="inspiration-monolith-container">
-        {PILLAR_DATA.map(pillar => (
-          <PillarArtifact
-            key={pillar.id}
-            data={pillar}
-            isActive={activePillarId === pillar.id}
-            isInactive={activePillarId !== null && activePillarId !== pillar.id}
-            phase={phase}
-            onOpen={() => openPillar(pillar.id)}
-          />
-        ))}
-      </div>
+      {/* ── Section 2: The 5-Pillar Monolith System (shown on VIEW THE VISION click) ── */}
+      <AnimatePresence>
+        {showMonolith && phase !== 3 && (
+          <motion.div
+            className="inspiration-monolith-container"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            {PILLAR_DATA.map(pillar => (
+              <PillarArtifact
+                key={pillar.id}
+                data={pillar}
+                isActive={activePillarId === pillar.id}
+                isInactive={activePillarId !== null && activePillarId !== pillar.id}
+                phase={phase}
+                onOpen={() => openPillar(pillar.id)}
+              />
+            ))}
+            {/* Close button for monolith view */}
+            <motion.p
+              className="volume-close-hint"
+              style={{
+                position: 'fixed',
+                bottom: '2.5rem',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                zIndex: 20,
+                cursor: 'pointer',
+              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              onClick={() => setShowMonolith(false)}
+            >
+              ESC · CLOSE
+            </motion.p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ΓöÇΓöÇ Section 3: Max Ernst Structure ΓöÇΓöÇ */}
       <section ref={ernstSectionRef} className="process-section ernst-section">

@@ -43,58 +43,6 @@ export default function AxiomeRoute() {
         zIndex: 1,
         pointerEvents: 'none'
       }} />
-      
-      {/* Branding Overlay */}
-      <div style={{
-        position: 'fixed',
-        bottom: '8%',
-        left: '4%',
-        zIndex: 10,
-        pointerEvents: 'none'
-      }}>
-        <h1 style={{
-          fontSize: 'clamp(3rem, 8vw, 10rem)',
-          letterSpacing: '0.15em',
-          textTransform: 'uppercase',
-          margin: 0,
-          color: 'white',
-          fontWeight: 400,
-          opacity: 0.95
-        }}>
-          AXIOMÉ
-        </h1>
-        <p style={{
-          fontSize: '0.8rem',
-          letterSpacing: '0.4em',
-          textTransform: 'uppercase',
-          color: 'rgba(255,255,255,0.6)',
-          marginTop: '1rem'
-        }}>
-          SPRING SUMMER 2025–2026
-        </p>
-      </div>
-
-      {/* Placeholder for future collection items */}
-      <div className="axiome-empty-container" style={{ 
-        position: 'relative',
-        zIndex: 5,
-        height: '100vh', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center',
-        pointerEvents: 'none'
-      }}>
-        <h2 style={{ 
-          color: 'white', 
-          opacity: 0.15, 
-          letterSpacing: '0.3em',
-          fontWeight: 300,
-          fontSize: '0.9rem',
-          textTransform: 'uppercase'
-        }}>
-          COLLECTION · CURATION IN PROGRESS
-        </h2>
-      </div>
     </div>
   );
 }
