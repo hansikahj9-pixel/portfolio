@@ -30,98 +30,144 @@
 
 /* ── Page Base ── */
 .shakespeare-page {
-    background-color: #d1bfae;
+    background-color: #e8dcc4; /* Slightly warmer vintage paper base */
     overflow: hidden;
-    box-shadow: inset 0 0 50px rgba(0,0,0,0.1);
+    box-shadow: inset 0 0 100px rgba(0,0,0,0.05); /* Soft overall depth */
+    position: relative;
+}
+
+/* ── Spine & Depth Effects ── */
+/* This creates the realistic "fold" shadow in the center of the book */
+.shakespeare-page::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 30px;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Right side page shadow (spine is on the left) */
+.shakespeare-page:nth-child(even)::after {
+    left: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 100%);
+}
+
+/* Left side page shadow (spine is on the right) */
+.shakespeare-page:nth-child(odd)::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 100%);
+}
+
+/* Corner Vignette for aged look */
+.shakespeare-page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(44, 24, 16, 0.1) 100%);
+    pointer-events: none;
+    z-index: 4;
 }
 
 /* ── Cover Styling ── */
 .shakespeare-cover-front {
-    background: #4a1c14 !important;
+    background: #3d140d !important; /* Deeper leather brown */
     border-radius: 0 15px 15px 0;
-    box-shadow: 10px 0 20px rgba(0,0,0,0.5);
+    box-shadow: 15px 5px 30px rgba(0,0,0,0.7);
 }
 
 .shakespeare-cover-back {
-    background: #4a1c14 !important;
+    background: #3d140d !important;
     border-radius: 15px 0 0 15px;
-    box-shadow: -10px 0 20px rgba(0,0,0,0.5);
+    box-shadow: -15px 5px 30px rgba(0,0,0,0.7);
 }
 
 .shakespeare-leather-texture {
     position: absolute;
     inset: 0;
     background-image: url('https://www.transparenttextures.com/patterns/leather.png');
-    opacity: 0.4;
+    opacity: 0.6;
     mix-blend-mode: multiply;
     pointer-events: none;
+    z-index: 1;
 }
 
 .shakespeare-gold-frame {
     position: absolute;
-    inset: 20px;
-    border: 3px double #d4af37;
-    border-radius: 10px;
+    inset: 25px;
+    border: 4px double #d4af37;
+    border-radius: 8px;
     pointer-events: none;
+    z-index: 2;
+    box-shadow: inset 0 0 10px rgba(212, 175, 55, 0.3);
 }
 
 .shakespeare-gold-inner-frame {
     position: absolute;
-    inset: 35px;
-    border: 1px solid rgba(212, 175, 55, 0.4);
+    inset: 45px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
     pointer-events: none;
+    z-index: 2;
 }
 
 /* ── Content Classes ── */
 .shakespeare-content {
-    padding: 60px;
+    padding: 70px 60px;
     height: 100%;
     display: flex;
     flex-direction: column;
     color: #2c1810;
     position: relative;
+    z-index: 10;
 }
 
 .shakespeare-title {
     font-family: 'Cinzel', serif;
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     color: #4a1c14;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(74, 28, 20, 0.15);
+    padding-bottom: 1.2rem;
+    text-shadow: 1px 1px 0px rgba(255,255,255,0.3);
 }
 
 .shakespeare-poem {
     font-family: 'Great Vibes', cursive;
-    font-size: 2.2rem;
-    line-height: 1.4;
+    font-size: 2.4rem;
+    line-height: 1.5;
     text-align: center;
     margin-top: auto;
     margin-bottom: auto;
+    color: #3d140d;
+    filter: sepia(0.2);
 }
 
 .shakespeare-letter {
     font-family: 'IM Fell English', serif;
-    font-size: 1.2rem;
-    line-height: 1.6;
+    font-size: 1.3rem;
+    line-height: 1.7;
     font-style: italic;
     white-space: pre-line;
+    color: #2c1810;
 }
 
 .shakespeare-date {
     font-family: 'Cinzel', serif;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     text-align: right;
-    margin-bottom: 1.5rem;
-    opacity: 0.7;
+    margin-bottom: 2rem;
+    opacity: 0.8;
+    color: #4a1c14;
 }
 
 .shakespeare-signature {
     font-family: 'Great Vibes', cursive;
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     text-align: right;
-    margin-top: 2rem;
+    margin-top: 2.5rem;
+    color: #4a1c14;
 }
 
 /* ── Paper Effect ── */
@@ -129,18 +175,23 @@
     position: absolute;
     inset: 0;
     background-image: url('https://www.transparenttextures.com/patterns/handmade-paper.png');
-    opacity: 0.3;
+    opacity: 0.5;
     pointer-events: none;
+    mix-blend-mode: multiply;
+    z-index: 2;
 }
 
 .shakespeare-page-number {
     position: absolute;
-    bottom: 20px;
+    bottom: 25px;
     width: 100%;
+    left: 0;
     text-align: center;
-    font-size: 0.8rem;
-    opacity: 0.4;
+    font-size: 0.85rem;
+    opacity: 0.5;
     font-family: 'Cinzel', serif;
+    letter-spacing: 2px;
+    z-index: 10;
 }
 
 /* ── Status & Navigation ── */
