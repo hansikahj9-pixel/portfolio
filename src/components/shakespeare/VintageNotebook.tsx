@@ -5,7 +5,6 @@ import './VintageNotebook.css';
 export const VintageNotebook: React.FC = () => {
     const bookRef = useRef<HTMLDivElement>(null);
     const wrapperRef = useRef<HTMLDivElement>(null);
-    const [status, setStatus] = useState<string>('Initializing...');
     const [isError, setIsError] = useState(false);
 
     useEffect(() => {
@@ -22,7 +21,6 @@ export const VintageNotebook: React.FC = () => {
                     throw new Error('PageFlip library not found.');
                 }
 
-                setStatus('Preparing Pages...');
                 const container = bookRef.current!;
                 while (container.firstChild) container.removeChild(container.firstChild);
 
@@ -106,8 +104,6 @@ export const VintageNotebook: React.FC = () => {
                     pageElements.push(page);
                 });
 
-                setStatus('Igniting Physics...');
-                
                 // 3. Initialize Engine
                 flip = new PageFlip(container, {
                     width: 550,
@@ -124,12 +120,10 @@ export const VintageNotebook: React.FC = () => {
 
                 flip.loadFromHTML(pageElements);
                 
-                setStatus('Ready');
                 wrapperRef.current!.style.opacity = '1';
 
             } catch (err: any) {
                 console.error('SHAKESPEARE_ENGINE_CRASH:', err);
-                setStatus('CRITICAL ERROR: ' + err.message);
                 setIsError(true);
             }
         };
