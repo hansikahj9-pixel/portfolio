@@ -1,0 +1,184 @@
+/* ============================================================
+   SHAKESPEARE NOTEBOOK — PREMIUM SCOPED STYLES
+   All selectors prefixed with .shakespeare-* to avoid
+   any collision with the existing Axiomé CSS architecture.
+   ============================================================ */
+
+.shakespeare-stage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: #050505;
+    overflow: hidden;
+    position: relative;
+    font-family: 'IM Fell English', serif;
+}
+
+.shakespeare-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 90vw;
+    height: 90vh;
+    max-width: 1200px;
+    max-height: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ── Page Base ── */
+.shakespeare-page {
+    background-color: #d1bfae;
+    overflow: hidden;
+    box-shadow: inset 0 0 50px rgba(0,0,0,0.1);
+}
+
+/* ── Cover Styling ── */
+.shakespeare-cover-front {
+    background: #4a1c14 !important;
+    border-radius: 0 15px 15px 0;
+    box-shadow: 10px 0 20px rgba(0,0,0,0.5);
+}
+
+.shakespeare-cover-back {
+    background: #4a1c14 !important;
+    border-radius: 15px 0 0 15px;
+    box-shadow: -10px 0 20px rgba(0,0,0,0.5);
+}
+
+.shakespeare-leather-texture {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://www.transparenttextures.com/patterns/leather.png');
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+}
+
+.shakespeare-gold-frame {
+    position: absolute;
+    inset: 20px;
+    border: 3px double #d4af37;
+    border-radius: 10px;
+    pointer-events: none;
+}
+
+.shakespeare-gold-inner-frame {
+    position: absolute;
+    inset: 35px;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    pointer-events: none;
+}
+
+/* ── Content Classes ── */
+.shakespeare-content {
+    padding: 60px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    color: #2c1810;
+    position: relative;
+}
+
+.shakespeare-title {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #4a1c14;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding-bottom: 1rem;
+}
+
+.shakespeare-poem {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.2rem;
+    line-height: 1.4;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.shakespeare-letter {
+    font-family: 'IM Fell English', serif;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    font-style: italic;
+    white-space: pre-line;
+}
+
+.shakespeare-date {
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    text-align: right;
+    margin-bottom: 1.5rem;
+    opacity: 0.7;
+}
+
+.shakespeare-signature {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    text-align: right;
+    margin-top: 2rem;
+}
+
+/* ── Paper Effect ── */
+.shakespeare-paper-texture {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://www.transparenttextures.com/patterns/handmade-paper.png');
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.shakespeare-page-number {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 0.8rem;
+    opacity: 0.4;
+    font-family: 'Cinzel', serif;
+}
+
+/* ── Status & Navigation ── */
+.shakespeare-status {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #d4af37;
+    opacity: 0.6;
+    z-index: 100;
+}
+
+.shakespeare-nav-link {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 12px;
+    color: #fff;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 10px 25px;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    border-radius: 30px;
+}
+
+.shakespeare-nav-link:hover {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+    letter-spacing: 5px;
+}

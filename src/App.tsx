@@ -9,6 +9,7 @@ import CollectionRoute from './routes/CollectionRoute';
 import ProcessRoute from './routes/ProcessRoute';
 import InspirationRoute from './routes/InspirationRoute';
 import MonolithRoute from './routes/MonolithRoute';
+import ShakespeareRoute from './routes/ShakespeareRoute';
 import CustomCursor from './components/CustomCursor';
 import MotionPageFlip from './components/MotionPageFlip';
 import AxiomeGlobalNav from './components/AxiomeGlobalNav';
@@ -41,6 +42,9 @@ function App() {
             {/* ── Legacy Redirects ── */}
             <Route path="/axiome/process" element={<Navigate to="/process" replace />} />
             <Route path="/axiome/inspiration" element={<Navigate to="/inspiration" replace />} />
+
+            {/* ── Shakespeare Feature (Isolated) ── */}
+            <Route path="/shakespeare" element={<ShakespeareRoute />} />
           </Routes>
         </AnimatePresence>
       </div>

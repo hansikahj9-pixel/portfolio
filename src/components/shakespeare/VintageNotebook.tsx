@@ -1,0 +1,168 @@
+import { useEffect, useRef, useState } from 'react';
+import * as ST from 'page-flip';
+import './VintageNotebook.css';
+
+export const VintageNotebook: React.FC = () => {
+    const bookRef = useRef<HTMLDivElement>(null);
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const [status, setStatus] = useState<string>('Initializing...');
+    const [isError, setIsError] = useState(false);
+
+    useEffect(() => {
+        if (!bookRef.current || !wrapperRef.current) return;
+
+        let flip: any = null;
+
+        const initFlip = () => {
+            try {
+                // 1. Resolve Constructor
+                const PageFlip = (ST as any).PageFlip || (ST as any).default?.PageFlip || (window as any).St?.PageFlip;
+                
+                if (!PageFlip) {
+                    throw new Error('PageFlip library not found.');
+                }
+
+                setStatus('Preparing Pages...');
+                const container = bookRef.current!;
+                while (container.firstChild) container.removeChild(container.firstChild);
+
+                // 2. Create High-Fidelity Pages
+                const pagesData = [
+                    { type: 'cover', title: 'Shakespearean\nLove', subtitle: 'A Vintage Collection' },
+                    { 
+                        type: 'poem', 
+                        title: 'Sonnet 18', 
+                        content: 'Shall I compare thee to a summer’s day?\nThou art more lovely and more temperate:\nRough winds do shake the darling buds of May,\nAnd summer’s lease hath all too short a date...' 
+                    },
+                    { 
+                        type: 'letter', 
+                        date: 'April 23, 1609',
+                        content: 'Dearest Love,\n\nIn the quiet of my chamber, your image remains the brightest light. Every word I pen is but a pale reflection of the beauty you possess.\n\nEver Yours,\nW.S.' 
+                    },
+                    { 
+                        type: 'sketch', 
+                        title: 'The Globe',
+                        content: 'A rough sketch of where our stories come alive. The wooden O, holding the universe within its walls.'
+                    },
+                    { 
+                        type: 'closing', 
+                        title: 'Finis',
+                        content: 'All the world’s a stage,\nAnd all the men and women merely players.'
+                    },
+                    { type: 'back', title: 'The End' }
+                ];
+
+                const pageElements: HTMLElement[] = [];
+
+                pagesData.forEach((data, index) => {
+                    const page = document.createElement('div');
+                    page.className = 'shakespeare-page';
+                    
+                    if (index === 0) {
+                        page.classList.add('shakespeare-cover-front');
+                        page.innerHTML = `
+                            <div class="shakespeare-leather-texture"></div>
+                            <div class="shakespeare-gold-frame"></div>
+                            <div class="shakespeare-gold-inner-frame"></div>
+                            <div class="shakespeare-content" style="justify-content: center; align-items: center; text-align: center;">
+                                <h1 class="shakespeare-title" style="color: #d4af37; border: none; font-size: 3rem;">${(data.title || '').replace('\n', '<br>')}</h1>
+                                <p style="color: #d4af37; opacity: 0.8; font-family: 'Cinzel';">${data.subtitle || ''}</p>
+                            </div>
+                        `;
+                        page.dataset.density = 'hard';
+                    } else if (index === pagesData.length - 1) {
+                        page.classList.add('shakespeare-cover-back');
+                        page.innerHTML = `
+                            <div class="shakespeare-leather-texture"></div>
+                            <div class="shakespeare-gold-frame"></div>
+                            <div class="shakespeare-content" style="justify-content: center; align-items: center;">
+                                <h2 class="shakespeare-title" style="color: #d4af37; border: none;">${data.title || ''}</h2>
+                            </div>
+                        `;
+                        page.dataset.density = 'hard';
+                    } else {
+                        page.innerHTML = `
+                            <div class="shakespeare-paper-texture"></div>
+                            <div class="shakespeare-content">
+                                ${data.date ? `<div class="shakespeare-date">${data.date}</div>` : ''}
+                                ${data.title && index !== 0 ? `<h2 class="shakespeare-title">${data.title}</h2>` : ''}
+                                ${data.type === 'poem' ? `<div class="shakespeare-poem">${data.content?.replace(/\n/g, '<br>')}</div>` : ''}
+                                ${data.type === 'letter' ? `<div class="shakespeare-letter">${data.content}</div><div class="shakespeare-signature">W.S.</div>` : ''}
+                                ${data.type === 'sketch' || data.type === 'closing' ? `<div class="shakespeare-letter" style="text-align: center; margin-top: 40px;">${data.content?.replace(/\n/g, '<br>')}</div>` : ''}
+                                <div class="shakespeare-page-number">- ${index} -</div>
+                            </div>
+                        `;
+                    }
+
+                    container.appendChild(page);
+                    pageElements.push(page);
+                });
+
+                setStatus('Igniting Physics...');
+                
+                // 3. Initialize Engine
+                flip = new PageFlip(container, {
+                    width: 550,
+                    height: 733, // 3:4 Aspect ratio for pages
+                    size: "stretch",
+                    minWidth: 315,
+                    maxWidth: 1000,
+                    minHeight: 420,
+                    maxHeight: 1350,
+                    maxShadowOpacity: 0.5,
+                    showCover: true,
+                    mobileScrollSupport: false
+                });
+
+                flip.loadFromHTML(pageElements);
+                
+                setStatus('Ready');
+                wrapperRef.current!.style.opacity = '1';
+
+            } catch (err: any) {
+                console.error('SHAKESPEARE_ENGINE_CRASH:', err);
+                setStatus('CRITICAL ERROR: ' + err.message);
+                setIsError(true);
+            }
+        };
+
+        initFlip();
+
+        const handleResize = () => {
+            if (flip) flip.updateFromHtml(Array.from(bookRef.current?.children || []) as HTMLElement[]);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            if (flip) {
+                try { flip.destroy(); } catch (e) {}
+            }
+        };
+    }, []);
+
+    return (
+        <div className="shakespeare-stage">
+            <div className="shakespeare-status">
+                SYSTEM: STABLE // STATUS: {status}
+            </div>
+
+            <a href="/" className="shakespeare-nav-link">
+                Close Notebook
+            </a>
+            
+            {isError ? (
+                <div style={{ border: '1px solid #4a1c14', padding: '40px', background: 'rgba(74, 28, 20, 0.2)', textAlign: 'center', backdropFilter: 'blur(20px)' }}>
+                    <h2 style={{ color: '#d4af37', fontFamily: 'Cinzel', marginBottom: '20px' }}>Sanctuary Breached</h2>
+                    <p style={{ color: '#fff', opacity: 0.8, marginBottom: '30px' }}>The physics engine failed to manifest.</p>
+                    <a href="/" className="shakespeare-nav-link" style={{ position: 'static', transform: 'none' }}>Escape to Reality</a>
+                </div>
+            ) : (
+                <div ref={wrapperRef} className="shakespeare-wrapper">
+                    <div ref={bookRef}></div>
+                </div>
+            )}
+        </div>
+    );
+};

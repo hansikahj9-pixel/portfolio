@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 
 export default function HeroSection() {
@@ -43,6 +44,7 @@ export default function HeroSection() {
         <span>Scroll</span>
         <div className="hero-scroll-line" />
       </div>
+      <Link to="/shakespeare" style={{ position: 'absolute', bottom: '1rem', left: '1rem', fontSize: '0.75rem', color: '#ffffff', opacity: 0.5, transition: 'opacity 0.3s ease', zIndex: 5, pointerEvents: 'auto' }} onMouseEnter={e => (e.currentTarget.style.opacity = '1')} onMouseLeave={e => (e.currentTarget.style.opacity = '0.5')}>Shakespearean Love</Link>
     </div>
   );
 }
