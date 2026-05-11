@@ -76,6 +76,8 @@ export default function ProjectList({ onHover }: ProjectListProps) {
             onClick={() => {
               if (project.name === 'AXIOME') {
                 navigate('/axiome');
+              } else if (project.name === 'Shakespearean Love') {
+                navigate('/shakespeare');
               }
             }}
             onMouseEnter={(e) =>
