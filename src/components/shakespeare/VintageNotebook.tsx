@@ -26,8 +26,8 @@ export const VintageNotebook: React.FC = () => {
                 const container = bookRef.current!;
                 while (container.firstChild) container.removeChild(container.firstChild);
 
-                // 2. Create High-Fidelity Pages
-                const pagesData = [
+                // 2. Create High-Fidelity Pages (Total: 22 with covers)
+                const pagesData: any[] = [
                     { type: 'cover', title: 'Shakespearean\nLove', subtitle: 'A Vintage Collection' },
                     { 
                         type: 'poem', 
@@ -43,14 +43,21 @@ export const VintageNotebook: React.FC = () => {
                         type: 'sketch', 
                         title: 'The Globe',
                         content: 'A rough sketch of where our stories come alive. The wooden O, holding the universe within its walls.'
-                    },
-                    { 
-                        type: 'closing', 
-                        title: 'Finis',
-                        content: 'All the world’s a stage,\nAnd all the men and women merely players.'
-                    },
-                    { type: 'back', title: 'The End' }
+                    }
                 ];
+
+                // Add blank pages to reach 20 content pages
+                for (let i = pagesData.length; i <= 20; i++) {
+                    pagesData.push({ type: 'blank' });
+                }
+
+                // Add closing and back cover
+                pagesData.push({ 
+                    type: 'closing', 
+                    title: 'Finis',
+                    content: 'All the world’s a stage,\nAnd all the men and women merely players.'
+                });
+                pagesData.push({ type: 'back', title: 'The End' });
 
                 const pageElements: HTMLElement[] = [];
 
@@ -85,11 +92,12 @@ export const VintageNotebook: React.FC = () => {
                             <div class="shakespeare-paper-texture"></div>
                             <div class="shakespeare-content">
                                 ${data.date ? `<div class="shakespeare-date">${data.date}</div>` : ''}
-                                ${data.title && index !== 0 ? `<h2 class="shakespeare-title">${data.title}</h2>` : ''}
+                                ${data.title ? `<h2 class="shakespeare-title">${data.title}</h2>` : ''}
                                 ${data.type === 'poem' ? `<div class="shakespeare-poem">${data.content?.replace(/\n/g, '<br>')}</div>` : ''}
                                 ${data.type === 'letter' ? `<div class="shakespeare-letter">${data.content}</div><div class="shakespeare-signature">W.S.</div>` : ''}
                                 ${data.type === 'sketch' || data.type === 'closing' ? `<div class="shakespeare-letter" style="text-align: center; margin-top: 40px;">${data.content?.replace(/\n/g, '<br>')}</div>` : ''}
-                                <div class="shakespeare-page-number">- ${index} -</div>
+                                ${data.type === 'blank' ? `<div style="flex: 1; display: flex; align-items: center; justify-content: center; opacity: 0.05; font-style: italic;">(this page intentionally left blank)</div>` : ''}
+                                <div class="shakespeare-page-number">${index}</div>
                             </div>
                         `;
                     }
@@ -103,12 +111,12 @@ export const VintageNotebook: React.FC = () => {
                 // 3. Initialize Engine
                 flip = new PageFlip(container, {
                     width: 550,
-                    height: 733, // 3:4 Aspect ratio for pages
+                    height: 680, // Reduced height to fit viewport better
                     size: "stretch",
                     minWidth: 315,
                     maxWidth: 1000,
-                    minHeight: 420,
-                    maxHeight: 1350,
+                    minHeight: 400,
+                    maxHeight: 1000, // Capped max height
                     maxShadowOpacity: 0.5,
                     showCover: true,
                     mobileScrollSupport: false
@@ -144,10 +152,6 @@ export const VintageNotebook: React.FC = () => {
 
     return (
         <div className="shakespeare-stage">
-            <div className="shakespeare-status">
-                SYSTEM: STABLE // STATUS: {status}
-            </div>
-
             <a href="/" className="shakespeare-nav-link">
                 Close Notebook
             </a>
