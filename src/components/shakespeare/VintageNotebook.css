@@ -37,42 +37,27 @@
 }
 
 /* ── Spine & Depth Effects ── */
-/* The central physical spine divider */
-.shakespeare-wrapper::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 2px;
-    background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.4) 10%, rgba(0,0,0,0.4) 90%, transparent);
-    transform: translateX(-50%);
-    z-index: 100; /* Above pages but below nav */
-    pointer-events: none;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-}
-
 /* This creates the realistic "fold" shadow in the center of the book */
 .shakespeare-page::after {
     content: '';
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 50px; /* Increased for deeper gradient */
+    width: 30px;
     pointer-events: none;
-    z-index: 20; /* Above the content to darken the text near spine */
+    z-index: 5;
 }
 
 /* Right side page shadow (spine is on the left) */
 .shakespeare-page:nth-child(even)::after {
     left: 0;
-    background: linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.15) 20%, rgba(0,0,0,0) 100%);
+    background: linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 100%);
 }
 
 /* Left side page shadow (spine is on the right) */
 .shakespeare-page:nth-child(odd)::after {
     right: 0;
-    background: linear-gradient(to left, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.15) 20%, rgba(0,0,0,0) 100%);
+    background: linear-gradient(to left, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 100%);
 }
 
 /* Corner Vignette for aged look */
