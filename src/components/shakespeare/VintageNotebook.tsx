@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import * as ST from 'page-flip';
+import { PageFlip } from 'page-flip';
 import pageBg from '../../assets/page.jpg';
-import coverCenterpiece from '../../assets/Collection.png';
+import coverCenterpiece from '../../assets/collection.png';
 import './VintageNotebook.css';
 
 export const VintageNotebook: React.FC = () => {
@@ -15,16 +15,12 @@ export const VintageNotebook: React.FC = () => {
         let flip: any = null;
 
         const initFlip = () => {
+            console.log('INIT_FLIP_START');
             try {
-                // 1. Resolve Constructor
-                const PageFlip = (ST as any).PageFlip || (ST as any).default?.PageFlip || (window as any).St?.PageFlip;
-                
-                if (!PageFlip) {
-                    throw new Error('PageFlip library not found.');
-                }
-
                 const container = bookRef.current!;
+                console.log('CONTAINER_FOUND:', container);
                 while (container.firstChild) container.removeChild(container.firstChild);
+                console.log('CONTAINER_CLEARED');
 
                 // 2. Create High-Fidelity Pages (Total: 22 with covers)
                 const pagesData: any[] = [
@@ -72,11 +68,13 @@ export const VintageNotebook: React.FC = () => {
                             <div class="shakespeare-leather-texture"></div>
                             <div class="shakespeare-gold-frame"></div>
                             <div class="shakespeare-gold-inner-frame"></div>
-                            <div class="shakespeare-cover-image" style="background-image: url('${coverCenterpiece}')"></div>
+                            <div class="shakespeare-cover-image-container">
+                                <img src="${coverCenterpiece}" class="shakespeare-cover-image" alt="Centerpiece" />
+                            </div>
                             <div class="shakespeare-page-lighting"></div>
-                            <div class="shakespeare-content" style="justify-content: center; align-items: center; text-align: center;">
-                                <h1 class="shakespeare-title" style="color: #d4af37; border: none; font-size: 3rem;">${(data.title || '').replace('\n', '<br>')}</h1>
-                                <p style="color: #d4af37; opacity: 0.8; font-family: 'Cinzel';">${data.subtitle || ''}</p>
+                            <div class="shakespeare-content" style="justify-content: flex-start; align-items: center; text-align: center; padding-top: 55px; width: 100%;">
+                                <h1 class="shakespeare-title" style="color: #d4af37; border: none; font-size: 2.2rem; margin-bottom: 0.1rem; line-height: 1.1; letter-spacing: 2px; width: 100%; margin-left: 0; margin-right: 0;">${(data.title || '').replace('\n', '<br>')}</h1>
+                                <p style="color: #d4af37; opacity: 0.6; font-family: 'Cinzel'; font-size: 0.8rem; letter-spacing: 1px; width: 100%; margin-left: 0; margin-right: 0;">${data.subtitle || ''}</p>
                             </div>
                             <div class="shakespeare-spine-crease"></div>
                         `;
@@ -133,9 +131,19 @@ export const VintageNotebook: React.FC = () => {
                     mobileScrollSupport: false
                 });
 
-                flip.loadFromHTML(pageElements);
+                console.log('LOADING_PAGES:', pageElements.length);
+                try {
+                    flip.loadFromHTML(pageElements);
+                    console.log('FLIP_LOADED_SUCCESSFULLY');
+                } catch (loadErr) {
+                    console.error('FLIP_LOAD_ERROR:', loadErr);
+                    throw loadErr;
+                }
                 
-                wrapperRef.current!.style.opacity = '1';
+                if (wrapperRef.current) {
+                    wrapperRef.current.style.opacity = '1';
+                    console.log('WRAPPER_VISIBLE');
+                }
 
             } catch (err: any) {
                 console.error('SHAKESPEARE_ENGINE_CRASH:', err);
@@ -143,7 +151,8 @@ export const VintageNotebook: React.FC = () => {
             }
         };
 
-        initFlip();
+        // Small delay to ensure React has finished painting the initial DOM structure
+        const timer = setTimeout(initFlip, 100);
 
         const handleResize = () => {
             if (flip) flip.updateFromHtml(Array.from(bookRef.current?.children || []) as HTMLElement[]);
@@ -152,6 +161,7 @@ export const VintageNotebook: React.FC = () => {
         window.addEventListener('resize', handleResize);
 
         return () => {
+            clearTimeout(timer);
             window.removeEventListener('resize', handleResize);
             if (flip) {
                 try { flip.destroy(); } catch (e) {}
@@ -173,7 +183,7 @@ export const VintageNotebook: React.FC = () => {
                 </div>
             ) : (
                 <div ref={wrapperRef} className="shakespeare-wrapper">
-                    <div ref={bookRef}></div>
+                    <div ref={bookRef} className="shakespeare-book"></div>
                 </div>
             )}
         </div>
