@@ -43,21 +43,29 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 30px; /* Original soft width */
+    width: 60px; /* Widened to ensure visibility over complex textures */
     pointer-events: none;
-    z-index: 20; /* High z-index to stay above ornate background */
+    z-index: 50; /* Forced to the very top layer */
 }
 
 /* Right side page shadow (spine is on the left) */
 .shakespeare-page:nth-child(even)::after {
     left: 0;
-    background: linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 100%);
+    background: linear-gradient(to right, 
+        rgba(0,0,0,0.5) 0%, 
+        rgba(0,0,0,0.2) 20%, 
+        rgba(0,0,0,0.05) 50%, 
+        transparent 100%);
 }
 
 /* Left side page shadow (spine is on the right) */
 .shakespeare-page:nth-child(odd)::after {
     right: 0;
-    background: linear-gradient(to left, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 100%);
+    background: linear-gradient(to left, 
+        rgba(0,0,0,0.5) 0%, 
+        rgba(0,0,0,0.2) 20%, 
+        rgba(0,0,0,0.05) 50%, 
+        transparent 100%);
 }
 
 /* Corner Vignette for aged look */
