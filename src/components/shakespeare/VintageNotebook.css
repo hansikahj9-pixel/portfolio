@@ -164,6 +164,17 @@
     z-index: 2;
 }
 
+.shakespeare-cover-image {
+    position: absolute;
+    inset: 45px; /* Matches inner frame */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    z-index: 3;
+    border-radius: 4px;
+}
+
 /* ── Content Classes ── */
 .shakespeare-content {
     padding: 70px 40px; /* Base padding */

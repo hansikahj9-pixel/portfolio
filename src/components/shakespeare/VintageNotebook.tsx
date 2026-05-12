@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import * as ST from 'page-flip';
 import pageBg from '../../assets/page.jpg';
+import coverCenterpiece from '../../assets/collection.png';
 import './VintageNotebook.css';
 
 export const VintageNotebook: React.FC = () => {
@@ -71,6 +72,7 @@ export const VintageNotebook: React.FC = () => {
                             <div class="shakespeare-leather-texture"></div>
                             <div class="shakespeare-gold-frame"></div>
                             <div class="shakespeare-gold-inner-frame"></div>
+                            <div class="shakespeare-cover-image" style="background-image: url('${coverCenterpiece}')"></div>
                             <div class="shakespeare-page-lighting"></div>
                             <div class="shakespeare-content" style="justify-content: center; align-items: center; text-align: center;">
                                 <h1 class="shakespeare-title" style="color: #d4af37; border: none; font-size: 3rem;">${(data.title || '').replace('\n', '<br>')}</h1>
