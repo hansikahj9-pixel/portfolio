@@ -37,35 +37,80 @@
 }
 
 /* ── Spine & Depth Effects ── */
+/* The physical binding line in the center */
+.shakespeare-spine-crease {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 60;
+    pointer-events: none;
+}
+
+[data-side="left"] .shakespeare-spine-crease {
+    right: 0;
+    box-shadow: -1px 0 3px rgba(0,0,0,0.5);
+}
+
+[data-side="right"] .shakespeare-spine-crease {
+    left: 0;
+    box-shadow: 1px 0 3px rgba(0,0,0,0.5);
+}
+
 /* This creates the realistic "fold" shadow in the center of the book */
 .shakespeare-page::after {
     content: '';
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 60px; /* Widened to ensure visibility over complex textures */
+    width: 100px; /* Widened for better soft curve */
     pointer-events: none;
-    z-index: 50; /* Forced to the very top layer */
-}
-
-/* Right side page shadow (spine is on the left) */
-.shakespeare-page:nth-child(even)::after {
-    left: 0;
-    background: linear-gradient(to right, 
-        rgba(0,0,0,0.5) 0%, 
-        rgba(0,0,0,0.2) 20%, 
-        rgba(0,0,0,0.05) 50%, 
-        transparent 100%);
+    z-index: 55;
+    mix-blend-mode: multiply; /* Better blending with background image */
 }
 
 /* Left side page shadow (spine is on the right) */
-.shakespeare-page:nth-child(odd)::after {
+.shakespeare-page[data-side="left"]::after {
     right: 0;
     background: linear-gradient(to left, 
-        rgba(0,0,0,0.5) 0%, 
-        rgba(0,0,0,0.2) 20%, 
-        rgba(0,0,0,0.05) 50%, 
+        rgba(0,0,0,0.8) 0%,      /* Deep binding void */
+        rgba(0,0,0,0.6) 2%,      /* Sharp falloff */
+        rgba(0,0,0,0.4) 8%,      /* Soft curve shadow */
+        rgba(0,0,0,0.1) 25%,     /* Extended fade */
         transparent 100%);
+}
+
+/* Right side page shadow (spine is on the left) */
+.shakespeare-page[data-side="right"]::after {
+    left: 0;
+    background: linear-gradient(to right, 
+        rgba(0,0,0,0.8) 0%,      /* Deep binding void */
+        rgba(0,0,0,0.6) 2%,      /* Sharp falloff */
+        rgba(0,0,0,0.4) 8%,      /* Soft curve shadow */
+        rgba(0,0,0,0.1) 25%,     /* Extended fade */
+        transparent 100%);
+}
+
+/* Page Curvature Highlight (The "Hump") */
+.shakespeare-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    z-index: 54;
+    pointer-events: none;
+}
+
+.shakespeare-page[data-side="left"]::before {
+    right: 25px;
+    background: linear-gradient(to left, transparent, rgba(255,255,255,0.08) 50%, transparent);
+}
+
+.shakespeare-page[data-side="right"]::before {
+    left: 25px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.08) 50%, transparent);
 }
 
 /* Corner Vignette for aged look */
@@ -121,13 +166,23 @@
 
 /* ── Content Classes ── */
 .shakespeare-content {
-    padding: 70px 60px;
+    padding: 70px 40px; /* Base padding */
     height: 100%;
     display: flex;
     flex-direction: column;
     color: #2c1810;
     position: relative;
     z-index: 10;
+}
+
+[data-side="left"] .shakespeare-content {
+    padding-right: 80px; /* Extra room for the gutter */
+    padding-left: 40px;
+}
+
+[data-side="right"] .shakespeare-content {
+    padding-left: 80px; /* Extra room for the gutter */
+    padding-right: 40px;
 }
 
 .shakespeare-title {
@@ -193,10 +248,19 @@
     position: absolute;
     inset: 0;
     background-image: url('https://www.transparenttextures.com/patterns/handmade-paper.png');
-    opacity: 0.3; /* Slightly reduced to let page.jpg shine through */
+    opacity: 0.3;
     pointer-events: none;
     mix-blend-mode: multiply;
     z-index: 2;
+}
+
+/* ── Page Lighting & Vignette ── */
+.shakespeare-page-lighting {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(44, 24, 16, 0.15) 100%);
+    pointer-events: none;
+    z-index: 4;
 }
 
 .shakespeare-page-number {

@@ -66,30 +66,39 @@ export const VintageNotebook: React.FC = () => {
                     
                     if (index === 0) {
                         page.classList.add('shakespeare-cover-front');
+                        page.dataset.side = 'right';
                         page.innerHTML = `
                             <div class="shakespeare-leather-texture"></div>
                             <div class="shakespeare-gold-frame"></div>
                             <div class="shakespeare-gold-inner-frame"></div>
+                            <div class="shakespeare-page-lighting"></div>
                             <div class="shakespeare-content" style="justify-content: center; align-items: center; text-align: center;">
                                 <h1 class="shakespeare-title" style="color: #d4af37; border: none; font-size: 3rem;">${(data.title || '').replace('\n', '<br>')}</h1>
                                 <p style="color: #d4af37; opacity: 0.8; font-family: 'Cinzel';">${data.subtitle || ''}</p>
                             </div>
+                            <div class="shakespeare-spine-crease"></div>
                         `;
                         page.dataset.density = 'hard';
                     } else if (index === pagesData.length - 1) {
                         page.classList.add('shakespeare-cover-back');
+                        page.dataset.side = 'left';
                         page.innerHTML = `
                             <div class="shakespeare-leather-texture"></div>
                             <div class="shakespeare-gold-frame"></div>
+                            <div class="shakespeare-page-lighting"></div>
                             <div class="shakespeare-content" style="justify-content: center; align-items: center;">
                                 <h2 class="shakespeare-title" style="color: #d4af37; border: none;">${data.title || ''}</h2>
                             </div>
+                            <div class="shakespeare-spine-crease"></div>
                         `;
                         page.dataset.density = 'hard';
                     } else {
+                        const side = index % 2 !== 0 ? 'left' : 'right';
+                        page.dataset.side = side;
                         page.innerHTML = `
                             <div class="shakespeare-page-bg" style="background-image: url('${pageBg}')"></div>
                             <div class="shakespeare-paper-texture"></div>
+                            <div class="shakespeare-page-lighting"></div>
                             <div class="shakespeare-content">
                                 ${data.date ? `<div class="shakespeare-date">${data.date}</div>` : ''}
                                 ${data.title ? `<h2 class="shakespeare-title">${data.title}</h2>` : ''}
@@ -99,6 +108,7 @@ export const VintageNotebook: React.FC = () => {
                                 ${data.type === 'blank' ? `<div style="flex: 1; display: flex; align-items: center; justify-content: center; opacity: 0.05; font-style: italic;">(this page intentionally left blank)</div>` : ''}
                                 <div class="shakespeare-page-number">${index}</div>
                             </div>
+                            <div class="shakespeare-spine-crease"></div>
                         `;
                     }
 
