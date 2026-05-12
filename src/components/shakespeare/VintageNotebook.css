@@ -43,29 +43,21 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 60px; /* Wider gradient for soft 3D curvature */
+    width: 30px; /* Original soft width */
     pointer-events: none;
-    z-index: 20;
+    z-index: 20; /* High z-index to stay above ornate background */
 }
 
 /* Right side page shadow (spine is on the left) */
 .shakespeare-page:nth-child(even)::after {
     left: 0;
-    background: linear-gradient(to right, 
-        rgba(0,0,0,0.3) 0%, 
-        rgba(0,0,0,0.1) 15%, 
-        rgba(0,0,0,0.05) 30%, 
-        transparent 100%);
+    background: linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 100%);
 }
 
 /* Left side page shadow (spine is on the right) */
 .shakespeare-page:nth-child(odd)::after {
     right: 0;
-    background: linear-gradient(to left, 
-        rgba(0,0,0,0.3) 0%, 
-        rgba(0,0,0,0.1) 15%, 
-        rgba(0,0,0,0.05) 30%, 
-        transparent 100%);
+    background: linear-gradient(to left, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 100%);
 }
 
 /* Corner Vignette for aged look */
