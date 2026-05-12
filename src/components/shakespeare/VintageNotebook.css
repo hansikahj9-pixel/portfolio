@@ -37,34 +37,53 @@
 }
 
 /* ── Spine & Depth Effects ── */
-/* This creates the realistic "fold" shadow in the center of the book */
+/* The central physical spine gutter */
+.shakespeare-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 30px; /* Gutter width */
+    background: linear-gradient(to right, 
+        rgba(0,0,0,0.2) 0%, 
+        rgba(0,0,0,0.5) 48%, 
+        rgba(0,0,0,0.8) 50%, 
+        rgba(0,0,0,0.5) 52%, 
+        rgba(0,0,0,0.2) 100%);
+    transform: translateX(-50%);
+    z-index: 100;
+    pointer-events: none;
+}
+
+/* Internal page fold shadows to deepen the gutter */
 .shakespeare-page::after {
     content: '';
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 60px; /* Wider gradient for soft 3D curvature */
+    width: 80px; /* Deep reach for curvature */
     pointer-events: none;
     z-index: 20;
 }
 
-/* Right side page shadow (spine is on the left) */
+/* Right side page (spine on left) */
 .shakespeare-page:nth-child(even)::after {
     left: 0;
     background: linear-gradient(to right, 
-        rgba(0,0,0,0.3) 0%, 
-        rgba(0,0,0,0.1) 15%, 
-        rgba(0,0,0,0.05) 30%, 
+        rgba(0,0,0,0.4) 0%, 
+        rgba(0,0,0,0.2) 15%, 
+        rgba(0,0,0,0.05) 40%, 
         transparent 100%);
 }
 
-/* Left side page shadow (spine is on the right) */
+/* Left side page (spine on right) */
 .shakespeare-page:nth-child(odd)::after {
     right: 0;
     background: linear-gradient(to left, 
-        rgba(0,0,0,0.3) 0%, 
-        rgba(0,0,0,0.1) 15%, 
-        rgba(0,0,0,0.05) 30%, 
+        rgba(0,0,0,0.4) 0%, 
+        rgba(0,0,0,0.2) 15%, 
+        rgba(0,0,0,0.05) 40%, 
         transparent 100%);
 }
 
