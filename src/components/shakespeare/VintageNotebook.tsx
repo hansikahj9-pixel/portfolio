@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { PageFlip } from 'page-flip';
 import pageBg from '../../assets/page.jpg';
-import coverCenterpiece from '../../assets/collection.png';
+import coverCenterpiece from '../../assets/Collection.png';
 import './VintageNotebook.css';
 
 export const VintageNotebook: React.FC = () => {
