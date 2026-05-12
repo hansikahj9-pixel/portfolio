@@ -171,11 +171,21 @@
 }
 
 /* ── Paper Effect ── */
+.shakespeare-page-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 1;
+    z-index: 1;
+}
+
 .shakespeare-paper-texture {
     position: absolute;
     inset: 0;
     background-image: url('https://www.transparenttextures.com/patterns/handmade-paper.png');
-    opacity: 0.5;
+    opacity: 0.3; /* Slightly reduced to let page.jpg shine through */
     pointer-events: none;
     mix-blend-mode: multiply;
     z-index: 2;

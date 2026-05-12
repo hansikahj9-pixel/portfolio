@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import * as ST from 'page-flip';
+import pageBg from '../../assets/page.jpg';
 import './VintageNotebook.css';
 
 export const VintageNotebook: React.FC = () => {
@@ -87,6 +88,7 @@ export const VintageNotebook: React.FC = () => {
                         page.dataset.density = 'hard';
                     } else {
                         page.innerHTML = `
+                            <div class="shakespeare-page-bg" style="background-image: url('${pageBg}')"></div>
                             <div class="shakespeare-paper-texture"></div>
                             <div class="shakespeare-content">
                                 ${data.date ? `<div class="shakespeare-date">${data.date}</div>` : ''}
@@ -103,6 +105,7 @@ export const VintageNotebook: React.FC = () => {
                     container.appendChild(page);
                     pageElements.push(page);
                 });
+
 
                 // 3. Initialize Engine
                 flip = new PageFlip(container, {
