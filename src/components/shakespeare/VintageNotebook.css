@@ -209,9 +209,11 @@
     padding-right: 0 !important;
 }
 
-.shakespeare-cover-front .shakespeare-title {
+.shakespeare-cover-front .shakespeare-title,
+.shakespeare-cover-back .shakespeare-title {
     text-shadow: 0 4px 15px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.5);
     color: #d4af37 !important;
+    border-bottom: none !important;
 }
 
 [data-side="left"] .shakespeare-content {
