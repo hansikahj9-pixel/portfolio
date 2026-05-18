@@ -74,7 +74,7 @@ export const VintageNotebook: React.FC = () => {
                             <div class="shakespeare-page-lighting"></div>
                             <div class="shakespeare-content" style="justify-content: flex-start; align-items: center; text-align: center; padding-top: 55px; width: 100%;">
                                 <h1 class="shakespeare-title" style="color: #d4af37; border: none; font-size: 2.2rem; margin-bottom: 0.1rem; line-height: 1.1; letter-spacing: 2px; width: 100%; margin-left: 0; margin-right: 0;">${(data.title || '').replace('\n', '<br>')}</h1>
-                                <p style="color: #d4af37; opacity: 0.6; font-family: 'Cinzel'; font-size: 0.8rem; letter-spacing: 1px; width: 100%; margin-left: 0; margin-right: 0;">${data.subtitle || ''}</p>
+                                ${data.subtitle ? `<p style="color: #d4af37; opacity: 0.6; font-family: 'Cinzel'; font-size: 0.8rem; letter-spacing: 1px; width: 100%; margin-left: 0; margin-right: 0;">${data.subtitle}</p>` : ''}
                             </div>
                             <div class="shakespeare-spine-crease"></div>
                         `;
