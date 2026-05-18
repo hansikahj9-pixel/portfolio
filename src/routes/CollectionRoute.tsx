@@ -21,7 +21,7 @@ export default function CollectionRoute() {
 
     // 2. THE GEOMETRY
     // 512x512 segments provide 262,144 vertices. Essential for perfectly round, thick droplets.
-    const geometry = new THREE.PlaneGeometry(2, 2, 512, 512);
+    const geometry = new THREE.PlaneGeometry(10, 10, 512, 512);
 
     // 3. VERTEX SHADER (The Gravity Drip Math)
     const vertexShader = `
@@ -86,7 +86,8 @@ export default function CollectionRoute() {
             // DOMAIN WARPING FOR TEARDROP SHAPES
             vec2 p = position.xy;
             // Stretch X to make streaks, move Y aggressively down to simulate dripping
-            vec3 dripPos = vec3(p.x * 3.5, p.y * 2.0 + t, 0.0); 
+            // Make droplets much bigger and longer by lowering the frequency multipliers
+            vec3 dripPos = vec3(p.x * 1.2, p.y * 0.4 + t, 0.0); 
             
             // Base Noise
             float n1 = snoise(dripPos) * 0.5 + 0.5; // normalize to 0.0 - 1.0
@@ -97,7 +98,7 @@ export default function CollectionRoute() {
             n1 = pow(n1, 4.0); 
 
             // Secondary noise for smaller surface ripples running down the droplets
-            float n2 = snoise(vec3(p.x * 6.0, p.y * 4.0 + t * 1.5, 10.0)) * 0.5 + 0.5;
+            float n2 = snoise(vec3(p.x * 2.5, p.y * 0.8 + t * 1.5, 10.0)) * 0.5 + 0.5;
             n2 = pow(n2, 3.0);
 
             // Combine droplets
