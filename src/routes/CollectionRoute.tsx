@@ -320,18 +320,66 @@ export default function CollectionRoute() {
         boxSizing: 'border-box'
       }}>
         {images.map((src, index) => (
-          <img 
+          <div
             key={index}
-            src={src}
-            alt={`Lookbook image ${index + 1}`}
             style={{
               width: '85vw',
-              objectFit: 'contain',
-              padding: '2vw',
-              border: '1px solid rgba(255, 255, 255, 0.8)', // Crisp luxury editorial white border
-              boxShadow: '0 30px 60px rgba(0,0,0,0.6)' // Deep shadow for separation from background
+              maxWidth: '900px', // Keeps it elegant on ultra-wide screens
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%)',
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)', // Safari support
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderTop: '1px solid rgba(255,255,255,0.25)', // Creates a subtle rim light effect on the glass
+              borderLeft: '1px solid rgba(255,255,255,0.15)',
+              padding: 'clamp(20px, 4vw, 40px)',
+              paddingBottom: 'clamp(80px, 12vw, 120px)', // Deep bottom padding for the Polaroid look
+              boxShadow: '0 40px 80px rgba(0,0,0,0.7), 0 0 40px rgba(0,0,0,0.5)',
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              borderRadius: '2px' // Sharp, luxury edge
             }}
-          />
+          >
+            <img 
+              src={src}
+              alt={`Lookbook image ${index + 1}`}
+              style={{
+                width: '100%',
+                height: 'auto',
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.6))' // Gives the transparent garment 3D depth over the glass
+              }}
+            />
+            
+            {/* Archival Metadata Caption */}
+            <div style={{
+              position: 'absolute',
+              bottom: 'clamp(20px, 4vw, 40px)',
+              left: 'clamp(20px, 4vw, 40px)',
+              right: 'clamp(20px, 4vw, 40px)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              fontFamily: 'var(--font-sans)', // Using the Inter font defined in index.css
+              fontSize: '0.65rem',
+              letterSpacing: '0.4em',
+              color: 'rgba(255,255,255,0.8)',
+              borderTop: '1px solid rgba(255,255,255,0.15)',
+              paddingTop: 'clamp(15px, 2.5vw, 25px)',
+              textTransform: 'uppercase'
+            }}>
+              <span>Axiomé Collection</span>
+              <span style={{ 
+                fontFamily: 'var(--font-serif)', 
+                fontSize: '0.9rem', 
+                fontStyle: 'italic', 
+                letterSpacing: '0.1em',
+                color: '#fff'
+              }}>
+                Look {(index + 1).toString().padStart(2, '0')}
+              </span>
+            </div>
+          </div>
         ))}
       </div>
     </>
