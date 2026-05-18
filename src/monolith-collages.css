@@ -1,21 +1,19 @@
 /* ─── GLOBAL WRAPPER ──────────────────────────────────────────────────────── */
-.monolith-scroll-container {
+.monolith-single-container {
   width: 100vw;
   height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
   position: absolute;
   top: 0;
   left: 0;
   z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .collage-section {
   width: 100vw;
   height: 100vh;
-  scroll-snap-align: start;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -23,19 +21,7 @@
   position: relative;
 }
 
-.section-title {
-  position: absolute;
-  top: 4vh;
-  left: 4vw;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.8rem;
-  letter-spacing: 0.2em;
-  color: rgba(255,255,255,0.5);
-  text-transform: uppercase;
-  z-index: 100;
-}
-
-/* Base Title Styling for All Collages */
+/* Base Title Styling */
 .video-title {
   position: absolute;
   bottom: 2rem;
@@ -86,8 +72,7 @@
   object-fit: cover;
   transform: scale(1.08);
   transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-  opacity: 0.7;
-  filter: grayscale(30%) contrast(1.1);
+  opacity: 1;
 }
 
 .bento-cell:hover {
@@ -99,8 +84,6 @@
 
 .bento-cell:hover video {
   transform: scale(1);
-  opacity: 1;
-  filter: grayscale(0%) contrast(1.2);
 }
 
 .bento-cell:hover .video-title {
@@ -114,140 +97,3 @@
 .bento-cell-2 { grid-area: 4 / 5 / 7 / 9; }
 .bento-cell-3 { grid-area: 1 / 9 / 5 / 13; }
 .bento-cell-4 { grid-area: 5 / 9 / 7 / 13; }
-
-
-/* ─── CONCEPT 2: ETHEREAL ARCHIPELAGOS ────────────────────────────────────── */
-.blobs-wrapper {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  filter: url('#goo');
-  pointer-events: none; /* Let hover pass to children */
-}
-
-.blobs-container {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  pointer-events: auto;
-}
-
-.blob-cell {
-  position: absolute;
-  overflow: hidden;
-  animation: blob-morph 14s ease-in-out infinite alternate;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1), 0 15px 40px rgba(0,0,0,0.4);
-  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-  background: #000;
-  cursor: move;
-}
-
-.blob-cell video {
-  width: 140%;
-  height: 140%;
-  object-fit: cover;
-  position: absolute;
-  top: -20%;
-  left: -20%;
-  opacity: 0.6;
-  transition: opacity 0.6s ease;
-  pointer-events: none;
-}
-
-.blob-cell:hover {
-  transform: scale(1.08) translateZ(0);
-  z-index: 10;
-}
-
-.blob-cell:hover video {
-  opacity: 1;
-}
-
-@keyframes blob-morph {
-  0%   { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
-  34%  { border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%; }
-  67%  { border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%; }
-  100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
-}
-
-/* Explicit Layout for 5 Blobs */
-.blob-cell-0 { width: 35vw; height: 35vw; top: 15vh; left: 10vw; animation-delay: 0s; }
-.blob-cell-1 { width: 25vw; height: 25vw; top: 10vh; right: 15vw; animation-delay: -3s; }
-.blob-cell-2 { width: 28vw; height: 28vw; bottom: 10vh; left: 25vw; animation-delay: -7s; }
-.blob-cell-3 { width: 30vw; height: 30vw; bottom: 15vh; right: 20vw; animation-delay: -11s; }
-.blob-cell-4 { width: 20vw; height: 20vw; top: 40vh; left: 45vw; animation-delay: -5s; }
-
-
-/* ─── CONCEPT 3: SHATTERED MIRROR ─────────────────────────────────────────── */
-.mirror-container {
-  display: flex;
-  width: 90vw;
-  height: 80vh;
-  perspective: 2000px;
-  position: relative;
-  transform-style: preserve-3d;
-}
-
-.shard-cell {
-  position: absolute;
-  inset: 0;
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.6s;
-  will-change: transform;
-  overflow: hidden;
-  background: #000;
-  cursor: crosshair;
-}
-
-.shard-cell video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.5;
-  transition: opacity 0.6s ease, transform 1s ease;
-  transform: scale(1.1);
-}
-
-.shard-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 40%, rgba(0,0,0,0.6) 100%);
-  mix-blend-mode: overlay;
-  pointer-events: none;
-  transition: background 0.6s ease;
-}
-
-/* The fractured geometry */
-.shard-cell-0 { clip-path: polygon(0 0, 45% 0, 20% 100%, 0 100%); }
-.shard-cell-1 { clip-path: polygon(45.5% 0, 80% 0, 50% 55%, 20.5% 100%, 20.5% 100%); }
-.shard-cell-2 { clip-path: polygon(80.5% 0, 100% 0, 100% 40%, 50.5% 55%); }
-.shard-cell-3 { clip-path: polygon(51% 55.5%, 100% 40.5%, 100% 100%, 70% 100%); }
-.shard-cell-4 { clip-path: polygon(21% 100%, 50.5% 55.5%, 69.5% 100%); }
-
-.shard-cell:hover {
-  transform: translateZ(60px) scale(1.02);
-  z-index: 10;
-  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
-}
-
-.shard-cell:hover video {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.shard-cell:hover .shard-overlay {
-  background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 40%, rgba(0,0,0,0.2) 100%);
-}
-
-.shard-cell .video-title {
-  /* Center text within shard via transform logic in React */
-  bottom: auto;
-  left: auto;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.shard-cell:hover .video-title {
-  transform: translate(-50%, -50%) scale(1.05);
-}
