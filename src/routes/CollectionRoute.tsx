@@ -3,13 +3,16 @@ import * as THREE from 'three';
 
 // Import all images from the lookbook directory dynamically
 const lookbookImages = import.meta.glob('../assets/lookbook/*.png', { eager: true, import: 'default' });
-const images = Object.values(lookbookImages) as string[];
-// Sort them numerically based on their filenames
-images.sort((a, b) => {
+
+// Get the original paths (keys) and sort them numerically based on the filename
+const sortedKeys = Object.keys(lookbookImages).sort((a, b) => {
   const numA = parseInt(a.match(/(\d+)\.png$/)?.[1] || "0", 10);
   const numB = parseInt(b.match(/(\d+)\.png$/)?.[1] || "0", 10);
   return numA - numB;
 });
+
+// Map the sorted keys to their resolved module values
+const images = sortedKeys.map(key => lookbookImages[key] as string);
 
 export default function CollectionRoute() {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -323,7 +326,10 @@ export default function CollectionRoute() {
             alt={`Lookbook image ${index + 1}`}
             style={{
               width: '85vw',
-              objectFit: 'contain'
+              objectFit: 'contain',
+              padding: '2vw',
+              border: '1px solid rgba(255, 255, 255, 0.8)', // Crisp luxury editorial white border
+              boxShadow: '0 30px 60px rgba(0,0,0,0.6)' // Deep shadow for separation from background
             }}
           />
         ))}
