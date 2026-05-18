@@ -2,12 +2,12 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 // Import all images from the lookbook directory dynamically
-const lookbookImages = import.meta.glob('../assets/lookbook/*.jpg', { eager: true, import: 'default' });
+const lookbookImages = import.meta.glob('../assets/lookbook/*.png', { eager: true, import: 'default' });
 const images = Object.values(lookbookImages) as string[];
 // Sort them numerically based on their filenames
 images.sort((a, b) => {
-  const numA = parseInt(a.match(/(\d+)\.jpg$/)?.[1] || "0", 10);
-  const numB = parseInt(b.match(/(\d+)\.jpg$/)?.[1] || "0", 10);
+  const numA = parseInt(a.match(/(\d+)\.png$/)?.[1] || "0", 10);
+  const numB = parseInt(b.match(/(\d+)\.png$/)?.[1] || "0", 10);
   return numA - numB;
 });
 
@@ -301,14 +301,18 @@ export default function CollectionRoute() {
 
       {/* Lookbook Content Overlay */}
       <div style={{
-        position: 'relative',
+        position: 'absolute',
+        top: 0,
+        left: 0,
         zIndex: 10,
         width: '100%',
-        minHeight: '100vh',
+        height: '100vh',
+        overflowY: 'auto',
+        overflowX: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '120px 20px', // Space at top and bottom
+        padding: '120px 0', // Space at top and bottom
         gap: '100px', // Space in between images
         boxSizing: 'border-box'
       }}>
@@ -318,12 +322,8 @@ export default function CollectionRoute() {
             src={src}
             alt={`Lookbook image ${index + 1}`}
             style={{
-              maxWidth: '100%',
-              maxHeight: '85vh', // Keep it mostly within the viewport height
-              objectFit: 'contain',
-              borderRadius: '4px',
-              boxShadow: '0 25px 50px rgba(0,0,0,0.8)',
-              border: '1px solid rgba(255,255,255,0.05)'
+              width: '85vw',
+              objectFit: 'contain'
             }}
           />
         ))}
