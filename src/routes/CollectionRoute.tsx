@@ -197,6 +197,7 @@ export default function CollectionRoute() {
             uTime: { value: 0 }
         },
         // WebGL standard derivatives must be enabled for the procedural normals to calculate the shine
+        // @ts-ignore
         extensions: { derivatives: true }
     });
 
