@@ -325,12 +325,12 @@ export default function CollectionRoute() {
             style={{
               width: '85vw',
               // Removed maxWidth to strictly cover 85% of the screen
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.46) 0%, rgba(255,255,255,0.41) 100%)', // Opacity increased by 40%
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0.21) 100%)', // Opacity decreased by 20%
               backdropFilter: 'blur(24px)',
               WebkitBackdropFilter: 'blur(24px)', // Safari support
-              border: '1px solid rgba(255,255,255,0.3)', // Softened border for the lighter glass
-              borderTop: '1px solid rgba(255,255,255,0.5)', 
-              borderLeft: '1px solid rgba(255,255,255,0.4)',
+              border: '1px solid rgba(255,255,255,0.15)', // Refined white border for darker glass
+              borderTop: '1px solid rgba(255,255,255,0.3)', 
+              borderLeft: '1px solid rgba(255,255,255,0.2)',
               padding: 'clamp(20px, 4vw, 40px)',
               paddingBottom: 'clamp(80px, 12vw, 120px)', // Deep bottom padding for the Polaroid look
               boxShadow: '0 40px 80px rgba(0,0,0,0.6), 0 0 40px rgba(0,0,0,0.4)',
@@ -351,7 +351,7 @@ export default function CollectionRoute() {
               }}
             />
             
-            {/* Archival Metadata Caption - Swapped to high-contrast dark ink for light background */}
+            {/* Archival Metadata Caption - Reverted back to pristine white for dark contrast */}
             <div style={{
               position: 'absolute',
               bottom: 'clamp(20px, 4vw, 40px)',
@@ -363,8 +363,8 @@ export default function CollectionRoute() {
               fontFamily: 'var(--font-sans)', // Using the Inter font defined in index.css
               fontSize: '0.65rem',
               letterSpacing: '0.4em',
-              color: 'rgba(0,0,0,0.7)',
-              borderTop: '1px solid rgba(0,0,0,0.15)',
+              color: 'rgba(255,255,255,0.8)',
+              borderTop: '1px solid rgba(255,255,255,0.15)',
               paddingTop: 'clamp(15px, 2.5vw, 25px)',
               textTransform: 'uppercase'
             }}>
@@ -374,7 +374,7 @@ export default function CollectionRoute() {
                 fontSize: '0.9rem', 
                 fontStyle: 'italic', 
                 letterSpacing: '0.1em',
-                color: '#000'
+                color: '#fff'
               }}>
                 Look {(index + 1).toString().padStart(2, '0')}
               </span>
