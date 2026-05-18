@@ -1,6 +1,16 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
+// Import all images from the lookbook directory dynamically
+const lookbookImages = import.meta.glob('../assets/lookbook/*.jpg', { eager: true, import: 'default' });
+const images = Object.values(lookbookImages) as string[];
+// Sort them numerically based on their filenames
+images.sort((a, b) => {
+  const numA = parseInt(a.match(/(\d+)\.jpg$/)?.[1] || "0", 10);
+  const numB = parseInt(b.match(/(\d+)\.jpg$/)?.[1] || "0", 10);
+  return numA - numB;
+});
+
 export default function CollectionRoute() {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -254,38 +264,70 @@ export default function CollectionRoute() {
   }, []);
 
   return (
-    <div 
-      ref={mountRef}
-      style={{
-        width: '100vw',
-        height: '100vh',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        zIndex: 1,
-        backgroundColor: '#020202', // Match the provided HTML background
-        pointerEvents: 'none'
-      }}
-    >
+    <>
       <div 
-        id="loading"
+        ref={mountRef}
         style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          color: 'rgba(255,255,255,0.3)',
-          fontFamily: '"Geist Sans", -apple-system, sans-serif',
-          letterSpacing: '0.3em',
-          fontSize: '11px',
-          pointerEvents: 'none',
-          transition: 'opacity 0.5s',
-          textTransform: 'uppercase',
-          opacity: 0 // Assume it loads instantly in React local bundle
+          width: '100vw',
+          height: '100vh',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          zIndex: 1,
+          backgroundColor: '#020202', // Match the provided HTML background
+          pointerEvents: 'none'
         }}
       >
-        Synthesizing Mercury...
+        <div 
+          id="loading"
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            color: 'rgba(255,255,255,0.3)',
+            fontFamily: '"Geist Sans", -apple-system, sans-serif',
+            letterSpacing: '0.3em',
+            fontSize: '11px',
+            pointerEvents: 'none',
+            transition: 'opacity 0.5s',
+            textTransform: 'uppercase',
+            opacity: 0 // Assume it loads instantly in React local bundle
+          }}
+        >
+          Synthesizing Mercury...
+        </div>
       </div>
-    </div>
+
+      {/* Lookbook Content Overlay */}
+      <div style={{
+        position: 'relative',
+        zIndex: 10,
+        width: '100%',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '120px 20px', // Space at top and bottom
+        gap: '100px', // Space in between images
+        boxSizing: 'border-box'
+      }}>
+        {images.map((src, index) => (
+          <img 
+            key={index}
+            src={src}
+            alt={`Lookbook image ${index + 1}`}
+            style={{
+              maxWidth: '100%',
+              maxHeight: '85vh', // Keep it mostly within the viewport height
+              objectFit: 'contain',
+              borderRadius: '4px',
+              boxShadow: '0 25px 50px rgba(0,0,0,0.8)',
+              border: '1px solid rgba(255,255,255,0.05)'
+            }}
+          />
+        ))}
+      </div>
+    </>
   );
 }
