@@ -14,6 +14,69 @@ const sortedKeys = Object.keys(lookbookImages).sort((a, b) => {
 // Map the sorted keys to their resolved module values
 const images = sortedKeys.map(key => lookbookImages[key] as string);
 
+const garments = [
+  {
+    name: "L'Ange du Foyer",
+    description: "A structured yet ethereal silhouette, drawing upon Max Ernst’s chaotic elegance. The fabric defies gravity, capturing the destructive beauty of surrealist landscapes in its sweeping folds.",
+    images: [images[0]]
+  },
+  {
+    name: "Galatea of the Spheres",
+    description: "Fragmented and harmonious. This piece reconstructs the human form into floating molecular draping, inspired by Salvador Dalí’s atomic period and his fascination with nuclear mysticism.",
+    images: [images[1]]
+  },
+  {
+    name: "The Elephants of Celebes",
+    description: "A monolithic presence. Rigid geometry juxtaposed against fluid textiles, echoing Max Ernst's fascination with mechanical organicism and the subconscious mind.",
+    images: [images[2], images[3]]
+  },
+  {
+    name: "Swans Reflecting Silk",
+    description: "A trompe l'œil in fabric. The garment shifts its appearance with the viewer's perspective, mirroring the paranoiac-critical method of Dalí through cascading layers of illusion.",
+    images: [images[4]]
+  },
+  {
+    name: "Europe After the Rain",
+    description: "Decalcomania in textile form. The textures resemble ancient ruins and overgrown forests, a testament to Ernst’s apocalyptic romanticism and the beauty of decay.",
+    images: [images[5], images[6]]
+  },
+  {
+    name: "The Persistence of Fluidity",
+    description: "Time melts, and so does the silhouette. Drooping, elongated hemlines and asymmetrical cuts pay homage to Dalí's melting clocks, draping the body in temporal distortion.",
+    images: [images[7], images[8]]
+  },
+  {
+    name: "The Forest and the Dove",
+    description: "A play on confinement and freedom. The bodice acts as a cage of intricate threading, releasing into a sweeping, dove-like train that represents the flight of the subconscious.",
+    images: [images[9], images[10]]
+  },
+  {
+    name: "The Accommodations of Desire",
+    description: "A visceral exploration of texture and desire. The piece features striking appliqués that mimic painted pebbles, evoking the tension between fear and obsession.",
+    images: [images[11]]
+  },
+  {
+    name: "Ubu Imperator",
+    description: "Regal yet absurd. A silhouette that spins like a top, blending sharp tailoring with unexpected voids to channel the authoritative whimsy of Ernst's monument.",
+    images: [images[12]]
+  },
+  {
+    name: "The Disintegration of Persistence",
+    description: "A deconstructed echo. The fabric fragments into a geometric lattice, symbolizing the atomic breakdown of memory and the structured chaos of a shifting reality.",
+    images: [images[13]]
+  },
+  {
+    name: "Nightingale's Threat",
+    description: "A poetic juxtaposition. Soft, delicate tulle abruptly meets rigid framing, capturing the haunting, dreamlike panic of an open gate in an endless surreal horizon.",
+    images: [images[14]]
+  },
+  {
+    name: "The Sacrament of Geometry",
+    description: "A transcendent finale. Dodecahedron-inspired geometry meets divine drapery, blending the mathematical with the mystical in a culmination of surrealist devotion.",
+    images: [images[15]]
+  }
+];
+
 export default function CollectionRoute() {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -315,69 +378,77 @@ export default function CollectionRoute() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '120px 0', // Space at top and bottom
-        gap: '100px', // Space in between images
+        padding: '120px 0', 
         boxSizing: 'border-box'
       }}>
-        {images.map((src, index) => (
+        {garments.map((garment, index) => (
           <div
             key={index}
             style={{
-              width: '85vw',
-              // Removed maxWidth to strictly cover 85% of the screen
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0.21) 100%)', // Opacity decreased by 20%
-              backdropFilter: 'blur(24px)',
-              WebkitBackdropFilter: 'blur(24px)', // Safari support
-              border: '1px solid rgba(255,255,255,0.15)', // Refined white border for darker glass
-              borderTop: '1px solid rgba(255,255,255,0.3)', 
-              borderLeft: '1px solid rgba(255,255,255,0.2)',
-              padding: 'clamp(20px, 4vw, 40px)',
-              paddingBottom: 'clamp(80px, 12vw, 120px)', // Deep bottom padding for the Polaroid look
-              boxShadow: '0 40px 80px rgba(0,0,0,0.6), 0 0 40px rgba(0,0,0,0.4)',
               display: 'flex',
               flexDirection: 'column',
+              width: '85vw',
               position: 'relative',
-              borderRadius: '2px' // Sharp, luxury edge
+              marginBottom: '150px'
             }}
           >
-            <img 
-              src={src}
-              alt={`Lookbook image ${index + 1}`}
-              style={{
-                width: '100%',
-                height: 'auto',
-                objectFit: 'contain',
-                filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.6))' // Gives the transparent garment 3D depth over the glass
-              }}
-            />
-            
-            {/* Archival Metadata Caption - Reverted back to pristine white for dark contrast */}
+            {/* Editorial Text Top */}
             <div style={{
-              position: 'absolute',
-              bottom: 'clamp(20px, 4vw, 40px)',
-              left: 'clamp(20px, 4vw, 40px)',
-              right: 'clamp(20px, 4vw, 40px)',
               display: 'flex',
+              flexWrap: 'wrap',
               justifyContent: 'space-between',
-              alignItems: 'center',
-              fontFamily: 'var(--font-sans)', // Using the Inter font defined in index.css
-              fontSize: '0.65rem',
-              letterSpacing: '0.4em',
-              color: 'rgba(255,255,255,0.8)',
-              borderTop: '1px solid rgba(255,255,255,0.15)',
-              paddingTop: 'clamp(15px, 2.5vw, 25px)',
-              textTransform: 'uppercase'
+              alignItems: 'flex-end',
+              gap: '20px',
+              borderBottom: '1px solid rgba(255,255,255,0.2)',
+              paddingBottom: '20px',
+              marginBottom: '40px',
+              color: '#fff'
             }}>
-              <span>Axiomé Collection</span>
-              <span style={{ 
-                fontFamily: 'var(--font-serif)', 
-                fontSize: '0.9rem', 
-                fontStyle: 'italic', 
-                letterSpacing: '0.1em',
-                color: '#fff'
-              }}>
-                Look {(index + 1).toString().padStart(2, '0')}
-              </span>
+               <div style={{ flex: '1 1 300px' }}>
+                  <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.75rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', marginBottom: '10px' }}>
+                    Axiomé Collection • Look {(index + 1).toString().padStart(2, '0')}
+                  </div>
+                  <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(2rem, 4vw, 3.5rem)', fontWeight: 300, margin: 0, letterSpacing: '-0.02em' }}>
+                    {garment.name}
+                  </h2>
+               </div>
+               <div style={{ flex: '1 1 300px', maxWidth: '500px', textAlign: 'left', fontFamily: 'var(--font-sans)', fontSize: '0.9rem', lineHeight: 1.6, color: 'rgba(255,255,255,0.8)', fontWeight: 300 }}>
+                  {garment.description}
+               </div>
+            </div>
+
+            {/* Images inside glass */}
+            <div style={{
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)',
+              backdropFilter: 'blur(30px)',
+              WebkitBackdropFilter: 'blur(30px)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderTop: '1px solid rgba(255,255,255,0.2)',
+              borderLeft: '1px solid rgba(255,255,255,0.15)',
+              padding: 'clamp(20px, 4vw, 60px)',
+              boxShadow: '0 40px 80px rgba(0,0,0,0.5)',
+              borderRadius: '2px',
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              gap: '40px',
+              justifyContent: 'center'
+            }}>
+              {garment.images.map((src, i) => (
+                 <img 
+                   key={i}
+                   src={src}
+                   alt={`${garment.name} - View ${i + 1}`}
+                   style={{
+                     flex: garment.images.length === 1 ? '1 1 100%' : '1 1 calc(50% - 20px)',
+                     minWidth: '280px',
+                     height: 'auto',
+                     maxHeight: '80vh',
+                     objectFit: 'contain',
+                     filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.7))'
+                   }}
+                 />
+              ))}
             </div>
           </div>
         ))}
