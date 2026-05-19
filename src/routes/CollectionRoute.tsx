@@ -387,22 +387,88 @@ export default function CollectionRoute() {
             key={index}
             style={{
               width: '85vw',
-              // Removed maxWidth to strictly cover 85% of the screen
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0.21) 100%)', // Opacity decreased by 20%
-              backdropFilter: 'blur(24px)',
-              WebkitBackdropFilter: 'blur(24px)', // Safari support
-              border: '1px solid rgba(255,255,255,0.15)', // Refined white border for darker glass
-              borderTop: '1px solid rgba(255,255,255,0.3)', 
-              borderLeft: '1px solid rgba(255,255,255,0.2)',
-              padding: 'clamp(20px, 4vw, 40px)',
-              paddingBottom: 'clamp(100px, 14vw, 160px)', // Deep bottom padding for the Polaroid look and description
-              boxShadow: '0 40px 80px rgba(0,0,0,0.6), 0 0 40px rgba(0,0,0,0.4)',
+              background: '#fdfdfd',
+              padding: 'clamp(30px, 5vw, 60px)',
+              paddingBottom: 'clamp(30px, 5vw, 60px)',
+              boxShadow: '0 60px 120px rgba(0,0,0,0.45), 0 10px 30px rgba(0,0,0,0.2)',
               display: 'flex',
               flexDirection: 'column',
               position: 'relative',
-              borderRadius: '2px' // Sharp, luxury edge
+              borderRadius: '0px',
+              // Creative inset outline
+              outline: '1px solid rgba(0,0,0,0.08)',
+              outlineOffset: '-20px',
             }}
           >
+            {/* ── Editorial Header Block (ABOVE images) ── */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              marginBottom: 'clamp(20px, 3vw, 40px)',
+              paddingBottom: 'clamp(15px, 2vw, 25px)',
+              borderBottom: '1px solid rgba(0,0,0,0.06)',
+            }}>
+              {/* Left: Name + Description */}
+              <div style={{ flex: 1, maxWidth: '75%' }}>
+                <div style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '0.6rem',
+                  letterSpacing: '0.5em',
+                  color: 'rgba(0,0,0,0.35)',
+                  textTransform: 'uppercase',
+                  marginBottom: '10px',
+                }}>
+                  Look {(index + 1).toString().padStart(2, '0')}
+                </div>
+                <h2 style={{
+                  fontFamily: 'var(--font-serif, "Playfair Display", Georgia, serif)',
+                  fontSize: 'clamp(2.5rem, 5.5vw, 6rem)',
+                  fontWeight: 400,
+                  fontStyle: 'italic',
+                  lineHeight: 0.95,
+                  color: '#0a0a0a',
+                  margin: 0,
+                  textShadow: '2px 4px 12px rgba(0,0,0,0.08)',
+                  letterSpacing: '-0.02em',
+                }}>
+                  {garment.name}
+                </h2>
+                <div style={{
+                  marginTop: 'clamp(12px, 2vw, 22px)',
+                  paddingLeft: '18px',
+                  borderLeft: '4px solid #0a0a0a',
+                }}>
+                  <p style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 'clamp(1rem, 1.8vw, 1.35rem)',
+                    lineHeight: 1.65,
+                    color: 'rgba(0,0,0,0.55)',
+                    margin: 0,
+                    textShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                    fontWeight: 300,
+                  }}>
+                    {garment.description}
+                  </p>
+                </div>
+              </div>
+
+              {/* Right: Index number watermark */}
+              <div style={{
+                fontFamily: 'var(--font-serif, "Playfair Display", Georgia, serif)',
+                fontSize: 'clamp(4rem, 8vw, 9rem)',
+                fontWeight: 300,
+                fontStyle: 'italic',
+                color: 'rgba(0,0,0,0.04)',
+                lineHeight: 1,
+                marginTop: '-10px',
+                userSelect: 'none',
+              }}>
+                {(index + 1).toString().padStart(2, '0')}
+              </div>
+            </div>
+
+            {/* ── Garment Images ── */}
             {garment.images.map((src, imgIdx) => (
               <img 
                 key={imgIdx}
@@ -412,55 +478,11 @@ export default function CollectionRoute() {
                   width: '100%',
                   height: 'auto',
                   objectFit: 'contain',
-                  filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.6))', // Gives the transparent garment 3D depth over the glass
+                  filter: 'drop-shadow(0 15px 35px rgba(0,0,0,0.15))',
                   marginBottom: imgIdx !== garment.images.length - 1 ? '40px' : '0'
                 }}
               />
             ))}
-            
-            {/* Archival Metadata Caption */}
-            <div style={{
-              position: 'absolute',
-              bottom: 'clamp(20px, 4vw, 40px)',
-              left: 'clamp(20px, 4vw, 40px)',
-              right: 'clamp(20px, 4vw, 40px)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '15px',
-              borderTop: '1px solid rgba(255,255,255,0.15)',
-              paddingTop: 'clamp(15px, 2.5vw, 25px)',
-            }}>
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                fontFamily: 'var(--font-sans)',
-                fontSize: '0.65rem',
-                letterSpacing: '0.4em',
-                color: 'rgba(255,255,255,0.8)',
-                textTransform: 'uppercase'
-              }}>
-                <span>{garment.name}</span>
-                <span style={{ 
-                  fontFamily: 'var(--font-serif)', 
-                  fontSize: '0.9rem', 
-                  fontStyle: 'italic', 
-                  letterSpacing: '0.1em',
-                  color: '#fff'
-                }}>
-                  Look {(index + 1).toString().padStart(2, '0')}
-                </span>
-              </div>
-              <div style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '0.75rem',
-                lineHeight: '1.6',
-                color: 'rgba(255,255,255,0.6)',
-                maxWidth: '90%'
-              }}>
-                {garment.description}
-              </div>
-            </div>
           </div>
         ))}
       </div>
