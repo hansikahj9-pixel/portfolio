@@ -144,9 +144,9 @@ export default function CollectionRoute() {
 
         // Procedural HDRI Environment (The secret to realistic silver chrome)
         vec3 getStudioEnvironment(vec3 rayDir) {
-            // Background gradient simulating a dark grey studio
+            // Background gradient simulating a white/beige studio instead of black
             float gradient = rayDir.y * 0.5 + 0.5;
-            vec3 bg = mix(vec3(0.02, 0.02, 0.03), vec3(0.2, 0.2, 0.22), gradient);
+            vec3 bg = mix(vec3(0.91, 0.87, 0.80), vec3(1.0, 0.99, 0.97), gradient);
             
             // Procedural Softbox Light 1 (Top overhead white light)
             float light1 = smoothstep(0.85, 0.98, dot(rayDir, normalize(vec3(0.0, 1.0, 0.5))));
@@ -277,7 +277,7 @@ export default function CollectionRoute() {
           top: 0,
           left: 0,
           zIndex: 1,
-          backgroundColor: '#020202', // Match the provided HTML background
+          backgroundColor: '#f5f2eb', // Match the beige background
           pointerEvents: 'none'
         }}
       >
