@@ -148,12 +148,12 @@ export default function CollectionRoute() {
             float gradient = rayDir.y * 0.5 + 0.5;
             vec3 bg = mix(vec3(0.02, 0.02, 0.03), vec3(0.2, 0.2, 0.22), gradient);
             
-            // Procedural Softbox Light 1 (Top overhead white light)
+            // Procedural Softbox Light 1 (Top overhead white light) - Boosted intensity
             float light1 = smoothstep(0.85, 0.98, dot(rayDir, normalize(vec3(0.0, 1.0, 0.5))));
-            // Procedural Softbox Light 2 (Side rim light)
+            // Procedural Softbox Light 2 (Side rim light) - Boosted intensity
             float light2 = smoothstep(0.9, 0.99, dot(rayDir, normalize(vec3(-1.0, 0.5, 0.0))));
             
-            return bg + (vec3(1.0) * light1) + (vec3(0.8, 0.9, 1.0) * light2);
+            return bg + (vec3(1.6) * light1) + (vec3(1.2, 1.35, 1.5) * light2);
         }
 
         void main() {
@@ -185,16 +185,16 @@ export default function CollectionRoute() {
             vec3 iridColor = palette(fresnel * 3.0 + (uTime * 0.1), iridA, iridB, iridC, iridD);
 
             // 4. BLENDING THE METALS
-            // Base is pure shiny silver. 
-            vec3 finalColor = chromeReflection;
+            // Base is pure shiny silver. Boosted by 1.35x for ultra-vivid liquid metal look.
+            vec3 finalColor = chromeReflection * 1.35;
             
             // CRITICAL: We DO NOT paint the whole mesh rainbow. 
             // We only tint the shiny reflections with the iridescent color at the grazing angles.
             finalColor = mix(finalColor, finalColor * iridColor * 2.5, fresnel * 0.85);
 
-            // Blinding specular peak (the white dot in the image)
+            // Blinding specular peak (the white dot in the image) - Boosted to 2.5 for intense glints
             float spec = pow(max(dot(reflectionVector, normalize(vec3(0.5, 1.0, 1.0))), 0.0), 120.0);
-            finalColor += vec3(1.0) * spec * 1.5;
+            finalColor += vec3(1.0) * spec * 2.5;
 
             // Deepen the shadows (contrast mapping)
             finalColor = smoothstep(0.0, 1.0, finalColor);
