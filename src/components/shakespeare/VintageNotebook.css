@@ -4,6 +4,9 @@
    any collision with the existing Axiomé CSS architecture.
    ============================================================ */
 
+/* ── Google Fonts (loaded inline for Renaissance aesthetic) ── */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700;900&family=Great+Vibes&family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
+
 .shakespeare-stage {
     display: flex;
     justify-content: center;
@@ -355,4 +358,200 @@
     color: #000;
     border-color: #fff;
     letter-spacing: 5px;
+}
+
+
+/* ================================================================
+   ROMEO & JULIET — PAGE 1: INTRO
+   ================================================================ */
+
+.shakespeare-rj-intro-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.shakespeare-rj-ornament-top {
+    font-size: 1.2rem;
+    color: #8b6914;
+    opacity: 0.5;
+    margin-bottom: 1.2rem;
+    letter-spacing: 8px;
+    animation: shakespeare-ornament-pulse 4s ease-in-out infinite;
+}
+
+.shakespeare-rj-heading {
+    font-family: 'Cinzel Decorative', 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 2.2rem;
+    color: #4a1c14;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin: 0 0 0.6rem 0;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.3);
+    border: none;
+    line-height: 1.2;
+}
+
+.shakespeare-rj-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0.8rem 0;
+    width: 80%;
+}
+
+.shakespeare-rj-divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba(139, 105, 20, 0.5) 20%,
+        rgba(139, 105, 20, 0.5) 80%,
+        transparent
+    );
+}
+
+.shakespeare-rj-divider-rose {
+    font-size: 1.1rem;
+    opacity: 0.7;
+    animation: shakespeare-rose-sway 5s ease-in-out infinite;
+}
+
+.shakespeare-rj-subheading {
+    font-family: 'Cormorant Garamond', 'IM Fell English', serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: #6b3a2a;
+    letter-spacing: 2px;
+    margin: 0.3rem 0 1.8rem 0;
+    opacity: 0.85;
+    border: none;
+}
+
+.shakespeare-rj-description {
+    font-family: 'Cormorant Garamond', 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: #3d2015;
+    max-width: 85%;
+    text-align: center;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.shakespeare-rj-ornament-bottom {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #8b6914;
+    opacity: 0.4;
+    margin-top: auto;
+    padding-top: 1.5rem;
+}
+
+@keyframes shakespeare-ornament-pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+@keyframes shakespeare-rose-sway {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }
+    75% { transform: rotate(-5deg); }
+}
+
+
+/* ================================================================
+   ROMEO & JULIET — PAGE 2: IMAGE
+   ================================================================ */
+
+.shakespeare-rj-image-content {
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+.shakespeare-rj-image-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border: 2px solid rgba(139, 105, 20, 0.25);
+    box-shadow:
+        inset 0 0 30px rgba(44, 24, 16, 0.15),
+        0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.shakespeare-rj-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: sepia(0.08) contrast(1.02) saturate(0.95);
+    transition: filter 0.6s ease;
+}
+
+
+/* ================================================================
+   FLOATING QUOTES OVERLAY
+   ================================================================ */
+
+.shakespeare-floating-quotes-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 500; /* Above everything including the book */
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.shakespeare-floating-quote {
+    position: absolute;
+    font-family: 'Cormorant Garamond', 'IM Fell English', serif;
+    font-style: italic;
+    font-weight: 300;
+    color: rgba(212, 175, 55, 0.85);
+    max-width: 320px;
+    line-height: 1.5;
+    text-align: center;
+    text-shadow:
+        0 0 20px rgba(0, 0, 0, 0.9),
+        0 0 40px rgba(0, 0, 0, 0.6),
+        0 2px 8px rgba(0, 0, 0, 0.8);
+    letter-spacing: 0.5px;
+    white-space: normal;
+    animation: shakespeare-quote-drift ease-in-out forwards;
+    will-change: opacity, transform;
+}
+
+@keyframes shakespeare-quote-drift {
+    0% {
+        opacity: 0;
+        transform: rotate(var(--_rot, 0deg)) translateY(8px) scale(0.95);
+        filter: blur(2px);
+    }
+    15% {
+        opacity: var(--quote-peak-opacity, 0.35);
+        transform: rotate(var(--_rot, 0deg)) translateY(0) scale(1);
+        filter: blur(0);
+    }
+    75% {
+        opacity: var(--quote-peak-opacity, 0.35);
+        transform: rotate(var(--_rot, 0deg)) translateY(-4px) scale(1);
+        filter: blur(0);
+    }
+    100% {
+        opacity: 0;
+        transform: rotate(var(--_rot, 0deg)) translateY(-15px) scale(0.97);
+        filter: blur(3px);
+    }
 }

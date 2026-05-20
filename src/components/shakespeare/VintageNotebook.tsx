@@ -1,8 +1,125 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { PageFlip } from 'page-flip';
 import pageBg from '../../assets/page.jpg';
 import coverCenterpiece from '../../assets/Collection.png';
+import romeoJulietImg from '../../assets/Romeo and Juliet\u{1F339}.webp';
 import './VintageNotebook.css';
+
+/* ── Romeo & Juliet Quotes ── */
+const RJ_QUOTES = [
+    "But soft, what light through yonder window breaks?",
+    "My bounty is as boundless as the sea, my love as deep.",
+    "Good night, good night! Parting is such sweet sorrow.",
+    "These violent delights have violent ends.",
+    "O Romeo, Romeo, wherefore art thou Romeo?",
+    "What's in a name? That which we call a rose by any other name would smell as sweet.",
+    "Thus with a kiss I die.",
+    "For never was a story of more woe, than this of Juliet and her Romeo.",
+    "Love is a smoke raised with the fume of sighs.",
+    "Did my heart love till now? Forswear it, sight! For I ne'er saw true beauty till this night.",
+    "Wisely and slow; they stumble that run fast.",
+    "Under love's heavy burden do I sink.",
+    "See how she leans her cheek upon her hand, O that I were a glove upon that hand.",
+    "My only love sprung from my only hate.",
+    "With love's light wings did I o'erperch these walls.",
+    "One fairer than my love? The all-seeing sun ne'er saw her match since first the world begun.",
+    "Love goes toward love, as schoolboys from their books.",
+    "It is the east, and Juliet is the sun.",
+    "A pair of star-cross'd lovers take their life.",
+    "The brightness of her cheek would shame those stars.",
+];
+
+interface FloatingQuote {
+    id: number;
+    text: string;
+    x: number;
+    y: number;
+    rotation: number;
+    duration: number;
+    fontSize: number;
+    opacity: number;
+}
+
+/* ── Floating Quotes Overlay ── */
+const FloatingQuotes: React.FC = () => {
+    const [quotes, setQuotes] = useState<FloatingQuote[]>([]);
+    const counterRef = useRef(0);
+    const usedIndicesRef = useRef<Set<number>>(new Set());
+
+    const getUniqueQuoteIndex = useCallback(() => {
+        if (usedIndicesRef.current.size >= RJ_QUOTES.length) {
+            usedIndicesRef.current.clear();
+        }
+        let idx: number;
+        do {
+            idx = Math.floor(Math.random() * RJ_QUOTES.length);
+        } while (usedIndicesRef.current.has(idx));
+        usedIndicesRef.current.add(idx);
+        return idx;
+    }, []);
+
+    useEffect(() => {
+        const spawnQuote = () => {
+            const id = ++counterRef.current;
+            const quoteIdx = getUniqueQuoteIndex();
+            const duration = 6000 + Math.random() * 6000; // 6–12 seconds
+            const newQuote: FloatingQuote = {
+                id,
+                text: RJ_QUOTES[quoteIdx],
+                x: 5 + Math.random() * 80,   // 5–85% from left
+                y: 5 + Math.random() * 80,   // 5–85% from top
+                rotation: -8 + Math.random() * 16, // -8° to +8°
+                duration,
+                fontSize: 0.85 + Math.random() * 0.6, // 0.85–1.45rem
+                opacity: 0.15 + Math.random() * 0.35,  // 0.15–0.50
+            };
+
+            setQuotes(prev => [...prev, newQuote]);
+
+            // Remove after animation completes
+            setTimeout(() => {
+                setQuotes(prev => prev.filter(q => q.id !== id));
+            }, duration);
+        };
+
+        // Spawn first few quickly
+        const initialTimers = [
+            setTimeout(spawnQuote, 500),
+            setTimeout(spawnQuote, 1800),
+            setTimeout(spawnQuote, 3200),
+        ];
+
+        // Then spawn on interval
+        const interval = setInterval(spawnQuote, 3500 + Math.random() * 2000);
+
+        return () => {
+            initialTimers.forEach(clearTimeout);
+            clearInterval(interval);
+        };
+    }, [getUniqueQuoteIndex]);
+
+    return (
+        <div className="shakespeare-floating-quotes-overlay">
+            {quotes.map(q => (
+                <span
+                    key={q.id}
+                    className="shakespeare-floating-quote"
+                    style={{
+                        left: `${q.x}%`,
+                        top: `${q.y}%`,
+                        transform: `rotate(${q.rotation}deg)`,
+                        animationDuration: `${q.duration}ms`,
+                        fontSize: `${q.fontSize}rem`,
+                        '--quote-peak-opacity': q.opacity,
+                    } as React.CSSProperties}
+                >
+                    "{q.text}"
+                </span>
+            ))}
+        </div>
+    );
+};
+
 
 export const VintageNotebook: React.FC = () => {
     const bookRef = useRef<HTMLDivElement>(null);
@@ -26,14 +143,14 @@ export const VintageNotebook: React.FC = () => {
                 const pagesData: any[] = [
                     { type: 'cover', title: 'Shakespearean\nLove', subtitle: 'A Vintage Collection' },
                     { 
-                        type: 'poem', 
-                        title: 'Sonnet 18', 
-                        content: 'Shall I compare thee to a summer’s day?\nThou art more lovely and more temperate:\nRough winds do shake the darling buds of May,\nAnd summer’s lease hath all too short a date...' 
+                        type: 'rj-intro',
+                        title: 'Romeo & Juliet',
+                        subtitle: 'Love, Draped in Renaissance',
+                        content: 'A fashion collection born from the eternal passion of Shakespeare\'s star-cross\'d lovers — garments woven with the spirit of Italian Renaissance, where every silhouette whispers of Verona\'s moonlit balconies and forbidden devotion.'
                     },
                     { 
-                        type: 'letter', 
-                        date: 'April 23, 1609',
-                        content: 'Dearest Love,\n\nIn the quiet of my chamber, your image remains the brightest light. Every word I pen is but a pale reflection of the beauty you possess.\n\nEver Yours,\nW.S.' 
+                        type: 'rj-image',
+                        imageSrc: romeoJulietImg
                     },
                     { 
                         type: 'sketch', 
@@ -51,7 +168,7 @@ export const VintageNotebook: React.FC = () => {
                 pagesData.push({ 
                     type: 'closing', 
                     title: 'Finis',
-                    content: 'All the world’s a stage,\nAnd all the men and women merely players.'
+                    content: 'All the world\'s a stage,\nAnd all the men and women merely players.'
                 });
                 pagesData.push({ type: 'back', title: 'The End' });
 
@@ -92,6 +209,45 @@ export const VintageNotebook: React.FC = () => {
                             <div class="shakespeare-spine-crease"></div>
                         `;
                         page.dataset.density = 'hard';
+                    } else if (data.type === 'rj-intro') {
+                        /* ── Page 1: Romeo & Juliet Intro ── */
+                        const side = index % 2 !== 0 ? 'left' : 'right';
+                        page.dataset.side = side;
+                        page.innerHTML = `
+                            <div class="shakespeare-page-bg" style="background-image: url('${pageBg}')"></div>
+                            <div class="shakespeare-paper-texture"></div>
+                            <div class="shakespeare-page-lighting"></div>
+                            <div class="shakespeare-content shakespeare-rj-intro-content">
+                                <div class="shakespeare-rj-ornament-top">✦</div>
+                                <h2 class="shakespeare-rj-heading">${data.title}</h2>
+                                <div class="shakespeare-rj-divider">
+                                    <span class="shakespeare-rj-divider-line"></span>
+                                    <span class="shakespeare-rj-divider-rose">🌹</span>
+                                    <span class="shakespeare-rj-divider-line"></span>
+                                </div>
+                                <h3 class="shakespeare-rj-subheading">${data.subtitle}</h3>
+                                <p class="shakespeare-rj-description">${data.content}</p>
+                                <div class="shakespeare-rj-ornament-bottom">— Shakespearean Love —</div>
+                                <div class="shakespeare-page-number">${index}</div>
+                            </div>
+                            <div class="shakespeare-spine-crease"></div>
+                        `;
+                    } else if (data.type === 'rj-image') {
+                        /* ── Page 2: Romeo & Juliet Image ── */
+                        const side = index % 2 !== 0 ? 'left' : 'right';
+                        page.dataset.side = side;
+                        page.innerHTML = `
+                            <div class="shakespeare-page-bg" style="background-image: url('${pageBg}')"></div>
+                            <div class="shakespeare-paper-texture"></div>
+                            <div class="shakespeare-page-lighting"></div>
+                            <div class="shakespeare-content shakespeare-rj-image-content">
+                                <div class="shakespeare-rj-image-frame">
+                                    <img src="${data.imageSrc}" class="shakespeare-rj-image" alt="Romeo and Juliet — Shakespearean Love" />
+                                </div>
+                                <div class="shakespeare-page-number">${index}</div>
+                            </div>
+                            <div class="shakespeare-spine-crease"></div>
+                        `;
                     } else {
                         const side = index % 2 !== 0 ? 'left' : 'right';
                         page.dataset.side = side;
@@ -171,6 +327,9 @@ export const VintageNotebook: React.FC = () => {
 
     return (
         <div className="shakespeare-stage">
+            {/* ── Floating Quotes Overlay ── */}
+            <FloatingQuotes />
+
             <a href="/" className="shakespeare-nav-link">
                 Close Notebook
             </a>
