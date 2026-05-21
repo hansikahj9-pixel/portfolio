@@ -3,6 +3,7 @@ import { PageFlip } from 'page-flip';
 import pageBg from '../../assets/page.jpg';
 import coverCenterpiece from '../../assets/Collection.png';
 import romeoJulietImg from '../../assets/Romeo and Juliet\u{1F339}.webp';
+import moodboardImg from '../../assets/moodboard.jpg';
 import './VintageNotebook.css';
 
 /* ── Romeo & Juliet Quotes ── */
@@ -116,7 +117,12 @@ export const VintageNotebook: React.FC = () => {
                         content: "A fashion collection born from the eternal passion of Shakespeare\u2019s star-cross\u2019d lovers \u2014 garments woven with the spirit of Italian Renaissance, where every silhouette whispers of Verona\u2019s moonlit balconies and forbidden devotion.",
                     },
                     { type: 'rj-image', imageSrc: romeoJulietImg },
-                    { type: 'sketch',   title: 'The Globe', content: 'A rough sketch of where our stories come alive. The wooden O, holding the universe within its walls.' },
+                    {
+                        type: 'rj-themes',
+                        title: 'The Collection',
+                        content: 'Romance, tragedy, fate, passion, rebellion \u2014 these are the threads that weave through Romeo and Juliet. While the play is often remembered for its tragic ending, love remains its most enduring force. Through this collection, I have explored the themes of love and passion, translated into fabric, colour, and silhouette.\n\nThe romantic and sensuous nature of the garments is met with quiet rebellion: Italian Renaissance elements \u2014 rich fabrics, ornamental prints, period forms \u2014 juxtaposed with modern, flowing, off-shoulder silhouettes.\n\nContrasting colours mirror two rival families; pleats echo the twists and turns of their story. I chose to forgo corsets \u2014 though synonymous with the era \u2014 because love, my central theme, speaks of comfort, not constraint.',
+                    },
+                    { type: 'moodboard-image', imageSrc: moodboardImg },
                 ];
 
                 for (let i = pagesData.length; i <= 20; i++) pagesData.push({ type: 'blank' });
@@ -207,6 +213,40 @@ export const VintageNotebook: React.FC = () => {
                         `;
                         // Grab the quotes layer right after setting innerHTML
                         quotesLayerEl = page.querySelector('#shakespeare-quotes-layer');
+
+                    /* ── Page 3: Themes & philosophy text ── */
+                    } else if (data.type === 'rj-themes') {
+                        page.dataset.side = index % 2 !== 0 ? 'left' : 'right';
+                        page.innerHTML = `
+                            <div class="shakespeare-page-bg" style="background-image:url('${pageBg}')"></div>
+                            <div class="shakespeare-paper-texture"></div>
+                            <div class="shakespeare-page-lighting"></div>
+                            <div class="shakespeare-content shakespeare-rj-themes-content">
+                                <div class="shakespeare-rj-themes-rule-top"></div>
+                                <h2 class="shakespeare-rj-themes-heading">${data.title}</h2>
+                                <div class="shakespeare-rj-themes-body">${data.content.replace(/\n/g, '<br>')}</div>
+                                <div class="shakespeare-rj-themes-rule-bottom"></div>
+                                <div class="shakespeare-page-number">${index}</div>
+                            </div>
+                            <div class="shakespeare-spine-crease"></div>
+                        `;
+
+                    /* ── Page 4: Mood board image ── */
+                    } else if (data.type === 'moodboard-image') {
+                        page.dataset.side = index % 2 !== 0 ? 'left' : 'right';
+                        page.innerHTML = `
+                            <div class="shakespeare-page-bg" style="background-image:url('${pageBg}')"></div>
+                            <div class="shakespeare-paper-texture"></div>
+                            <div class="shakespeare-page-lighting"></div>
+                            <div class="shakespeare-content shakespeare-moodboard-content">
+                                <div class="shakespeare-moodboard-label">Mood Board</div>
+                                <div class="shakespeare-moodboard-frame">
+                                    <img src="${data.imageSrc}" class="shakespeare-moodboard-image" alt="Mood Board \u2014 Shakespearean Love" />
+                                </div>
+                                <div class="shakespeare-page-number">${index}</div>
+                            </div>
+                            <div class="shakespeare-spine-crease"></div>
+                        `;
 
                     /* ── All other pages ── */
                     } else {
