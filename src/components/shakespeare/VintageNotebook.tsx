@@ -6,6 +6,11 @@ import romeoJulietImg from '../../assets/Romeo and Juliet\u{1F339}.webp';
 import moodboardImg from '../../assets/moodboard.jpg';
 import silhouetteBoardImg from '../../assets/silhouette-board.png';
 import roughSketchesImg from '../../assets/Untitled design (2).png';
+import spread1 from '../../assets/spreads/11.jpg';
+import spread2 from '../../assets/spreads/12.jpg';
+import spread3 from '../../assets/spreads/13.jpg';
+import spread4 from '../../assets/spreads/14.jpg';
+import spread5 from '../../assets/spreads/15.jpg';
 import './VintageNotebook.css';
 
 /* ── Romeo & Juliet Quotes ── */
@@ -132,6 +137,16 @@ export const VintageNotebook: React.FC = () => {
                         title: 'Rough Sketches',
                         content: 'Initial explorations in form and drape \u2014 where Renaissance grandeur meets the freedom of the modern silhouette.',
                     },
+                    { type: 'spread-left',  imageSrc: spread1 },
+                    { type: 'spread-right', imageSrc: spread1 },
+                    { type: 'spread-left',  imageSrc: spread2 },
+                    { type: 'spread-right', imageSrc: spread2 },
+                    { type: 'spread-left',  imageSrc: spread3 },
+                    { type: 'spread-right', imageSrc: spread3 },
+                    { type: 'spread-left',  imageSrc: spread4 },
+                    { type: 'spread-right', imageSrc: spread4 },
+                    { type: 'spread-left',  imageSrc: spread5 },
+                    { type: 'spread-right', imageSrc: spread5 },
                 ];
 
                 for (let i = pagesData.length; i <= 20; i++) pagesData.push({ type: 'blank' });
@@ -289,6 +304,38 @@ export const VintageNotebook: React.FC = () => {
                                 </div>
                                 <div class="shakespeare-page-number">${index}</div>
                             </div>
+                            <div class="shakespeare-spine-crease"></div>
+                        `;
+
+                    /* ── Two-Page Spread Left ── */
+                    } else if (data.type === 'spread-left') {
+                        page.dataset.side = index % 2 !== 0 ? 'left' : 'right';
+                        page.innerHTML = `
+                            <div class="shakespeare-page-bg" style="background-image:url('${pageBg}')"></div>
+                            <div class="shakespeare-paper-texture"></div>
+                            <div class="shakespeare-page-lighting"></div>
+                            <div class="shakespeare-spread-wrapper left-spread">
+                                <div class="shakespeare-spread-image-container">
+                                    <img src="${data.imageSrc}" class="shakespeare-spread-image" alt="Collection Spread" />
+                                </div>
+                            </div>
+                            <div class="shakespeare-page-number">${index}</div>
+                            <div class="shakespeare-spine-crease"></div>
+                        `;
+
+                    /* ── Two-Page Spread Right ── */
+                    } else if (data.type === 'spread-right') {
+                        page.dataset.side = index % 2 !== 0 ? 'left' : 'right';
+                        page.innerHTML = `
+                            <div class="shakespeare-page-bg" style="background-image:url('${pageBg}')"></div>
+                            <div class="shakespeare-paper-texture"></div>
+                            <div class="shakespeare-page-lighting"></div>
+                            <div class="shakespeare-spread-wrapper right-spread">
+                                <div class="shakespeare-spread-image-container">
+                                    <img src="${data.imageSrc}" class="shakespeare-spread-image" alt="Collection Spread" />
+                                </div>
+                            </div>
+                            <div class="shakespeare-page-number">${index}</div>
                             <div class="shakespeare-spine-crease"></div>
                         `;
 
