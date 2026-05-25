@@ -5,6 +5,7 @@ import coverCenterpiece from '../../assets/Collection.png';
 import romeoJulietImg from '../../assets/Romeo and Juliet\u{1F339}.webp';
 import moodboardImg from '../../assets/moodboard.jpg';
 import silhouetteBoardImg from '../../assets/silhouette-board.png';
+import roughSketchesImg from '../../assets/Untitled design (2).png';
 import './VintageNotebook.css';
 
 /* ── Romeo & Juliet Quotes ── */
@@ -125,6 +126,12 @@ export const VintageNotebook: React.FC = () => {
                     },
                     { type: 'moodboard-image', imageSrc: moodboardImg },
                     { type: 'silhouette-board', imageSrc: silhouetteBoardImg },
+                    {
+                        type: 'rough-sketches',
+                        imageSrc: roughSketchesImg,
+                        title: 'Rough Sketches',
+                        content: 'Initial explorations in form and drape \u2014 where Renaissance grandeur meets the freedom of the modern silhouette.',
+                    },
                 ];
 
                 for (let i = pagesData.length; i <= 20; i++) pagesData.push({ type: 'blank' });
@@ -261,6 +268,24 @@ export const VintageNotebook: React.FC = () => {
                                 <div class="shakespeare-silhouette-label">Silhouette Board</div>
                                 <div class="shakespeare-silhouette-frame">
                                     <img src="${data.imageSrc}" class="shakespeare-silhouette-image" alt="Silhouette Board \u2014 Shakespearean Love" />
+                                </div>
+                                <div class="shakespeare-page-number">${index}</div>
+                            </div>
+                            <div class="shakespeare-spine-crease"></div>
+                        `;
+
+                    /* ── Page 6: Rough Sketches ── */
+                    } else if (data.type === 'rough-sketches') {
+                        page.dataset.side = index % 2 !== 0 ? 'left' : 'right';
+                        page.innerHTML = `
+                            <div class="shakespeare-page-bg" style="background-image:url('${pageBg}')"></div>
+                            <div class="shakespeare-paper-texture"></div>
+                            <div class="shakespeare-page-lighting"></div>
+                            <div class="shakespeare-content shakespeare-sketches-content">
+                                <h2 class="shakespeare-sketches-heading">${data.title}</h2>
+                                <p class="shakespeare-sketches-description">${data.content}</p>
+                                <div class="shakespeare-sketches-image-area">
+                                    <img src="${data.imageSrc}" class="shakespeare-sketches-image" alt="Rough Sketches \u2014 Shakespearean Love" />
                                 </div>
                                 <div class="shakespeare-page-number">${index}</div>
                             </div>
