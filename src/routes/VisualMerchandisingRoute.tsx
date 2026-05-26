@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import guoPeiStore from '../assets/store/Gemini_Generated_Image_nuxoqlnuxoqlnuxo.png';
 import guoPeiDetail from '../assets/store/360 view.png';
 import coverImg from '../assets/store/cover page.png';
+import exteriorImg from '../assets/store/exterior.png';
 
 import './VisualMerchandising.css';
 
@@ -392,6 +393,159 @@ export default function VisualMerchandisingRoute() {
                       animate={{ width: '80px' }}
                       transition={{ delay: 1, duration: 0.8 }}
                     />
+                  </motion.div>
+
+                  {/* Scoped CSS Inject for responsiveness */}
+                  <style>{`
+                    @media (max-width: 900px) {
+                      .loewe-exterior-grid {
+                        grid-template-columns: 1fr !important;
+                        gap: 2.5rem !important;
+                        padding-top: 4rem !important;
+                        text-align: center !important;
+                      }
+                      .loewe-exterior-grid h2 {
+                        font-size: 2.2rem !important;
+                      }
+                      .loewe-spec-table {
+                        text-align: left !important;
+                      }
+                    }
+                  `}</style>
+
+                  {/* --- NEW SECTION: LOCATION & EXTERIOR (THE MARAYA MONUMENT) --- */}
+                  <motion.div
+                    className="loewe-exterior-grid"
+                    initial={{ y: 60, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                    style={{
+                      width: '100%',
+                      maxWidth: '1200px',
+                      marginTop: '4rem',
+                      paddingTop: '6rem',
+                      borderTop: '1px solid rgba(92, 74, 61, 0.15)',
+                      display: 'grid',
+                      gridTemplateColumns: '1.1fr 0.9fr',
+                      gap: '4rem',
+                      alignItems: 'center',
+                      color: '#5c4a3d',
+                      textAlign: 'left'
+                    }}
+                  >
+                    {/* Left Column: Image with interactive shimmer & hover scale */}
+                    <motion.div
+                      style={{
+                        position: 'relative',
+                        borderRadius: '16px',
+                        overflow: 'hidden',
+                        boxShadow: '0 30px 60px rgba(139, 107, 74, 0.25)',
+                        cursor: 'pointer'
+                      }}
+                      whileHover={{ scale: 1.015, y: -6 }}
+                      transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
+                    >
+                      <img 
+                        src={exteriorImg} 
+                        alt="Loewe Pop-Up Store Exterior - Maraya Monument AlUla" 
+                        style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }} 
+                      />
+                      {/* High-fashion specular glare shimmer overlay */}
+                      <motion.div
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          background: 'linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0) 100%)',
+                          transform: 'translateX(-100%)'
+                        }}
+                        whileHover={{ transform: 'translateX(100%)' }}
+                        transition={{ duration: 1.2, ease: "easeInOut" }}
+                      />
+                    </motion.div>
+
+                    {/* Right Column: Premium Text & Specs */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                      <div>
+                        <span style={{ 
+                          fontSize: '0.85rem', 
+                          letterSpacing: '0.3em', 
+                          textTransform: 'uppercase', 
+                          color: '#c49e29', 
+                          fontWeight: 600,
+                          display: 'block',
+                          marginBottom: '0.5rem'
+                        }}>
+                          THE ALULA OUTPOST
+                        </span>
+                        <h2 className="font-sans" style={{ 
+                          fontSize: '3rem', 
+                          letterSpacing: '0.05em', 
+                          margin: 0, 
+                          fontWeight: 300,
+                          lineHeight: '1.1',
+                          textTransform: 'uppercase'
+                        }}>
+                          ORGANIC CLAY CANOPY
+                        </h2>
+                      </div>
+
+                      <p style={{ 
+                        fontSize: '1.15rem', 
+                        lineHeight: '1.8', 
+                        opacity: 0.9, 
+                        margin: 0,
+                        fontWeight: 300
+                      }}>
+                        Nestled seamlessly within the majestic sandstone canyon walls of <strong>AlUla, Saudi Arabia</strong>, this conceptual Loewe storefront is an architectural extension of the earth itself. Positioned near the legendary <strong>Maraya Monument</strong>, the pavilion trades harsh structural corners for sweeping, wind-carved organic curves.
+                      </p>
+                      
+                      <p style={{ 
+                        fontSize: '1.15rem', 
+                        lineHeight: '1.8', 
+                        opacity: 0.9, 
+                        margin: 0,
+                        fontWeight: 300
+                      }}>
+                        Crafted from fluid layers of natural clay and compressed sandstone, the canopy mimics the undulating sand dunes and slot canyons of the region. As twilight falls, warm, concealed lighting strips illuminate the textured interior contours, casting a soft golden glow. The open, fluid entrance invites guests into a circular fashion sanctuary, blending high-end craftsmanship with raw, geological history.
+                      </p>
+
+                      {/* Brutalist Design Specification Cards */}
+                      <div 
+                        className="loewe-spec-table"
+                        style={{ 
+                          display: 'grid', 
+                          gridTemplateColumns: '1fr 1fr', 
+                          gap: '1.5rem',
+                          marginTop: '1rem',
+                          background: 'rgba(253, 251, 247, 0.45)',
+                          padding: '1.5rem',
+                          borderRadius: '12px',
+                          backdropFilter: 'blur(10px)',
+                          border: '1px solid rgba(92, 74, 61, 0.1)'
+                        }}
+                      >
+                        <div>
+                          <span style={{ fontSize: '0.75rem', opacity: 0.6, letterSpacing: '0.1em', display: 'block', textTransform: 'uppercase' }}>ARCHITECTURAL TYPE</span>
+                          <span style={{ fontSize: '0.95rem', fontWeight: 400, color: '#5c4a3d' }}>Organic Clay Pavilion</span>
+                        </div>
+                        <div>
+                          <span style={{ fontSize: '0.75rem', opacity: 0.6, letterSpacing: '0.1em', display: 'block', textTransform: 'uppercase' }}>LOCATION COORDINATES</span>
+                          <span style={{ fontSize: '0.95rem', fontWeight: 400, color: '#5c4a3d' }}>AlUla, Saudi Arabia</span>
+                        </div>
+                        <div>
+                          <span style={{ fontSize: '0.75rem', opacity: 0.6, letterSpacing: '0.1em', display: 'block', textTransform: 'uppercase' }}>FACADE TEXTURE</span>
+                          <span style={{ fontSize: '0.95rem', fontWeight: 400, color: '#5c4a3d' }}>Fluid Layered Sandstone</span>
+                        </div>
+                        <div>
+                          <span style={{ fontSize: '0.75rem', opacity: 0.6, letterSpacing: '0.1em', display: 'block', textTransform: 'uppercase' }}>DESIGN AESTHETIC</span>
+                          <span style={{ fontSize: '0.95rem', fontWeight: 400, color: '#5c4a3d' }}>Biomimetic Desert Luxury</span>
+                        </div>
+                      </div>
+                    </div>
                   </motion.div>
                 </motion.div>
               ) : (
