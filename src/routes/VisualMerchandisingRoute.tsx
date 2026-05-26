@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // Asset Imports
 import loeweStore from '../assets/store/store 1.jpeg';
@@ -120,7 +120,6 @@ export default function VisualMerchandisingRoute() {
 
   const activeTheme = loeweMaterialThemes[activeLoeweMaterial];
 
-  const navigate = useNavigate();
   return (
     <div className="vm-stage">
       {/* ── Floating Ring Back Button ── */}
@@ -186,7 +185,7 @@ export default function VisualMerchandisingRoute() {
                 rotateY: loeweRotateYSpring,
               }}
               whileHover={{ scale: 1.02 }}
-              onClick={() => navigate('/loewe')}
+              onClick={() => setSelectedProject('loewe')}
             >
               <div 
                 className="loewe-card-frame"
@@ -372,7 +371,7 @@ export default function VisualMerchandisingRoute() {
           3. EXPANDED LUXURY DETAILS DIALOG/DRAWER
           ========================================== */}
       <AnimatePresence>
-        /* Loewe drawer removed – now a dedicated route */
+        {selectedProject && (
           <motion.div 
             className="vm-drawer-backdrop"
             initial={{ opacity: 0 }}
