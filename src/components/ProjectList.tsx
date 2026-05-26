@@ -78,6 +78,8 @@ export default function ProjectList({ onHover }: ProjectListProps) {
                 navigate('/axiome');
               } else if (project.name === 'Shakespearean Love') {
                 navigate('/shakespeare');
+              } else if (project.name === 'Visual Merchandising') {
+                navigate('/visual-merchandising');
               }
             }}
             onMouseEnter={(e) =>

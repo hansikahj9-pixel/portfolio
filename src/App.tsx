@@ -10,6 +10,7 @@ import ProcessRoute from './routes/ProcessRoute';
 import InspirationRoute from './routes/InspirationRoute';
 import MonolithRoute from './routes/MonolithRoute';
 import ShakespeareRoute from './routes/ShakespeareRoute';
+import VisualMerchandisingRoute from './routes/VisualMerchandisingRoute';
 import CustomCursor from './components/CustomCursor';
 import MotionPageFlip from './components/MotionPageFlip';
 import AxiomeGlobalNav from './components/AxiomeGlobalNav';
@@ -38,6 +39,7 @@ function App() {
             <Route path="/collection" element={<MotionPageFlip locationKey="/collection"><CollectionRoute /></MotionPageFlip>} />
             <Route path="/axiome" element={<MotionPageFlip locationKey="/axiome"><AxiomeRoute /></MotionPageFlip>} />
             <Route path="/vision" element={<MotionPageFlip locationKey="/vision"><MonolithRoute /></MotionPageFlip>} />
+            <Route path="/visual-merchandising" element={<MotionPageFlip locationKey="/visual-merchandising"><VisualMerchandisingRoute /></MotionPageFlip>} />
 
             {/* ── Legacy Redirects ── */}
             <Route path="/axiome/process" element={<Navigate to="/process" replace />} />
