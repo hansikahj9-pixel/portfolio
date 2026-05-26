@@ -12,7 +12,6 @@ import './VisualMerchandising.css';
 
 export default function VisualMerchandisingRoute() {
   const [hoveredPanel, setHoveredPanel] = useState<'loewe' | 'guopei' | null>(null);
-  const [activeLoeweMaterial, setActiveLoeweMaterial] = useState<'suede' | 'terracotta' | 'concrete'>('concrete');
   const [selectedProject, setSelectedProject] = useState<'loewe' | 'guopei' | null>(null);
 
   // Mouse Tracking for Spotlight / Parallax
@@ -97,28 +96,11 @@ export default function VisualMerchandisingRoute() {
   };
 
   // Swatch Styles / Backgrounds based on active material
-  const loeweMaterialThemes = {
-    concrete: {
-      accentColor: 'rgba(212, 208, 199, 0.45)',
-      bgColor: '#e2dfd8',
-      swatchLabel: 'Board-Formed Cement',
-      borderStyle: '1px solid rgba(0, 0, 0, 0.08)'
-    },
-    suede: {
-      accentColor: 'rgba(196, 154, 108, 0.4)',
-      bgColor: '#dac9b5',
-      swatchLabel: 'Raw Spanish Suede',
-      borderStyle: '1px dashed #A67C52'
-    },
-    terracotta: {
-      accentColor: 'rgba(204, 114, 82, 0.35)',
-      bgColor: '#dfccbd',
-      swatchLabel: 'Artisanal Terracotta',
-      borderStyle: '2px solid #CC7252'
-    }
+  const activeTheme = {
+    accentColor: 'rgba(212, 208, 199, 0.45)',
+    bgColor: '#e2dfd8',
+    borderStyle: '1px solid rgba(0, 0, 0, 0.08)'
   };
-
-  const activeTheme = loeweMaterialThemes[activeLoeweMaterial];
 
   return (
     <div className="vm-stage">
@@ -206,51 +188,7 @@ export default function VisualMerchandisingRoute() {
               </div>
             </motion.div>
 
-            {/* Bento Grid: Sub-Cards */}
-            <div className="loewe-bento-grid">
-              {/* Material Swatches Card */}
-              <motion.div 
-                className="loewe-bento-card material-board"
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-              >
-                <div className="bento-card-notch">MATERIAL PALETTE</div>
-                <h4 className="bento-card-title">Tactile Swatches</h4>
-                
-                <div className="swatches-container">
-                  <button 
-                    onClick={() => setActiveLoeweMaterial('concrete')}
-                    className={`swatch-btn concrete ${activeLoeweMaterial === 'concrete' ? 'active' : ''}`}
-                    title="Cement block"
-                  />
-                  <button 
-                    onClick={() => setActiveLoeweMaterial('suede')}
-                    className={`swatch-btn suede ${activeLoeweMaterial === 'suede' ? 'active' : ''}`}
-                    title="Suede leather swatch"
-                  />
-                  <button 
-                    onClick={() => setActiveLoeweMaterial('terracotta')}
-                    className={`swatch-btn terracotta ${activeLoeweMaterial === 'terracotta' ? 'active' : ''}`}
-                    title="Clay brick swatch"
-                  />
-                </div>
-                <span className="swatch-indicator">{activeTheme.swatchLabel}</span>
-              </motion.div>
 
-              {/* VM Strategy Bento Card */}
-              <motion.div 
-                className="loewe-bento-card text-strategy"
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-              >
-                <div className="bento-card-notch">VM STRATEGY</div>
-                <p className="bento-card-body">
-                  Leveraging low-angle soft museum spotlights and textured concrete columns to evoke a warm, open-air Spanish courtyard experience.
-                </p>
-              </motion.div>
-            </div>
           </div>
         </motion.div>
 
