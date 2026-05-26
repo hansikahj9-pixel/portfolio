@@ -372,15 +372,15 @@ export default function VisualMerchandisingRoute() {
           3. EXPANDED LUXURY DETAILS DIALOG/DRAWER
           ========================================== */}
       <AnimatePresence>
-        /* Loewe drawer removed – now a dedicated route */
-          <motion.div 
+        {selectedProject && (
+          <motion.div
             className="vm-drawer-backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedProject(null)}
           >
-            <motion.div 
+            <motion.div
               className={`vm-drawer-container ${selectedProject}`}
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
@@ -392,7 +392,7 @@ export default function VisualMerchandisingRoute() {
               <button className="vm-drawer-close" onClick={() => setSelectedProject(null)}>×</button>
 
               {selectedProject === 'loewe' ? (
-                /* LOEWE Immersive Presentation */
+                // LOEWE Immersive Presentation
                 <div className="drawer-layout">
                   <div className="drawer-column visual-show">
                     <div className="drawer-main-image-box">
