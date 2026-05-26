@@ -10,7 +10,6 @@ import ProcessRoute from './routes/ProcessRoute';
 import InspirationRoute from './routes/InspirationRoute';
 import MonolithRoute from './routes/MonolithRoute';
 import ShakespeareRoute from './routes/ShakespeareRoute';
-import LoeweRoute from './routes/LoeweRoute';
 import VisualMerchandisingRoute from './routes/VisualMerchandisingRoute';
 import CustomCursor from './components/CustomCursor';
 import MotionPageFlip from './components/MotionPageFlip';
@@ -41,7 +40,7 @@ function App() {
             <Route path="/axiome" element={<MotionPageFlip locationKey="/axiome"><AxiomeRoute /></MotionPageFlip>} />
             <Route path="/vision" element={<MotionPageFlip locationKey="/vision"><MonolithRoute /></MotionPageFlip>} />
             <Route path="/visual-merchandising" element={<MotionPageFlip locationKey="/visual-merchandising"><VisualMerchandisingRoute /></MotionPageFlip>} />
-            <Route path="/loewe" element={<MotionPageFlip locationKey="/loewe"><LoeweRoute /></MotionPageFlip>} />
+
             {/* ── Legacy Redirects ── */}
             <Route path="/axiome/process" element={<Navigate to="/process" replace />} />
             <Route path="/axiome/inspiration" element={<Navigate to="/inspiration" replace />} />
