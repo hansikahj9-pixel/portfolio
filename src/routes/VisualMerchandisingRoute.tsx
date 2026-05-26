@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import guoPeiStore from '../assets/store/Gemini_Generated_Image_nuxoqlnuxoqlnuxo.png';
 import guoPeiDetail from '../assets/store/360 view.png';
-import coverImg from '../assets/store/cover.png';
+import coverImg from '../assets/store/cover page.png';
 
 import './VisualMerchandising.css';
 
