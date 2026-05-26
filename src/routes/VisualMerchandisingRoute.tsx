@@ -3,10 +3,10 @@ import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from
 import { Link } from 'react-router-dom';
 
 // Asset Imports
-import loeweStore from '../assets/store/store 1.jpeg';
-import loeweInterior from '../assets/store/Gemini_Generated_Image_ (2).png';
+
 import guoPeiStore from '../assets/store/Gemini_Generated_Image_nuxoqlnuxoqlnuxo.png';
 import guoPeiDetail from '../assets/store/360 view.png';
+import coverImg from '../assets/store/cover.png';
 
 import './VisualMerchandising.css';
 
@@ -192,15 +192,15 @@ export default function VisualMerchandisingRoute() {
                 style={{ border: activeTheme.borderStyle }}
               >
                 <div className="loewe-image-container">
-                  <img src={loeweStore} alt="Loewe Facade Pop-Up Store Mockup" className="loewe-img" />
+                  <img src={coverImg} alt="Loewe Desert Pop-Up Store Mockup" className="loewe-img" />
                   <div className="loewe-image-overlay" />
                 </div>
 
                 <div className="loewe-card-details">
-                  <span className="loewe-tag">RESONANT TACTILITY</span>
-                  <h3 className="loewe-project-name">LOEWE ARCHITECTURAL POP-UP</h3>
+                  <span className="loewe-tag">DESERT OASIS</span>
+                  <h3 className="loewe-project-name">LOEWE DESERT POP-UP</h3>
                   <p className="loewe-project-desc">
-                    A physical structure celebrating modern geometry, raw concrete panels, and Madrid's signature leather heritage.
+                    A desert-themed pop-up store design showcasing Loewe products, mainly signature Puzzle bags and premium sunglasses.
                   </p>
                 </div>
               </div>
@@ -391,42 +391,71 @@ export default function VisualMerchandisingRoute() {
               <button className="vm-drawer-close" onClick={() => setSelectedProject(null)}>×</button>
 
               {selectedProject === 'loewe' ? (
-                /* LOEWE Immersive Presentation */
-                <div className="drawer-layout">
-                  <div className="drawer-column visual-show">
-                    <div className="drawer-main-image-box">
-                      <img src={loeweStore} alt="Loewe Architectural Facade" />
-                    </div>
-                    <div className="drawer-secondary-images">
-                      <div className="sec-img-box"><img src={loeweInterior} alt="Loewe Store Interior Design" /></div>
-                      <div className="sec-text-box">
-                        <h5>SPATIAL STRATEGY</h5>
-                        <p>Open-air sensory geometry utilizing natural clay aggregates and linen partitions to curate organic luxury.</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="drawer-column details-show">
-                    <span className="drawer-brand-sub font-sans">L O E W E</span>
-                    <h2 className="drawer-title font-sans">Madrid Pop-Up Store</h2>
-                    
-                    <div className="drawer-section">
-                      <h4>THE CONCEPT</h4>
-                      <p>
-                        A tribute to traditional Spanish craft merged with cutting-edge architectural form. The layout mimics the geometry of an open Spanish courtyard, utilizing board-formed cement panels contrasted against premium hand-stitched tan suede partitions.
-                      </p>
-                    </div>
-
-                    <div className="drawer-section">
-                      <h4>VISUAL MERCHANDISING ELEMENTS</h4>
-                      <ul className="details-list">
-                        <li><strong>Focal Points:</strong> Isolated central concrete podium showcasing the signature Puzzle bag, framed by architectural clay pillars.</li>
-                        <li><strong>Lighting Scheme:</strong> 3000K warm tracking spotlights focusing strictly on product focal planes, leaving the raw concrete columns in soft, structural shadow.</li>
-                        <li><strong>Sensory Touchpoints:</strong> Live Spanish olive trees embedded in board-formed clay rings, integrating organic elements into the luxury shopping experience.</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+                /* LOEWE Immersive Presentation - Desert Theme */
+                <motion.div 
+                  className="loewe-desert-drawer"
+                  initial={{ background: '#f5efe6' }}
+                  animate={{ 
+                    background: ['#f5efe6', '#ead8c4', '#f5efe6'],
+                  }}
+                  transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+                  style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    overflowY: 'auto', 
+                    padding: '3rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center'
+                  }}
+                >
+                  <motion.div 
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    style={{ 
+                      width: '100%', 
+                      maxWidth: '1200px',
+                      borderRadius: '16px', 
+                      overflow: 'hidden', 
+                      boxShadow: '0 25px 50px -12px rgba(139, 107, 74, 0.25)',
+                      marginBottom: '4rem',
+                      flexShrink: 0
+                    }}
+                  >
+                    <img src={coverImg} alt="Loewe Desert Cover" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                  </motion.div>
+                  
+                  <motion.div
+                    initial={{ y: 50, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.4, duration: 0.8 }}
+                    style={{
+                      maxWidth: '800px',
+                      textAlign: 'center',
+                      color: '#5c4a3d',
+                      paddingBottom: '4rem'
+                    }}
+                  >
+                    <h2 className="font-sans" style={{ fontSize: '2.5rem', letterSpacing: '0.1em', marginBottom: '1.5rem', fontWeight: 300 }}>
+                      MIRAGE & SAND DUNES
+                    </h2>
+                    <p style={{ fontSize: '1.25rem', lineHeight: '1.8', opacity: 0.9, marginBottom: '2.5rem' }}>
+                      Immerse yourself in a surreal desert oasis. This conceptual pop-up store draws inspiration from undulating sand dunes and reflective mirrors, creating a dreamlike landscape to showcase Loewe's signature Puzzle bags and contemporary sunglasses.
+                    </p>
+                    <motion.div 
+                      style={{ 
+                        width: '80px', 
+                        height: '2px', 
+                        background: '#d4af37', 
+                        margin: '0 auto' 
+                      }}
+                      initial={{ width: 0 }}
+                      animate={{ width: '80px' }}
+                      transition={{ delay: 1, duration: 0.8 }}
+                    />
+                  </motion.div>
+                </motion.div>
               ) : (
                 /* GUO PEI Immersive Presentation */
                 <div className="drawer-layout">
