@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform, useScroll, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 // Asset Imports
@@ -14,6 +14,17 @@ import sketch16 from '../assets/store/16.png';
 import sketch17 from '../assets/store/17.png';
 import sketch18 from '../assets/store/18.png';
 import sketch19 from '../assets/store/19.png';
+
+// Loewe Realized Sanctuary AI Renders Imports
+import exteriorImg from '../assets/store/exterior.png';
+import frontImg from '../assets/store/front.png';
+import windowDisplayImg from '../assets/store/window display.png';
+import wallImg from '../assets/store/wall.png';
+import wall2Img from '../assets/store/wall 2.png';
+import backImg from '../assets/store/back.png';
+import topViewImg from '../assets/store/top view.png';
+import view360Img from '../assets/store/360 view.png';
+import store1Img from '../assets/store/store 1.jpeg';
 
 import './VisualMerchandising.css';
 
@@ -54,6 +65,11 @@ const sketchesList = [
 export default function VisualMerchandisingRoute() {
   const [hoveredPanel, setHoveredPanel] = useState<'loewe' | 'guopei' | null>(null);
   const [selectedProject, setSelectedProject] = useState<'loewe' | 'guopei' | null>(null);
+
+  // ── Scroll Progress Tracking for Loewe Details Drawer ──
+  const drawerScrollRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ container: drawerScrollRef });
+  const scrollProgressSpring = useSpring(scrollYProgress, { stiffness: 100, damping: 25 });
 
   // ── Depth-Parallax Mirror Portal Mouse Tracking ──
 
@@ -401,6 +417,7 @@ export default function VisualMerchandisingRoute() {
               {selectedProject === 'loewe' ? (
                 /* LOEWE Immersive Presentation - Desert Theme */
                 <motion.div 
+                  ref={drawerScrollRef}
                   className="loewe-desert-drawer"
                   initial={{ background: '#f5efe6' }}
                   animate={{ 
@@ -414,9 +431,53 @@ export default function VisualMerchandisingRoute() {
                     padding: '3rem',
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    position: 'relative'
                   }}
                 >
+                  {/* Floating Liquid-Gold Scroll Progress Ribbon */}
+                  <motion.div 
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: '4px',
+                      background: 'linear-gradient(90deg, #c49e29, #ebd79e, #8c7662, #c49e29)',
+                      scaleX: scrollProgressSpring,
+                      transformOrigin: '0%',
+                      zIndex: 9999
+                    }}
+                  />
+
+                  {/* Organic Mirage Vector Dune Graphics (Drifting Backdrops) */}
+                  <motion.div 
+                    animate={{ 
+                      y: [0, -20, 0],
+                      x: [0, 10, 0],
+                      rotate: [0, 2, 0]
+                    }}
+                    transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut' }}
+                    style={{ position: 'absolute', top: '15%', left: '-10%', width: '45%', opacity: 0.05, pointerEvents: 'none', zIndex: 0 }}
+                  >
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%' }}>
+                      <path d="M0,50 C30,30 70,70 100,50 L100,100 L0,100 Z" fill="#c49e29" />
+                    </svg>
+                  </motion.div>
+                  <motion.div 
+                    animate={{ 
+                      y: [0, 25, 0],
+                      x: [0, -15, 0],
+                      rotate: [0, -3, 0]
+                    }}
+                    transition={{ duration: 30, repeat: Infinity, ease: 'easeInOut' }}
+                    style={{ position: 'absolute', top: '65%', right: '-10%', width: '50%', opacity: 0.04, pointerEvents: 'none', zIndex: 0 }}
+                  >
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%' }}>
+                      <path d="M0,40 C40,70 60,30 100,60 L100,100 L0,100 Z" fill="#c49e29" />
+                    </svg>
+                  </motion.div>
+
                   <motion.div 
                     initial={{ scale: 0.95, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -428,7 +489,8 @@ export default function VisualMerchandisingRoute() {
                       overflow: 'hidden', 
                       boxShadow: '0 25px 50px -12px rgba(139, 107, 74, 0.25)',
                       marginBottom: '4rem',
-                      flexShrink: 0
+                      flexShrink: 0,
+                      zIndex: 1
                     }}
                   >
                     <img src={coverImg} alt="Loewe Desert Cover" style={{ width: '100%', height: 'auto', display: 'block' }} />
@@ -589,7 +651,14 @@ export default function VisualMerchandisingRoute() {
                       <h2 className="font-sans" style={{ fontSize: '3rem', letterSpacing: '0.05em', margin: 0, fontWeight: 300, textTransform: 'uppercase' }}>
                         SKETCHES TO VISUALISE
                       </h2>
-                      <p style={{ fontSize: '1.15rem', lineHeight: '1.8', opacity: 0.9, fontWeight: 300, marginTop: '1.5rem' }}>
+                      <motion.div 
+                        initial={{ width: 0, opacity: 0 }}
+                        whileInView={{ width: 120, opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" }}
+                        style={{ height: '2px', background: 'linear-gradient(90deg, #c49e29, rgba(196, 158, 41, 0.2))', marginInline: 'auto', marginTop: '1.5rem' }}
+                      />
+                      <p style={{ fontSize: '1.2rem', lineHeight: '1.8', opacity: 0.9, fontWeight: 300, marginTop: '2rem' }}>
                         Original vector drawings, designed in Adobe Illustrator, mapping the physical volumes, display islands, and mirrored coves of the interior design before the realistic rendering stage.
                       </p>
                     </div>
@@ -689,6 +758,13 @@ export default function VisualMerchandisingRoute() {
                         <h2 className="font-sans" style={{ fontSize: '3rem', letterSpacing: '0.05em', margin: 0, fontWeight: 300, lineHeight: '1.1', textTransform: 'uppercase' }}>
                           THE LOCATION
                         </h2>
+                        <motion.div 
+                          initial={{ width: 0, opacity: 0 }}
+                          whileInView={{ width: 100, opacity: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" }}
+                          style={{ height: '2px', background: 'linear-gradient(90deg, #c49e29, rgba(196, 158, 41, 0.2))', marginTop: '1rem' }}
+                        />
                       </div>
 
                       <p style={{ fontSize: '1.15rem', lineHeight: '1.8', opacity: 0.9, fontWeight: 300, margin: 0 }}>
@@ -780,6 +856,170 @@ export default function VisualMerchandisingRoute() {
                       </motion.div>
                     </div>
                   </motion.div>
+
+                  {/* ── THE REALIZED SANCTUARY (AI ARCHITECTURAL VISUALISATIONS) ── */}
+                  <div
+                    style={{
+                      width: '100%',
+                      maxWidth: '1200px',
+                      marginTop: '8rem',
+                      paddingBottom: '8rem',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '7rem',
+                      zIndex: 1
+                    }}
+                  >
+                    {/* Realized Sanctuary Section Header */}
+                    <div style={{ textAlign: 'center', color: '#5c4a3d', maxWidth: '800px' }}>
+                      <span style={{ fontSize: '0.85rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#c49e29', fontWeight: 600, display: 'block', marginBottom: '0.5rem' }}>
+                        PHYSICAL REALIZATION
+                      </span>
+                      <h2 className="font-sans" style={{ fontSize: '3rem', letterSpacing: '0.04em', margin: 0, fontWeight: 300, textTransform: 'uppercase' }}>
+                        THE REALIZED SANCTUARY
+                      </h2>
+                      <span style={{ fontSize: '1.1rem', letterSpacing: '0.15em', color: '#8c7662', display: 'block', marginTop: '0.5rem', fontWeight: 300, textTransform: 'uppercase' }}>
+                        AI ARCHITECTURAL VISUALISATIONS
+                      </span>
+                      <p style={{ fontSize: '1.2rem', lineHeight: '1.8', opacity: 0.9, fontWeight: 300, marginTop: '1.5rem', color: '#5c4a3d' }}>
+                        The transition from conceptual Illustrator vector drawings to physically realized, realistically rendered spaces. Every volume, texture, lighting vector, and mirror interface is executed in high fidelity.
+                      </p>
+                      <motion.div 
+                        initial={{ width: 0, opacity: 0 }}
+                        whileInView={{ width: 120, opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" }}
+                        style={{ height: '2px', background: 'linear-gradient(90deg, #c49e29, rgba(196, 158, 41, 0.2))', marginInline: 'auto', marginTop: '1.5rem' }}
+                      />
+                    </div>
+
+                    {/* Massive Monograph Renders Scrollway */}
+                    {[
+                      {
+                        img: exteriorImg,
+                        title: 'The Canyon Outpost Facade',
+                        subtitle: 'Store Exterior & Canyon Integration',
+                        desc: 'A wide landscape capture of the pop-up outpost embedded directly into the towering sandstone slot canyons of AlUla. The sweeping sandstone exterior shell mirrors the wind-eroded cliff bands, while the reflective mirage facade panels catch the golden sunset light, making the store appear as a shimmering, magical illusion within the landscape.'
+                      },
+                      {
+                        img: frontImg,
+                        title: 'The Sandstone Facade Portal',
+                        subtitle: 'Store Front Entrance Detail',
+                        desc: 'A close capture of the main entrance canal. The heavy, layered sandstone curves wrap around the entrance, creating a shadowy cave threshold. A gleaming, polished brass trim anchors the base, making the entire monolithic sandstone structure appear as if it is floating.'
+                      },
+                      {
+                        img: windowDisplayImg,
+                        title: 'The Mirage Showcase Vitrine',
+                        subtitle: 'Front Window Display Scene',
+                        desc: 'An artistic street-facing vitrine installation. A circular plaster dune aperture acts as a framing device. Inside, a floating chrome halo suspends a single Puzzle leather bag, illuminated by tight pinpoint spotlights, surrounded by rising raw desert branches.'
+                      },
+                      {
+                        img: wallImg,
+                        title: 'Eroded Sandstone Shelving Niches',
+                        subtitle: 'Interior Gallery Wall Detail',
+                        desc: 'A detailed study of the interior accessory coves. Deep, wind-eroded sandstone cavities are sculpted directly into the plaster walls, backed by hidden warm LED ribbons. Folded silk scarves and small leather goods sit like gems inside organic cavernous coves.'
+                      },
+                      {
+                        img: store1Img,
+                        title: 'The Central Dune Sanctuary',
+                        subtitle: 'Interior Main Gallery View',
+                        desc: 'A broad interior panoramic capture. The wind-swept sandstone floor curves into columns. Loewe’s iconic Puzzle bags rest on classical column pedestals, elevated like rare organic minerals discovered in an ancient dune cave.'
+                      },
+                      {
+                        img: wall2Img,
+                        title: 'The Shattered Mirror Vanity Coves',
+                        subtitle: 'Interior Wall Detail - Eyewear Gallery',
+                        desc: 'Focused on eyewear and minor accessory display. A large, fractured mirror with natural, fluid brass contours is embedded flush into the dry clay wall. Sandstone columns emerge from the sand bed below to support luxury tortoiseshell glasses, offering shifting reflections of sand, mirror, and stone.'
+                      },
+                      {
+                        img: backImg,
+                        title: 'The Back-of-Store Cash Wrap & Rock Shelf Canopy',
+                        subtitle: 'Back of Store View',
+                        desc: 'The terminal point of the gallery journey. A sweeping sandstone arch forms a protective plaster canopy. The central cash-wrap counter is shaped like a layered rock shelf, stepping up from rough texturized sandstone into a seamless, liquid-brass countertop.'
+                      },
+                      {
+                        img: topViewImg,
+                        title: 'The Spatial Footprint Plan',
+                        subtitle: '3D Architectural Top View',
+                        desc: 'A 3D architectural plan view showcasing the circular dune paths. Illustrates how the biophilic layout guides visitors through the gallery in a seamless, fluid desert journey.'
+                      },
+                      {
+                        img: view360Img,
+                        title: 'The Cylindrical Panorama',
+                        subtitle: 'Immersive 360-Degree Cylindrical Projection',
+                        desc: 'An immersive, flattened 360-degree cylindrical projection panorama of the entire visual merchandising environment, illustrating the seamless circular dune flow of the interior space.'
+                      }
+                    ].map((render, idx) => (
+                      <motion.div
+                        key={idx}
+                        initial={{ opacity: 0, y: 60, scale: 0.97 }}
+                        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                        style={{
+                          width: '100%',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '2.5rem',
+                          textAlign: 'center'
+                        }}
+                      >
+                        {/* Render Heading & Narrative */}
+                        <div style={{ maxWidth: '850px', color: '#5c4a3d' }}>
+                          <span style={{ fontSize: '0.85rem', opacity: 0.6, letterSpacing: '0.2em', fontWeight: 600, color: '#c49e29', textTransform: 'uppercase', marginBottom: '0.25rem', display: 'block' }}>
+                            {render.subtitle}
+                          </span>
+                          <h3 className="font-sans" style={{ fontSize: '2.2rem', letterSpacing: '0.03em', margin: 0, fontWeight: 300, textTransform: 'uppercase' }}>
+                            {render.title}
+                          </h3>
+                          <motion.div 
+                            initial={{ width: 0, opacity: 0 }}
+                            whileInView={{ width: 80, opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" }}
+                            style={{ height: '2px', background: 'linear-gradient(90deg, #c49e29, rgba(196, 158, 41, 0.15))', marginInline: 'auto', marginTop: '0.75rem', marginBottom: '1.25rem' }}
+                          />
+                          <p style={{ fontSize: '1.15rem', lineHeight: '1.8', opacity: 0.9, fontWeight: 300, margin: 0 }}>
+                            {render.desc}
+                          </p>
+                        </div>
+
+                        {/* Massive Full-Screen Scale Render Container */}
+                        <motion.div
+                          style={{
+                            width: '100%',
+                            borderRadius: '16px',
+                            border: '1px solid rgba(92, 74, 61, 0.12)',
+                            boxShadow: '0 25px 50px -12px rgba(139, 107, 74, 0.25)',
+                            overflow: 'hidden',
+                            cursor: 'pointer',
+                            background: '#fcfaf5',
+                            padding: '16px',
+                            position: 'relative'
+                          }}
+                          whileHover={{ scale: 1.006, y: -6 }}
+                          transition={{ duration: 0.4 }}
+                        >
+                          <img 
+                            src={render.img} 
+                            alt={render.title} 
+                            style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '8px' }} 
+                          />
+                          {/* Liquid-Chrome Reflective Shimmer Glass Overlay */}
+                          <motion.div 
+                            style={{
+                              position: 'absolute',
+                              top: 0, left: 0, right: 0, bottom: 0,
+                              background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 60%)',
+                              pointerEvents: 'none'
+                            }} 
+                          />
+                        </motion.div>
+                      </motion.div>
+                    ))}
+                  </div>
                 </motion.div>
               ) : (
                 /* GUO PEI Immersive Presentation */
