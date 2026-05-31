@@ -19,11 +19,36 @@ import './VisualMerchandising.css';
 
 // ── Avant-Garde Exhibits Data ──
 const sketchesList = [
-  { img: sketch15, title: 'Concept 15: The Organic Dune Portal', desc: 'Initial visualization of the sweeping plaster canopy and open slot canyon entrance path.' },
-  { img: sketch16, title: 'Concept 16: Fluid Sand Display Islands', desc: 'Designing the layered display platforms resembling natural rock shelves to support Puzzle leather bags.' },
-  { img: sketch17, title: 'Concept 17: Linear Sandstone Runway', desc: 'Visual plan of the central canyon pathway showcasing the luxury eyewear collection.' },
-  { img: sketch18, title: 'Concept 18: Shelving Niche Formations', desc: 'Conceptualizing natural, organic cave wall cutouts and warm backlight coves for merchandise.' },
-  { img: sketch19, title: 'Concept 19: The Mirrored Portal', desc: 'Designing the shattered organic mirror display reflecting the ancient AlUla sands.' }
+  {
+    img: sketch17,
+    title: 'The Sandstone Facade Portal',
+    subtitle: 'Store Front Facade',
+    desc: 'The entrance facade is carved from monolithic sandstone blocks, mimicking the slot canyons of AlUla. The offset entryway creates an intimate architectural threshold, while a sleek, polished brass base plate floats the heavy stone mass above the shifting sand floor.'
+  },
+  {
+    img: sketch15,
+    title: 'The Mirage Showcase Vitrine',
+    subtitle: 'Window Display Scene',
+    desc: 'An artistic street-facing vitrine installation. A circular plaster dune aperture acts as a framing device. Inside, a floating chrome halo suspends a single Puzzle leather bag, illuminated by tight pinpoint spotlights, surrounded by rising raw desert branches.'
+  },
+  {
+    img: sketch18,
+    title: 'Eroded Sandstone Shelving Niches',
+    subtitle: 'Side Wall Detail - East Gallery',
+    desc: 'A detailed study of the interior accessory coves. Deep, wind-eroded sandstone cavities are sculpted directly into the plaster walls, backed by hidden warm LED ribbons. Folded silk scarves and small leather goods sit like gems inside organic cavernous coves.'
+  },
+  {
+    img: sketch19,
+    title: 'The Shattered Mirror Vanity Coves',
+    subtitle: 'Side Wall Detail - West Gallery',
+    desc: 'Focused on eyewear and minor accessory display. A large, fractured mirror with natural, fluid brass contours is embedded flush into the dry clay wall. Sandstone columns emerge from the sand bed below to support luxury tortoiseshell glasses, offering shifting reflections of sand, mirror, and stone.'
+  },
+  {
+    img: sketch16,
+    title: 'The Back-of-Store Cash Wrap & Rock Shelf Canopy',
+    subtitle: 'Back of Store View',
+    desc: 'The terminal point of the gallery journey. A sweeping sandstone arch forms a protective plaster canopy. The central cash-wrap counter is shaped like a layered rock shelf, stepping up from rough texturized sandstone into a seamless, liquid-brass countertop.'
+  }
 ];
 
 export default function VisualMerchandisingRoute() {
@@ -455,62 +480,78 @@ export default function VisualMerchandisingRoute() {
                     }}
                     className="loewe-split-row"
                   >
-                    {/* Left: Morphing frame Mood Board */}
-                    <motion.div
-                      animate={{ 
-                        borderRadius: [
-                          "42% 58% 70% 30% / 45% 45% 55% 55%", 
-                          "70% 30% 52% 48% / 30% 60% 40% 70%", 
-                          "42% 58% 70% 30% / 45% 45% 55% 55%"
-                        ]
-                      }}
-                      transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+                    {/* Left: Full-size detailed rectangular Mood Board */}
+                    <div
                       style={{
                         position: 'relative',
                         width: '100%',
-                        maxWidth: '500px',
-                        height: '500px',
-                        border: '1px solid rgba(92, 74, 61, 0.25)',
-                        boxShadow: '0 30px 60px rgba(139, 107, 74, 0.2)',
+                        borderRadius: '12px',
+                        border: '1px solid rgba(92, 74, 61, 0.15)',
+                        boxShadow: '0 20px 45px rgba(139, 107, 74, 0.12)',
                         overflow: 'hidden',
                         cursor: 'pointer',
-                        justifySelf: 'center'
+                        justifySelf: 'center',
+                        background: '#fcfaf5',
+                        padding: '12px'
                       }}
-                      whileHover={{ scale: 1.015 }}
                     >
                       <img 
                         src={moodBoardImg} 
                         alt="Loewe Desert Mood Board" 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                        style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '6px' }} 
                       />
                       <div style={{
                         position: 'absolute',
                         top: 0, left: 0, right: 0, bottom: 0,
-                        background: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 60%)',
+                        background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 60%)',
                         pointerEvents: 'none'
                       }} />
-                    </motion.div>
+                    </div>
 
-                    {/* Right: Editorial Narrative */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', color: '#5c4a3d' }}>
+                    {/* Right: Editorial Theme Analysis */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem', color: '#5c4a3d' }}>
                       <div>
                         <span style={{ fontSize: '0.85rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#c49e29', fontWeight: 600, display: 'block', marginBottom: '0.5rem' }}>
-                          CONCEPT INSPIRATION
+                          THEME & CONCEPT INSPIRATION
                         </span>
-                        <h2 className="font-sans" style={{ fontSize: '3rem', letterSpacing: '0.05em', margin: 0, fontWeight: 300, lineHeight: '1.1', textTransform: 'uppercase' }}>
-                          THE MOODBOARD
+                        <h2 className="font-sans" style={{ fontSize: '2.5rem', letterSpacing: '0.03em', margin: 0, fontWeight: 300, lineHeight: '1.15', textTransform: 'uppercase' }}>
+                          THE CHROME DUNE SANCTUARY
                         </h2>
+                        <span style={{ fontSize: '1rem', letterSpacing: '0.1em', color: '#8c7662', display: 'block', marginTop: '0.25rem', fontWeight: 400 }}>
+                          AN EXPERIMENTAL MIRAGE
+                        </span>
                       </div>
 
-                      <p style={{ fontSize: '1.15rem', lineHeight: '1.8', opacity: 0.9, fontWeight: 300, margin: 0 }}>
-                        The Loewe Desert Pop-Up represents an avant-garde dialogue between raw, geological formations and modern high-precision luxury craftsmanship.
-                      </p>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', fontSize: '1.05rem', lineHeight: '1.75', fontWeight: 300 }}>
+                        <p style={{ margin: 0 }}>
+                          This design is a highly curated study of <strong>tactile contrasts</strong>—an architectural sanctuary where raw geological matter dialogues directly with high-precision luxury craftsmanship.
+                        </p>
+                        
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '0.5rem' }}>
+                          <div>
+                            <strong style={{ fontWeight: 500, color: '#c49e29', textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.05em', display: 'block', marginBottom: '0.25rem' }}>Geological Substrate & High-Tactility</strong>
+                            <p style={{ margin: 0, opacity: 0.9 }}>
+                              The mood board captures the coarse earth of AlUla: wind-rippled sand dunes, dry clay plaster, and layered agate geodes. These elements anchor the pop-up in an ancient topographic language, emphasizing physical mass, texture, and natural weathering.
+                            </p>
+                          </div>
+                          
+                          <div>
+                            <strong style={{ fontWeight: 500, color: '#c49e29', textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.05em', display: 'block', marginBottom: '0.25rem' }}>Precision Metallurgy & Mirror Horizons</strong>
+                            <p style={{ margin: 0, opacity: 0.9 }}>
+                              Hyper-polished chrome rings, liquid copper surfaces, and mirrored shards slice through the organic textures. They act as precise optical instruments, catching reflections of shifting dunes and the desert's high-contrast daylight, transforming the pop-up into an interactive mirage.
+                            </p>
+                          </div>
+                          
+                          <div>
+                            <strong style={{ fontWeight: 500, color: '#c49e29', textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.05em', display: 'block', marginBottom: '0.25rem' }}>Biomimetic Synergy & Leather Cuts</strong>
+                            <p style={{ margin: 0, opacity: 0.9 }}>
+                              Loewe's avant-garde fashion details—the precise geometric seams of the signature Puzzle bag, classical architectural columns, and dried branches—are woven into the landscape. Products are presented not as isolated merchandise, but as organic formations emerging from the earth.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
 
-                      <p style={{ fontSize: '1.15rem', lineHeight: '1.8', opacity: 0.9, fontWeight: 300, margin: 0 }}>
-                        Synthesizing the visual theme of a <strong>surreal desert sanctuary</strong>, the mood board plays with extreme contrasts: wind-swept layered sand dunes, dry clay walls, raw desert rose minerals, and layered agate slices are integrated with Loewe's signature puzzle leather cuts, woven straw bags, and tortoiseshell sunglasses resting on classical pillars. It stands as a visual dreamscape celebrating raw nature through polished geometry.
-                      </p>
-
-                      <div style={{ width: '80px', height: '2px', background: '#c49e29', marginTop: '1rem' }} />
+                      <div style={{ width: '80px', height: '2px', background: '#c49e29', marginTop: '0.5rem' }} />
                     </div>
                   </motion.div>
 
@@ -591,8 +632,8 @@ export default function VisualMerchandisingRoute() {
                               }}
                               className="sketch-text"
                             >
-                              <span style={{ fontSize: '0.8rem', opacity: 0.5, letterSpacing: '0.15em', fontWeight: 600 }}>
-                                PERSPECTIVE FOCUS
+                              <span style={{ fontSize: '0.85rem', opacity: 0.6, letterSpacing: '0.2em', fontWeight: 600, color: '#c49e29', textTransform: 'uppercase', marginBottom: '0.25rem', display: 'block' }}>
+                                {sketch.subtitle}
                               </span>
                               <h3 className="font-sans" style={{ fontSize: '2.2rem', letterSpacing: '0.02em', margin: 0, fontWeight: 300, textTransform: 'uppercase' }}>
                                 {sketch.title}
