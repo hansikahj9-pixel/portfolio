@@ -457,6 +457,10 @@ export default function VisualMerchandisingRoute() {
                         text-align: center !important;
                         align-items: center !important;
                       }
+                      .loewe-three-col-analysis {
+                        grid-template-columns: 1fr !important;
+                        gap: 2rem !important;
+                      }
                     }
                   `}</style>
 
@@ -469,36 +473,51 @@ export default function VisualMerchandisingRoute() {
                     style={{
                       width: '100%',
                       maxWidth: '1200px',
-                      display: 'grid',
-                      gridTemplateColumns: '1.1fr 0.9fr',
-                      gap: '4rem',
-                      alignItems: 'center',
                       marginTop: '2rem',
                       paddingBottom: '6rem',
                       borderBottom: '1px solid rgba(92, 74, 61, 0.15)',
-                      textAlign: 'left'
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '3.5rem'
                     }}
-                    className="loewe-split-row"
                   >
-                    {/* Left: Full-size detailed rectangular Mood Board */}
-                    <div
+                    {/* Theme Header */}
+                    <div style={{ textAlign: 'center', color: '#5c4a3d', maxWidth: '850px' }}>
+                      <span style={{ fontSize: '0.85rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#c49e29', fontWeight: 600, display: 'block', marginBottom: '0.5rem' }}>
+                        THEME & CONCEPT INSPIRATION
+                      </span>
+                      <h2 className="font-sans" style={{ fontSize: '3rem', letterSpacing: '0.04em', margin: 0, fontWeight: 300, textTransform: 'uppercase', lineHeight: '1.2' }}>
+                        THE CHROME DUNE SANCTUARY
+                      </h2>
+                      <span style={{ fontSize: '1.1rem', letterSpacing: '0.15em', color: '#8c7662', display: 'block', marginTop: '0.5rem', fontWeight: 300, textTransform: 'uppercase' }}>
+                        AN EXPERIMENTAL MIRAGE
+                      </span>
+                      <p style={{ fontSize: '1.2rem', lineHeight: '1.8', opacity: 0.9, fontWeight: 300, marginTop: '1.5rem', color: '#5c4a3d', marginInline: 'auto' }}>
+                        This design is a highly curated study of <strong>tactile contrasts</strong>—an architectural sanctuary where raw geological matter dialogues directly with high-precision luxury craftsmanship.
+                      </p>
+                    </div>
+
+                    {/* Massive Full-Size Rectangular Mood Board (Matching Cover Image Size Exactly) */}
+                    <motion.div
                       style={{
-                        position: 'relative',
                         width: '100%',
-                        borderRadius: '12px',
-                        border: '1px solid rgba(92, 74, 61, 0.15)',
-                        boxShadow: '0 20px 45px rgba(139, 107, 74, 0.12)',
+                        borderRadius: '16px',
+                        border: '1px solid rgba(92, 74, 61, 0.12)',
+                        boxShadow: '0 25px 50px -12px rgba(139, 107, 74, 0.25)',
                         overflow: 'hidden',
                         cursor: 'pointer',
-                        justifySelf: 'center',
                         background: '#fcfaf5',
-                        padding: '12px'
+                        padding: '16px',
+                        position: 'relative'
                       }}
+                      whileHover={{ scale: 1.005 }}
+                      transition={{ duration: 0.4 }}
                     >
                       <img 
                         src={moodBoardImg} 
                         alt="Loewe Desert Mood Board" 
-                        style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '6px' }} 
+                        style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '8px' }} 
                       />
                       <div style={{
                         position: 'absolute',
@@ -506,52 +525,47 @@ export default function VisualMerchandisingRoute() {
                         background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 60%)',
                         pointerEvents: 'none'
                       }} />
-                    </div>
+                    </motion.div>
 
-                    {/* Right: Editorial Theme Analysis */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem', color: '#5c4a3d' }}>
+                    {/* Highly Detailed Editorial Design Analysis Grid */}
+                    <div 
+                      style={{ 
+                        display: 'grid', 
+                        gridTemplateColumns: '1fr 1fr 1fr', 
+                        gap: '3rem', 
+                        width: '100%', 
+                        color: '#5c4a3d',
+                        marginTop: '1.5rem',
+                        textAlign: 'left'
+                      }}
+                      className="loewe-three-col-analysis"
+                    >
                       <div>
-                        <span style={{ fontSize: '0.85rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#c49e29', fontWeight: 600, display: 'block', marginBottom: '0.5rem' }}>
-                          THEME & CONCEPT INSPIRATION
-                        </span>
-                        <h2 className="font-sans" style={{ fontSize: '2.5rem', letterSpacing: '0.03em', margin: 0, fontWeight: 300, lineHeight: '1.15', textTransform: 'uppercase' }}>
-                          THE CHROME DUNE SANCTUARY
-                        </h2>
-                        <span style={{ fontSize: '1rem', letterSpacing: '0.1em', color: '#8c7662', display: 'block', marginTop: '0.25rem', fontWeight: 400 }}>
-                          AN EXPERIMENTAL MIRAGE
-                        </span>
-                      </div>
-
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', fontSize: '1.05rem', lineHeight: '1.75', fontWeight: 300 }}>
-                        <p style={{ margin: 0 }}>
-                          This design is a highly curated study of <strong>tactile contrasts</strong>—an architectural sanctuary where raw geological matter dialogues directly with high-precision luxury craftsmanship.
+                        <strong style={{ fontWeight: 500, color: '#c49e29', textTransform: 'uppercase', fontSize: '0.9rem', letterSpacing: '0.08em', display: 'block', marginBottom: '0.75rem', borderBottom: '1px solid rgba(196, 158, 41, 0.25)', paddingBottom: '0.5rem' }}>
+                          Geological Substrate
+                        </strong>
+                        <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.75', fontWeight: 300, opacity: 0.9 }}>
+                          The mood board captures the coarse earth of AlUla: wind-rippled sand dunes, dry clay plaster, and layered agate geodes. These elements anchor the pop-up in an ancient topographic language, emphasizing physical mass, texture, and natural weathering.
                         </p>
-                        
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '0.5rem' }}>
-                          <div>
-                            <strong style={{ fontWeight: 500, color: '#c49e29', textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.05em', display: 'block', marginBottom: '0.25rem' }}>Geological Substrate & High-Tactility</strong>
-                            <p style={{ margin: 0, opacity: 0.9 }}>
-                              The mood board captures the coarse earth of AlUla: wind-rippled sand dunes, dry clay plaster, and layered agate geodes. These elements anchor the pop-up in an ancient topographic language, emphasizing physical mass, texture, and natural weathering.
-                            </p>
-                          </div>
-                          
-                          <div>
-                            <strong style={{ fontWeight: 500, color: '#c49e29', textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.05em', display: 'block', marginBottom: '0.25rem' }}>Precision Metallurgy & Mirror Horizons</strong>
-                            <p style={{ margin: 0, opacity: 0.9 }}>
-                              Hyper-polished chrome rings, liquid copper surfaces, and mirrored shards slice through the organic textures. They act as precise optical instruments, catching reflections of shifting dunes and the desert's high-contrast daylight, transforming the pop-up into an interactive mirage.
-                            </p>
-                          </div>
-                          
-                          <div>
-                            <strong style={{ fontWeight: 500, color: '#c49e29', textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.05em', display: 'block', marginBottom: '0.25rem' }}>Biomimetic Synergy & Leather Cuts</strong>
-                            <p style={{ margin: 0, opacity: 0.9 }}>
-                              Loewe's avant-garde fashion details—the precise geometric seams of the signature Puzzle bag, classical architectural columns, and dried branches—are woven into the landscape. Products are presented not as isolated merchandise, but as organic formations emerging from the earth.
-                            </p>
-                          </div>
-                        </div>
                       </div>
 
-                      <div style={{ width: '80px', height: '2px', background: '#c49e29', marginTop: '0.5rem' }} />
+                      <div>
+                        <strong style={{ fontWeight: 500, color: '#c49e29', textTransform: 'uppercase', fontSize: '0.9rem', letterSpacing: '0.08em', display: 'block', marginBottom: '0.75rem', borderBottom: '1px solid rgba(196, 158, 41, 0.25)', paddingBottom: '0.5rem' }}>
+                          Precision Metallurgy
+                        </strong>
+                        <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.75', fontWeight: 300, opacity: 0.9 }}>
+                          Hyper-polished chrome rings, liquid copper surfaces, and mirrored shards slice through the organic textures. They act as precise optical instruments, catching reflections of shifting dunes and the desert's high-contrast daylight, transforming the pop-up into an interactive mirage.
+                        </p>
+                      </div>
+
+                      <div>
+                        <strong style={{ fontWeight: 500, color: '#c49e29', textTransform: 'uppercase', fontSize: '0.9rem', letterSpacing: '0.08em', display: 'block', marginBottom: '0.75rem', borderBottom: '1px solid rgba(196, 158, 41, 0.25)', paddingBottom: '0.5rem' }}>
+                          Biomimetic Synergy
+                        </strong>
+                        <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.75', fontWeight: 300, opacity: 0.9 }}>
+                          Loewe's avant-garde fashion details—the precise geometric seams of the signature Puzzle bag, classical architectural columns, and dried branches—are woven into the landscape. Products are presented not as isolated merchandise, but as organic formations emerging from the earth.
+                        </p>
+                      </div>
                     </div>
                   </motion.div>
 
