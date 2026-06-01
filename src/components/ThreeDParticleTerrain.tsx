@@ -421,9 +421,9 @@ const cyberStyles = `
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     z-index: 999;
     opacity: 0;
     pointer-events: none;
@@ -438,16 +438,16 @@ const cyberStyles = `
     top: 50%;
     left: 50%;
     transform: translate(-50%, -46%) scale(0.96);
-    width: 85vw;
-    max-width: 1000px;
-    height: 75vh;
-    max-height: 720px;
-    background: rgba(255, 255, 255, 0.22);
-    backdrop-filter: blur(35px) saturate(140%);
-    -webkit-backdrop-filter: blur(35px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.45);
+    width: 84vw;
+    height: 84vh;
+    max-width: 1600px;
+    max-height: 1000px;
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(40px) saturate(160%);
+    -webkit-backdrop-filter: blur(40px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.85);
     border-radius: 28px;
-    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.25), inset 0 0 0 1px rgba(255, 255, 255, 0.3);
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -460,7 +460,7 @@ const cyberStyles = `
   @media (max-width: 768px) {
     .cyber-modal {
       width: 92vw;
-      height: 80vh;
+      height: 82vh;
       padding: 30px;
       border-radius: 20px;
     }
