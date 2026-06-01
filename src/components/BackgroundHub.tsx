@@ -89,6 +89,12 @@ function BackgroundMesh() {
 }
 
 export default function BackgroundHub() {
+  const location = useLocation();
+  
+  if (location.pathname === '/3d-design') {
+    return null;
+  }
+
   return (
     <div 
       id="global-background-hub"

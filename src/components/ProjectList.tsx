@@ -80,6 +80,8 @@ export default function ProjectList({ onHover }: ProjectListProps) {
                 navigate('/shakespeare');
               } else if (project.name === 'Visual Merchandising') {
                 navigate('/visual-merchandising');
+              } else if (project.name === '3D Design') {
+                navigate('/3d-design');
               }
             }}
             onMouseEnter={(e) =>
