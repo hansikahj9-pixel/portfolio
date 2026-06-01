@@ -311,8 +311,6 @@ interface LiquidTorusProps {
   rotation?: [number, number, number];
   onClick?: () => void;
   label: string;
-  subLabel: string;
-  coordString: string;
 }
 
 function LiquidTorus({ 
@@ -321,9 +319,7 @@ function LiquidTorus({
   phase, 
   rotation = [-0.74, 0, 0],
   onClick,
-  label,
-  subLabel,
-  coordString
+  label
 }: LiquidTorusProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
@@ -374,18 +370,10 @@ function LiquidTorus({
         depthTest={true}
         side={THREE.DoubleSide}
       />
-      {/* Option A: Centered Holographic HUD label directly inside the torus hole */}
+      {/* Centered clean geometric sans-serif label inside the torus hole */}
       <Html center distanceFactor={14}>
-        <div className="cyber-hud-label">
-          <div className="hud-line-top" />
-          <div className="hud-label-content">
-            <span className="hud-bracket">[</span>
-            <span className="hud-title">{label}</span>
-            <span className="hud-bracket">]</span>
-          </div>
-          <span className="hud-sublabel">{subLabel}</span>
-          <span className="hud-coords">{coordString}</span>
-          <div className="hud-line-bottom" />
+        <div className={`cyber-hud-label ${hovered ? 'hovered' : ''}`}>
+          <span className="hud-title">{label}</span>
         </div>
       </Html>
     </mesh>
@@ -394,8 +382,10 @@ function LiquidTorus({
 
 
 const cyberStyles = `
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
+
   .cyber-hud-label {
-    font-family: 'Space Mono', 'Share Tech Mono', 'Courier New', monospace;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -404,52 +394,24 @@ const cyberStyles = `
     pointer-events: none;
     user-select: none;
     text-align: center;
-    width: 250px;
+    width: 320px;
     padding: 10px;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   }
-  .hud-label-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.05rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #ffffff;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.7), 0 0 16px rgba(255, 255, 255, 0.3);
-  }
-  .hud-bracket {
-    color: #00ffaa;
-    font-weight: 400;
-    margin: 0 4px;
-    text-shadow: 0 0 8px rgba(0, 255, 170, 0.8);
+  .cyber-hud-label.hovered {
+    transform: scale(1.12);
   }
   .hud-title {
-    color: #ffffff;
-  }
-  .hud-sublabel {
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    color: #a0a0a5;
+    font-size: 1.55rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
     text-transform: uppercase;
-    margin-top: 4px;
-    font-weight: 500;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.3);
+    transition: text-shadow 0.4s ease;
   }
-  .hud-coords {
-    font-size: 0.55rem;
-    letter-spacing: 0.1em;
-    color: #00ffaa;
-    opacity: 0.8;
-    margin-top: 2px;
-    text-shadow: 0 0 4px rgba(0, 255, 170, 0.4);
-  }
-  .hud-line-top, .hud-line-bottom {
-    width: 40px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, #00ffaa, transparent);
-    margin: 6px 0;
-    opacity: 0.7;
-    box-shadow: 0 0 4px #00ffaa;
+  .cyber-hud-label.hovered .hud-title {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 1.0), 0 0 35px rgba(0, 255, 170, 0.6);
   }
 
   /* Slide-out Collapsible Panel styles */
@@ -501,23 +463,22 @@ const cyberStyles = `
     top: 30px;
     right: 30px;
     background: transparent;
-    border: 1px solid rgba(0, 255, 170, 0.3);
-    color: #00ffaa;
-    font-family: monospace;
-    font-size: 0.85rem;
-    padding: 6px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 8px 16px;
     cursor: pointer;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.05em;
     transition: all 0.3s ease;
-    border-radius: 2px;
-    box-shadow: 0 0 8px rgba(0, 255, 170, 0.1);
+    border-radius: 4px;
   }
   .cyber-drawer-close:hover {
-    background: rgba(0, 255, 170, 0.1);
-    border-color: #00ffaa;
-    box-shadow: 0 0 12px rgba(0, 255, 170, 0.4);
-    text-shadow: 0 0 5px #00ffaa;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #ffffff;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.25);
   }
   .cyber-drawer-content {
     margin-top: 60px;
@@ -525,12 +486,12 @@ const cyberStyles = `
     display: flex;
     flex-direction: column;
     color: #ffffff;
-    font-family: 'Space Mono', monospace;
+    font-family: 'Plus Jakarta Sans', sans-serif;
   }
   .cyber-drawer-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
     text-transform: uppercase;
     color: #ffffff;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -540,7 +501,7 @@ const cyberStyles = `
   }
   .cyber-drawer-subtitle {
     font-size: 0.75rem;
-    letter-spacing: 0.25em;
+    letter-spacing: 0.15em;
     color: #00ffaa;
     text-transform: uppercase;
     margin-bottom: 30px;
@@ -589,10 +550,8 @@ export default function ThreeDParticleTerrain() {
           scale={[1.11, 1.11, 1.11]} 
           phase={1.5} 
           rotation={[-0.895, 0, 0]} 
-          onClick={() => setSelectedProject({ label: "VALKNUT // KNOTWORK", subLabel: "NORDIC COLLECTION SCHEMA" })}
-          label="VALKNUT // KNOTWORK"
-          subLabel="NORDIC COLLECTION SCHEMA"
-          coordString="COORD.60.1281_N_18.6435_E"
+          onClick={() => setSelectedProject({ label: "Nordic Knots", subLabel: "Nordic Knots Collection" })}
+          label="Nordic Knots"
         />
         
         {/* Bottom Left Torus: Positioned higher at Y=-4.0 to prevent screen cutoff, pushed to Z=3.5 to render strictly on top */}
@@ -601,10 +560,8 @@ export default function ThreeDParticleTerrain() {
           scale={[0.88, 0.88, 0.88]} 
           phase={1.5} 
           rotation={[-0.553, 0, 0]} 
-          onClick={() => setSelectedProject({ label: "VITRAIL // GLAZING", subLabel: "STAINED GLASS SPECTRUM" })}
-          label="VITRAIL // GLAZING"
-          subLabel="STAINED GLASS SPECTRUM"
-          coordString="COORD.48.8566_N_2.3522_E"
+          onClick={() => setSelectedProject({ label: "Stained Glass", subLabel: "Stained Glass Dress" })}
+          label="Stained Glass"
         />
         
         {/* Bottom Right Torus: Positioned higher at Y=-4.0 to prevent screen cutoff, pushed to Z=3.5 to render strictly on top */}
@@ -613,10 +570,8 @@ export default function ThreeDParticleTerrain() {
           scale={[0.88, 0.88, 0.88]} 
           phase={1.5} 
           rotation={[-0.553, 0, 0]} 
-          onClick={() => setSelectedProject({ label: "CHROME // SHELL", subLabel: "LIQUID METALLIC CHASSIS" })}
-          label="CHROME // SHELL"
-          subLabel="LIQUID METALLIC CHASSIS"
-          coordString="COORD.35.6762_N_139.6503_E"
+          onClick={() => setSelectedProject({ label: "Metallic Dress", subLabel: "Metallic Dress" })}
+          label="Metallic Dress"
         />
       </Canvas>
 
@@ -627,7 +582,7 @@ export default function ThreeDParticleTerrain() {
       />
       <div className={`cyber-drawer ${selectedProject ? 'active' : ''}`}>
         <button className="cyber-drawer-close" onClick={() => setSelectedProject(null)}>
-          [ CLOSE_ ]
+          [ CLOSE ]
         </button>
         <div className="cyber-drawer-content">
           <div className="cyber-drawer-title">{selectedProject?.label}</div>
