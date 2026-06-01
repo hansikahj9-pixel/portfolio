@@ -27,13 +27,21 @@ const particleVertexShader = `
     // Fine-scale undulating detail
     float wave3 = sin(pos.x * 0.08 + pos.y * 0.08 + uTime * 0.35);
     
-    // Interactive mouse displacement (local ripple)
-    float distToMouse = distance(pos.xy, uMouse * 30.0 - vec2(15.0));
-    float mouseForce = smoothstep(8.0, 0.0, distToMouse) * 1.5;
-    float mouseWave = sin(distToMouse * 0.5 - uTime * 2.0) * mouseForce;
+    // Interactive mouse/touch displacement (Tactile Cursor-Centric Rising Hills & Ripples)
+    // uMouse is normalized [-1.0, 1.0]. We scale it to match the pos.xy range [-16.0, 16.0].
+    float distToMouse = distance(pos.xy, uMouse * 16.0);
     
-    // Combine waves for a complex height terrain (3D depth)
-    float height = (wave1 * 2.2 + wave2 * 0.8 + wave3 * 0.4 + mouseWave) * 0.85;
+    // Smooth tapering influence based on distance from the cursor (radius = 6.5 units)
+    float influence = smoothstep(6.5, 0.0, distToMouse);
+    
+    // The interactive curves rise up to 2.8 units directly under the cursor/touch
+    float mouseRise = influence * 2.8;
+    
+    // Smooth concentric ripple propagating outward from the cursor
+    float mouseRipple = sin(distToMouse * 1.2 - uTime * 3.5) * 0.52 * influence;
+    
+    // Combine waves for a complex height terrain (3D depth) with active mouse/touch deformation
+    float height = (wave1 * 2.2 + wave2 * 0.8 + wave3 * 0.4) * 0.85 + mouseRise + mouseRipple;
     pos.z = height;
     
     // 3. WebGL ModelView Projection
@@ -135,12 +143,12 @@ function ParticleGridMesh() {
     uResolution: { value: new THREE.Vector2(1, 1) }
   }), []);
 
-  // 3. Dynamic Mouse Tracking
+  // 3. Dynamic Mouse & Touch Tracking
   useEffect(() => {
-    const handleMove = (e: MouseEvent) => {
-      // Normalize mouse positions to range [-1.0, 1.0]
-      const targetX = (e.clientX / window.innerWidth) * 2.0 - 1.0;
-      const targetY = (1.0 - (e.clientY / window.innerHeight)) * 2.0 - 1.0;
+    const handleMove = (x: number, y: number) => {
+      // Normalize client coordinates to range [-1.0, 1.0]
+      const targetX = (x / window.innerWidth) * 2.0 - 1.0;
+      const targetY = (1.0 - (y / window.innerHeight)) * 2.0 - 1.0;
       
       // Smoothly interpolate the mouse uniform values
       gsap.to(uniforms.uMouse.value, {
@@ -150,9 +158,26 @@ function ParticleGridMesh() {
         ease: 'power2.out'
       });
     };
-    window.addEventListener('mousemove', handleMove, { passive: true });
-    return () => window.removeEventListener('mousemove', handleMove);
+
+    const onMouseMove = (e: MouseEvent) => {
+      handleMove(e.clientX, e.clientY);
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        handleMove(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    };
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
+
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('touchmove', onTouchMove);
+    };
   }, [uniforms]);
+
 
   // 4. Per-Frame Shader Updates
   useFrame((state) => {
