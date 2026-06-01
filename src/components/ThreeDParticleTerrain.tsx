@@ -148,41 +148,44 @@ const torusFragmentShader = `
     vec3 viewDir = normalize(vViewPosition);
     
     // 1. Fresnel factor: 1.0 when viewing edge-on (grazing), 0.0 when viewing head-on
-    float fresnel = pow(1.0 - max(0.0, dot(normal, viewDir)), 2.8);
+    float fresnel = pow(1.0 - max(0.0, dot(normal, viewDir)), 3.0);
     
-    // 2. Static Iridescent/holographic color shift calculations matching metallic glass
-    float shift = uPhase * 1.5 + normal.x * 0.45 + normal.y * 0.45 + vWorldPosition.z * 0.06;
+    // 2. High-Contrast Dark Chrome mapping
+    // Creates liquid metallic silver and space-gray banding
+    float chromeBanding = sin(normal.x * 2.8 + normal.y * 2.8 + normal.z * 1.5) * 0.5 + 0.5;
     
-    // Palette matching the user's color system & iridescent screenshot
-    vec3 colPink = vec3(0.92, 0.25, 0.82);   // Vibrant Magenta
-    vec3 colPurple = vec3(0.68, 0.20, 0.95); // Neon Violet / Deep Purple
-    vec3 colGold = vec3(0.96, 0.68, 0.28);   // Warm Golden Orange / Pink-Gold
-    vec3 colMint = vec3(0.38, 0.88, 0.62);   // Soft Mint Green / Pale Teal
-    vec3 colBlue = vec3(0.20, 0.52, 0.95);   // Cyan / Sky Blue (Chromatic reflective glass base)
+    // Core metallic colors
+    vec3 colCharcoal = vec3(0.08, 0.08, 0.09); // Deep dark space-gray shadow
+    vec3 colSilver = vec3(0.72, 0.72, 0.75);   // Polished liquid silver
     
-    // Smooth multi-layered color blending shifts (Static iridescent gradients)
-    vec3 baseColor = mix(colBlue, colPink, sin(shift * 1.2) * 0.5 + 0.5);
-    baseColor = mix(baseColor, colPurple, cos(shift * 1.8) * 0.4 + 0.4);
-    baseColor = mix(baseColor, colMint, fresnel * 0.72);
-    baseColor = mix(baseColor, colGold, (1.0 - fresnel) * 0.28);
+    // Subtle holographic color shift in grazing transition areas (combines soft pink-violet & teal-cyan)
+    vec3 colHoloPink = vec3(0.72, 0.35, 0.72);
+    vec3 colHoloBlue = vec3(0.35, 0.58, 0.82);
+    vec3 holoColor = mix(colHoloBlue, colHoloPink, sin(normal.z * 4.0 + uPhase) * 0.5 + 0.5);
     
-    // 3. Specular highlights for glassmorphic/liquid metallic gloss
-    vec3 lightDir = normalize(vec3(0.5, 1.5, 0.8)); // Top-front light
+    // Base mix: High contrast chrome banding
+    vec3 baseColor = mix(colCharcoal, colSilver, chromeBanding);
+    
+    // Blend subtle holographic iridescence into the grazing Fresnel margins (dark chrome effect)
+    baseColor = mix(baseColor, holoColor, fresnel * 0.38);
+    
+    // 3. Specular highlights for shiny metallic glass surface
+    vec3 lightDir = normalize(vec3(0.5, 1.6, 0.9)); // Top-front sharp light source
     vec3 halfDir = normalize(lightDir + viewDir);
-    float spec = pow(max(0.0, dot(normal, halfDir)), 32.0);
-    vec3 specularHighlight = vec3(1.0) * spec * 0.92;
+    float spec = pow(max(0.0, dot(normal, halfDir)), 48.0); // High power shininess
     
-    // 4. Rim light glowing edges
+    // Extremely bright, solid white crest highlights matching the user screenshot
+    vec3 specularHighlight = vec3(1.0) * spec * 1.65;
+    
+    // 4. Rim glow on edge boundaries
     float rim = pow(1.0 - max(0.0, dot(normal, viewDir)), 4.0);
-    vec3 rimLight = vec3(0.98, 0.78, 0.98) * rim * 0.45;
+    vec3 rimGlow = vec3(0.9, 0.9, 1.0) * rim * 0.32;
     
-    // Composite final color
-    vec3 finalColor = baseColor + specularHighlight + rimLight;
+    // Final Composite
+    vec3 finalColor = baseColor + specularHighlight + rimGlow;
     
-    // Glassmorphic transparency: Higher opacity at grazing edges, translucent center
-    float alpha = smoothstep(0.04, 0.88, fresnel) * 0.82 + 0.18;
-    
-    gl_FragColor = vec4(finalColor, alpha);
+    // 100% OPAQUE (Solid, no transparency)
+    gl_FragColor = vec4(finalColor, 1.0);
   }
 `;
 
@@ -313,9 +316,9 @@ function LiquidTorus({ position, scale, phase }: LiquidTorusProps) {
       ref={meshRef} 
       position={position}
       scale={scale}
-      // Tilted to face the camera pitch (looking down from [0, -11, 12] has ~-0.74rad pitch)
-      // Z rotation is set statically based on phase so they orient differently
-      rotation={[-0.74, 0, phase * 1.2]}
+      // Tilted to face the camera pitch exactly parallel (approx -0.74rad pitch)
+      // Front facing with no Y or Z phase rotations so all 3 shapes face forward and look identical
+      rotation={[-0.74, 0, 0]}
     >
       {/* 
         Torus Geometry:
@@ -336,6 +339,7 @@ function LiquidTorus({ position, scale, phase }: LiquidTorusProps) {
   );
 }
 
+
 export default function ThreeDParticleTerrain() {
   return (
     <div className="td-canvas-wrapper" style={{ pointerEvents: 'auto' }}>
@@ -352,10 +356,10 @@ export default function ThreeDParticleTerrain() {
       >
         <ParticleGridMesh />
         
-        {/* ── 3 monumental floating liquid iridescent toruses covering ~80% of the screen ── */}
-        <LiquidTorus position={[-4.2, 3.2, -1.0]} scale={[0.95, 0.95, 0.95]} phase={0.0} />
-        <LiquidTorus position={[4.4, -0.6, 0.5]} scale={[1.2, 1.2, 1.2]} phase={2.1} />
-        <LiquidTorus position={[-3.8, -4.2, 1.2]} scale={[0.9, 0.9, 0.9]} phase={4.5} />
+        {/* ── 3 identical front-facing monumental static chrome-silver toruses (zero overlap, 100% opaque) ── */}
+        <LiquidTorus position={[0.0, 3.2, 0.0]} scale={[0.72, 0.72, 0.72]} phase={1.5} />
+        <LiquidTorus position={[-4.0, -2.6, 0.0]} scale={[0.72, 0.72, 0.72]} phase={1.5} />
+        <LiquidTorus position={[4.0, -2.6, 0.0]} scale={[0.72, 0.72, 0.72]} phase={1.5} />
       </Canvas>
     </div>
   );
