@@ -346,8 +346,8 @@ export default function ThreeDParticleTerrain() {
   return (
     <div className="td-canvas-wrapper" style={{ pointerEvents: 'auto' }}>
       <Canvas
-        // Camera positioned at a front-facing perspective [0, -2, 24] to completely eliminate tilt distortion
-        camera={{ position: [0, -2, 24], fov: 55, near: 0.1, far: 60 }}
+        // Camera positioned at the 3D perspective angle looking down the sloped grid
+        camera={{ position: [0, -15, 17], fov: 55, near: 0.1, far: 60 }}
         dpr={Math.min(window.devicePixelRatio, 2)}
         gl={{ 
           antialias: true, 
@@ -359,28 +359,28 @@ export default function ThreeDParticleTerrain() {
         <ParticleGridMesh />
         
         {/* ── 3 identical front-facing monumental static chrome-silver toruses (zero overlap, 100% opaque) ── */}
-        {/* Top Torus: Positioned high at Y=7.8, X-rotation matched to camera pitch for a perfect front-facing donut */}
+        {/* Top Torus: Positioned high at Y=7.8, X-rotation set to match the other two shapes exactly */}
         <LiquidTorus 
           position={[0.0, 7.8, 0.0]} 
           scale={[0.94, 0.94, 0.94]} 
           phase={1.5} 
-          rotation={[-0.083, 0, 0]} 
+          rotation={[-0.553, 0, 0]} 
         />
         
-        {/* Bottom Left Torus: Positioned wide at X=-9.2, Y=-6.8, rotation identical to top for perfect uniformity */}
+        {/* Bottom Left Torus: Positioned wide at X=-9.2, Y=-6.8, rotation remains as previous state */}
         <LiquidTorus 
           position={[-9.2, -6.8, 0.0]} 
           scale={[0.94, 0.94, 0.94]} 
           phase={1.5} 
-          rotation={[-0.083, 0, 0]} 
+          rotation={[-0.553, 0, 0]} 
         />
         
-        {/* Bottom Right Torus: Positioned wide at X=9.2, Y=-6.8, rotation identical to top for perfect uniformity */}
+        {/* Bottom Right Torus: Positioned wide at X=9.2, Y=-6.8, rotation remains as previous state */}
         <LiquidTorus 
           position={[9.2, -6.8, 0.0]} 
           scale={[0.94, 0.94, 0.94]} 
           phase={1.5} 
-          rotation={[-0.083, 0, 0]} 
+          rotation={[-0.553, 0, 0]} 
         />
       </Canvas>
     </div>
