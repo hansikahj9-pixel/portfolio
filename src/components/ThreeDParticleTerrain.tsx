@@ -346,8 +346,8 @@ export default function ThreeDParticleTerrain() {
   return (
     <div className="td-canvas-wrapper" style={{ pointerEvents: 'auto' }}>
       <Canvas
-        // Camera positioned further back to capture the larger spaced-out shapes beautifully
-        camera={{ position: [0, -15, 17], fov: 55, near: 0.1, far: 60 }}
+        // Camera positioned at a front-facing perspective [0, -2, 24] to completely eliminate tilt distortion
+        camera={{ position: [0, -2, 24], fov: 55, near: 0.1, far: 60 }}
         dpr={Math.min(window.devicePixelRatio, 2)}
         gl={{ 
           antialias: true, 
@@ -359,28 +359,28 @@ export default function ThreeDParticleTerrain() {
         <ParticleGridMesh />
         
         {/* ── 3 identical front-facing monumental static chrome-silver toruses (zero overlap, 100% opaque) ── */}
-        {/* Top Torus: Positioned at Y=5.0, X-rotation computed for Y=5.0 and Z=17 camera position: -0.866 rad */}
+        {/* Top Torus: Positioned high at Y=7.8, X-rotation matched to camera pitch for a perfect front-facing donut */}
         <LiquidTorus 
-          position={[0.0, 5.0, 0.0]} 
+          position={[0.0, 7.8, 0.0]} 
           scale={[0.94, 0.94, 0.94]} 
           phase={1.5} 
-          rotation={[-0.866, 0, 0]} 
+          rotation={[-0.083, 0, 0]} 
         />
         
-        {/* Bottom Left Torus: Positioned at X=-6.4, Y=-4.5, X-rotation computed for Y=-4.5: -0.553 rad */}
+        {/* Bottom Left Torus: Positioned wide at X=-9.2, Y=-6.8, rotation identical to top for perfect uniformity */}
         <LiquidTorus 
-          position={[-6.4, -4.5, 0.0]} 
+          position={[-9.2, -6.8, 0.0]} 
           scale={[0.94, 0.94, 0.94]} 
           phase={1.5} 
-          rotation={[-0.553, 0, 0]} 
+          rotation={[-0.083, 0, 0]} 
         />
         
-        {/* Bottom Right Torus: Positioned at X=6.4, Y=-4.5, X-rotation computed for Y=-4.5: -0.553 rad */}
+        {/* Bottom Right Torus: Positioned wide at X=9.2, Y=-6.8, rotation identical to top for perfect uniformity */}
         <LiquidTorus 
-          position={[6.4, -4.5, 0.0]} 
+          position={[9.2, -6.8, 0.0]} 
           scale={[0.94, 0.94, 0.94]} 
           phase={1.5} 
-          rotation={[-0.553, 0, 0]} 
+          rotation={[-0.083, 0, 0]} 
         />
       </Canvas>
     </div>
