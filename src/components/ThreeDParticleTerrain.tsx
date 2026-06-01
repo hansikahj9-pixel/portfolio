@@ -1,6 +1,7 @@
 import { useFrame, Canvas, useThree } from '@react-three/fiber';
 import { useRef, useMemo, useEffect } from 'react';
 import * as THREE from 'three';
+import gsap from 'gsap';
 
 // ── CUSTOM SHADERS FOR EXACT COLOR, CURVES, AND CIRCULAR 3D MOTION ──
 
@@ -8,7 +9,6 @@ const particleVertexShader = `
   uniform float uTime;
   uniform vec2 uMouse;
   varying vec3 vColor;
-  varying float vDepth;
   
   void main() {
     vec3 pos = position;
@@ -41,7 +41,7 @@ const particleVertexShader = `
     gl_Position = projectionMatrix * mvPosition;
     
     // 4. Point Size Depth Attenuation (Spherical sizing based on distance)
-    gl_PointSize = 13.0 * (320.0 / -mvPosition.z);
+    gl_PointSize = clamp(13.0 * (320.0 / max(0.1, -mvPosition.z)), 1.0, 64.0);
     
     // 5. Precise Color Mapping matching the attached gradient image
     float normHeight = (height + 2.5) / 5.0; // Range [0, 1]
@@ -154,18 +154,6 @@ function ParticleGridMesh() {
     return () => window.removeEventListener('mousemove', handleMove);
   }, [uniforms]);
 
-  // Import gsap dynamically or fallback safely
-  let gsap = (window as any).gsap;
-  if (!gsap) {
-    // Fallback simple lerp if GSAP is not globally bound (though it is in package.json)
-    gsap = {
-      to: (obj: any, params: any) => {
-        obj.x = params.x;
-        obj.y = params.y;
-      }
-    };
-  }
-
   // 4. Per-Frame Shader Updates
   useFrame((state) => {
     if (materialRef.current) {
@@ -202,7 +190,7 @@ function ParticleGridMesh() {
 
 export default function ThreeDParticleTerrain() {
   return (
-    <div className="td-canvas-wrapper">
+    <div className="td-canvas-wrapper" style={{ pointerEvents: 'auto' }}>
       <Canvas
         // Camera positioned at a 3D perspective looking down the terrain slope
         camera={{ position: [0, -11, 12], fov: 55, near: 0.1, far: 50 }}
