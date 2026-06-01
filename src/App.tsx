@@ -41,7 +41,7 @@ function App() {
             <Route path="/axiome" element={<MotionPageFlip locationKey="/axiome"><AxiomeRoute /></MotionPageFlip>} />
             <Route path="/vision" element={<MotionPageFlip locationKey="/vision"><MonolithRoute /></MotionPageFlip>} />
             <Route path="/visual-merchandising" element={<MotionPageFlip locationKey="/visual-merchandising"><VisualMerchandisingRoute /></MotionPageFlip>} />
-            <Route path="/3d-design" element={<MotionPageFlip locationKey="/3d-design"><ThreeDDesignRoute /></MotionPageFlip>} />
+            <Route path="/3d-design" element={<ThreeDDesignRoute />} />
 
             {/* ── Legacy Redirects ── */}
             <Route path="/axiome/process" element={<Navigate to="/process" replace />} />
