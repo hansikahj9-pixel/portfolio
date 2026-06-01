@@ -339,44 +339,43 @@ function LiquidTorus({
   }, [hovered]);
 
   return (
-    <mesh 
-      ref={meshRef} 
-      position={position}
-      scale={scale}
-      rotation={rotation}
-      onClick={onClick}
-      onPointerOver={(e) => {
-        e.stopPropagation();
-        setHovered(true);
-      }}
-      onPointerOut={() => {
-        setHovered(false);
-      }}
-    >
-      {/* 
-        Torus Geometry:
-        - Torus radius increased to 5.8, tube radius 0.95
-        - Inside radius = 5.8 - 0.95 = 4.85 (a 36.6% increase over 3.55, matching the 35% requirement)
-        - Outer radius = 5.8 + 0.95 = 6.75
-      */}
-      <torusGeometry args={[5.8, 0.95, 64, 128]} />
-      <shaderMaterial
-        ref={materialRef}
-        vertexShader={torusVertexShader}
-        fragmentShader={torusFragmentShader}
-        uniforms={uniforms}
-        transparent={false}
-        depthWrite={true}
-        depthTest={true}
-        side={THREE.DoubleSide}
-      />
-      {/* Centered clean geometric sans-serif label inside the torus hole */}
-      <Html center distanceFactor={14}>
+    <group position={position} scale={scale} rotation={rotation}>
+      <mesh 
+        ref={meshRef} 
+        onClick={onClick}
+        onPointerOver={(e) => {
+          e.stopPropagation();
+          setHovered(true);
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+        }}
+      >
+        {/* 
+          Torus Geometry:
+          - Torus radius increased to 5.8, tube radius 0.95
+          - Inside radius = 5.8 - 0.95 = 4.85 (a 36.6% increase over 3.55, matching the 35% requirement)
+          - Outer radius = 5.8 + 0.95 = 6.75
+        */}
+        <torusGeometry args={[5.8, 0.95, 64, 128]} />
+        <shaderMaterial
+          ref={materialRef}
+          vertexShader={torusVertexShader}
+          fragmentShader={torusFragmentShader}
+          uniforms={uniforms}
+          transparent={false}
+          depthWrite={true}
+          depthTest={true}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      {/* Centered clean geometric sans-serif label tilted in 3D in the direction of the torus hole */}
+      <Html transform center distanceFactor={14}>
         <div className={`cyber-hud-label ${hovered ? 'hovered' : ''}`}>
           <span className="hud-title">{label}</span>
         </div>
       </Html>
-    </mesh>
+    </group>
   );
 }
 
@@ -394,7 +393,8 @@ const cyberStyles = `
     pointer-events: none;
     user-select: none;
     text-align: center;
-    width: 320px;
+    width: max-content;
+    white-space: nowrap;
     padding: 10px;
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   }
@@ -402,16 +402,16 @@ const cyberStyles = `
     transform: scale(1.12);
   }
   .hud-title {
-    font-size: 1.55rem;
+    font-size: 5.2rem;
     font-weight: 800;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     text-transform: uppercase;
     color: #ffffff;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.3);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.85), 0 0 35px rgba(255, 255, 255, 0.3);
     transition: text-shadow 0.4s ease;
   }
   .cyber-hud-label.hovered .hud-title {
-    text-shadow: 0 0 15px rgba(255, 255, 255, 1.0), 0 0 35px rgba(0, 255, 170, 0.6);
+    text-shadow: 0 0 22px rgba(255, 255, 255, 1.0), 0 0 45px rgba(0, 255, 170, 0.8);
   }
 
   /* Slide-out Collapsible Panel styles */
