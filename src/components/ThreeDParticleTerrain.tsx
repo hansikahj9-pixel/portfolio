@@ -62,8 +62,15 @@ const particleVertexShader = `
     vec3 colMint = vec3(0.38, 0.88, 0.62);   // Soft Mint Green / Pale Teal
     vec3 colIndigo = vec3(0.12, 0.08, 0.48); // Deep valley shadows
     
-    // Base mix: height deforms from deep Indigo (shadow) to bright Pink (crests)
-    vec3 color = mix(colIndigo, colPink, smoothstep(0.08, 0.82, normHeight));
+    // 50% Pink reduction replaced with Green, Silver, and White
+    vec3 colSilver = vec3(0.72, 0.72, 0.75); // Silver
+    vec3 colWhite = vec3(0.98, 0.98, 1.00);  // White
+    vec3 colGreen = vec3(0.28, 0.85, 0.52);  // Vibrant Green
+    vec3 colGreenSilverWhite = mix(colGreen, mix(colSilver, colWhite, 0.5), 0.5);
+    vec3 colPinkReplaced = mix(colPink, colGreenSilverWhite, 0.5);
+    
+    // Base mix: height deforms from deep Indigo (shadow) to the replaced Pink (crests)
+    vec3 color = mix(colIndigo, colPinkReplaced, smoothstep(0.08, 0.82, normHeight));
     
     // Swirling Gold/Amber on the mid-slope curves
     float goldenSlope = sin(r * 0.20 - uTime * 0.7 + theta * 2.0) * 0.5 + 0.5;
