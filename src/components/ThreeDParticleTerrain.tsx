@@ -102,30 +102,30 @@ const particleFragmentShader = `
     float core = smoothstep(0.18, 0.0, dist) * 0.65;
     vec3 finalColor = mix(vColor, vec3(1.0), core);
     
-    gl_FragColor = vec4(finalColor, alpha * 0.90);
+    // Decreased background animation opacity by 46.6% (alpha * 0.48 instead of 0.90) so shapes are highly visible
+    gl_FragColor = vec4(finalColor, alpha * 0.48);
   }
 `;
 
 // ── CUSTOM SHADERS FOR ORGANIC IRIDESCENT METALLIC CHROMATIC TORUS ──
 
 const torusVertexShader = `
-  uniform float uTime;
+  uniform float uPhase;
   varying vec3 vNormal;
   varying vec3 vViewPosition;
   varying vec3 vWorldPosition;
   
   void main() {
-    // 3D Organic Fluid deformation on Torus geometry
-    // Calculate polar angle on the horizontal plane of the torus tube
+    // 3D Organic Fluid deformation on Torus geometry (Static wavy shape)
     float angle = atan(position.y, position.x);
     
-    // Smooth wavy deformation based on trigonometric harmonics and time
-    float wave = sin(angle * 3.0 + uTime * 0.95) * 0.24 
-               + cos(position.z * 2.5 - uTime * 0.7) * 0.16
-               + sin(position.x * 0.6 + position.y * 0.6 + uTime * 0.5) * 0.12;
+    // Wavy deformation using uPhase for distinct static organic contours per mesh
+    float wave = sin(angle * 3.0 + uPhase) * 0.28 
+               + cos(position.z * 2.5 - uPhase) * 0.18
+               + sin(position.x * 0.6 + position.y * 0.6 + uPhase) * 0.14;
                
-    // Displace vertex along its local normal vector to shape irregular curves
-    vec3 displaced = position + normal * wave * 0.68;
+    // Displace vertex along its local normal vector to shape irregular static curves
+    vec3 displaced = position + normal * wave * 0.72;
     
     // standard vertex projection
     vNormal = normalize(normalMatrix * normal);
@@ -141,7 +141,7 @@ const torusFragmentShader = `
   varying vec3 vNormal;
   varying vec3 vViewPosition;
   varying vec3 vWorldPosition;
-  uniform float uTime;
+  uniform float uPhase;
   
   void main() {
     vec3 normal = normalize(vNormal);
@@ -150,8 +150,8 @@ const torusFragmentShader = `
     // 1. Fresnel factor: 1.0 when viewing edge-on (grazing), 0.0 when viewing head-on
     float fresnel = pow(1.0 - max(0.0, dot(normal, viewDir)), 2.8);
     
-    // 2. Iridescent/holographic color shift calculations matching metallic glass
-    float shift = uTime * 0.32 + normal.x * 0.45 + normal.y * 0.45 + vWorldPosition.z * 0.06;
+    // 2. Static Iridescent/holographic color shift calculations matching metallic glass
+    float shift = uPhase * 1.5 + normal.x * 0.45 + normal.y * 0.45 + vWorldPosition.z * 0.06;
     
     // Palette matching the user's color system & iridescent screenshot
     vec3 colPink = vec3(0.92, 0.25, 0.82);   // Vibrant Magenta
@@ -160,7 +160,7 @@ const torusFragmentShader = `
     vec3 colMint = vec3(0.38, 0.88, 0.62);   // Soft Mint Green / Pale Teal
     vec3 colBlue = vec3(0.20, 0.52, 0.95);   // Cyan / Sky Blue (Chromatic reflective glass base)
     
-    // Smooth multi-layered color blending shifts
+    // Smooth multi-layered color blending shifts (Static iridescent gradients)
     vec3 baseColor = mix(colBlue, colPink, sin(shift * 1.2) * 0.5 + 0.5);
     baseColor = mix(baseColor, colPurple, cos(shift * 1.8) * 0.4 + 0.4);
     baseColor = mix(baseColor, colMint, fresnel * 0.72);
@@ -303,41 +303,26 @@ function LiquidTorus({ position, scale, phase }: LiquidTorusProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
 
-  // 1. Torus Uniforms
+  // 1. Torus Uniforms (Static phase config)
   const uniforms = useMemo(() => ({
-    uTime: { value: 0 },
-  }), []);
-
-  // 2. Continuous float, wobble, and rotation per-frame updates
-  useFrame((state) => {
-    const time = state.clock.elapsedTime;
-    
-    if (materialRef.current) {
-      materialRef.current.uniforms.uTime.value = time;
-    }
-    
-    if (meshRef.current) {
-      // Gentle floating animation
-      meshRef.current.position.y = position[1] + Math.sin(time * 0.52 + phase) * 0.32;
-      meshRef.current.position.x = position[0] + Math.cos(time * 0.38 + phase) * 0.22;
-      
-      // Wobble aligned to face camera looking down from [0, -11, 12] (approx -0.74rad pitch)
-      meshRef.current.rotation.x = -0.74 + Math.sin(time * 0.25 + phase) * 0.12;
-      meshRef.current.rotation.y = Math.cos(time * 0.20 + phase) * 0.12;
-      meshRef.current.rotation.z = time * 0.04 + phase; // Slow rotational spin
-    }
-  });
+    uPhase: { value: phase },
+  }), [phase]);
 
   return (
-    <mesh ref={meshRef} scale={scale}>
+    <mesh 
+      ref={meshRef} 
+      position={position}
+      scale={scale}
+      // Tilted to face the camera pitch (looking down from [0, -11, 12] has ~-0.74rad pitch)
+      // Z rotation is set statically based on phase so they orient differently
+      rotation={[-0.74, 0, phase * 1.2]}
+    >
       {/* 
         Torus Geometry:
-        - Inner opening / radius is maximized to create ample space in the center for text/images.
-        - Radius = 4.2 (makes it 10x larger than in reference image)
-        - Tube Radius = 0.52 (relatively thin tube for incredibly wide center space)
-        - Segments: high segments for ultimate smooth rendering
+        - Outer radius is thicker (we increase the tube radius to 0.95, and radius to 4.5)
+        - Inner hole diameter is still huge: 2 * (4.5 - 0.95) = 7.10 units!
       */}
-      <torusGeometry args={[4.2, 0.52, 64, 128]} />
+      <torusGeometry args={[4.5, 0.95, 64, 128]} />
       <shaderMaterial
         ref={materialRef}
         vertexShader={torusVertexShader}
