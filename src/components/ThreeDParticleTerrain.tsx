@@ -414,111 +414,124 @@ const cyberStyles = `
     text-shadow: 0 0 15px rgba(255, 255, 255, 1.0), 0 0 35px rgba(0, 255, 170, 0.6);
   }
 
-  /* Slide-out Collapsible Panel styles */
-  .cyber-drawer-overlay {
+  /* Centered Glassmorphic Modal styles */
+  .cyber-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     z-index: 999;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   }
-  .cyber-drawer-overlay.active {
+  .cyber-modal-overlay.active {
     opacity: 1;
     pointer-events: auto;
   }
-  .cyber-drawer {
+  .cyber-modal {
     position: fixed;
-    top: 0;
-    right: -480px;
-    width: 480px;
-    height: 100vh;
-    background: rgba(8, 8, 10, 0.85);
-    backdrop-filter: blur(25px);
-    border-left: 1px solid rgba(0, 255, 170, 0.15);
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(0, 255, 170, 0.03);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -46%) scale(0.96);
+    width: 85vw;
+    max-width: 1000px;
+    height: 75vh;
+    max-height: 720px;
+    background: rgba(255, 255, 255, 0.22);
+    backdrop-filter: blur(35px) saturate(140%);
+    -webkit-backdrop-filter: blur(35px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 28px;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    padding: 40px;
+    padding: 50px;
     box-sizing: border-box;
-    transition: right 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.45s ease;
   }
-  @media (max-width: 600px) {
-    .cyber-drawer {
-      width: 100vw;
-      right: -100vw;
+  @media (max-width: 768px) {
+    .cyber-modal {
+      width: 92vw;
+      height: 80vh;
+      padding: 30px;
+      border-radius: 20px;
     }
   }
-  .cyber-drawer.active {
-    right: 0;
+  .cyber-modal.active {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    pointer-events: auto;
   }
-  .cyber-drawer-close {
+  .cyber-modal-close {
     position: absolute;
-    top: 30px;
-    right: 30px;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #ffffff;
+    top: 35px;
+    right: 35px;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    color: #111115;
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.8rem;
-    font-weight: 600;
-    padding: 8px 16px;
+    font-weight: 700;
+    padding: 8px 20px;
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    transition: all 0.3s ease;
-    border-radius: 4px;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    border-radius: 50px;
   }
-  .cyber-drawer-close:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: #ffffff;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.25);
+  .cyber-modal-close:hover {
+    background: #111115;
+    color: #ffffff;
+    border-color: #111115;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   }
-  .cyber-drawer-content {
-    margin-top: 60px;
+  .cyber-modal-content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    color: #ffffff;
+    color: #111115;
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
-  .cyber-drawer-title {
-    font-size: 1.6rem;
+  .cyber-modal-title {
+    font-size: 2.2rem;
     font-weight: 800;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     text-transform: uppercase;
-    color: #ffffff;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    color: #111115;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     padding-bottom: 15px;
-    margin-bottom: 20px;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    margin-bottom: 15px;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
   }
-  .cyber-drawer-subtitle {
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    color: #00ffaa;
+  .cyber-modal-subtitle {
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    color: #007352;
+    font-weight: 700;
     text-transform: uppercase;
     margin-bottom: 30px;
-    text-shadow: 0 0 5px rgba(0, 255, 170, 0.3);
   }
-  .cyber-drawer-body {
+  .cyber-modal-body {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px dashed rgba(255, 255, 255, 0.05);
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.01);
+    border: 1px dashed rgba(0, 0, 0, 0.15);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.15);
   }
-  .cyber-drawer-placeholder {
-    font-size: 0.75rem;
-    color: #505055;
+  .cyber-modal-placeholder {
+    font-size: 0.8rem;
+    color: #4a4a55;
+    font-weight: 600;
     letter-spacing: 0.15em;
     text-transform: uppercase;
   }
@@ -575,20 +588,20 @@ export default function ThreeDParticleTerrain() {
         />
       </Canvas>
 
-      {/* Sleek slide-out side panel */}
+      {/* Sleek glassmorphic centered modal */}
       <div 
-        className={`cyber-drawer-overlay ${selectedProject ? 'active' : ''}`}
+        className={`cyber-modal-overlay ${selectedProject ? 'active' : ''}`}
         onClick={() => setSelectedProject(null)}
       />
-      <div className={`cyber-drawer ${selectedProject ? 'active' : ''}`}>
-        <button className="cyber-drawer-close" onClick={() => setSelectedProject(null)}>
+      <div className={`cyber-modal ${selectedProject ? 'active' : ''}`}>
+        <button className="cyber-modal-close" onClick={() => setSelectedProject(null)}>
           [ CLOSE ]
         </button>
-        <div className="cyber-drawer-content">
-          <div className="cyber-drawer-title">{selectedProject?.label}</div>
-          <div className="cyber-drawer-subtitle">{selectedProject?.subLabel}</div>
-          <div className="cyber-drawer-body">
-            <span className="cyber-drawer-placeholder">// SECURE_CONTENT_LOCK_ACTIVE</span>
+        <div className="cyber-modal-content">
+          <div className="cyber-modal-title">{selectedProject?.label}</div>
+          <div className="cyber-modal-subtitle">{selectedProject?.subLabel}</div>
+          <div className="cyber-modal-body">
+            <span className="cyber-modal-placeholder">// SECURE_CONTENT_LOCK_ACTIVE</span>
           </div>
         </div>
       </div>
