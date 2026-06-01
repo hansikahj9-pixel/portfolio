@@ -421,9 +421,7 @@ const cyberStyles = `
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.22);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.15);
     z-index: 999;
     opacity: 0;
     pointer-events: none;
@@ -442,12 +440,12 @@ const cyberStyles = `
     height: 84vh;
     max-width: 1600px;
     max-height: 1000px;
-    background: rgba(255, 255, 255, 0.78);
-    backdrop-filter: blur(40px) saturate(160%);
-    -webkit-backdrop-filter: blur(40px) saturate(160%);
-    border: 1px solid rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(35px) saturate(180%);
+    -webkit-backdrop-filter: blur(35px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.45);
     border-radius: 28px;
-    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.25), inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -474,9 +472,9 @@ const cyberStyles = `
     position: absolute;
     top: 35px;
     right: 35px;
-    background: rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    color: #111115;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.8rem;
     font-weight: 700;
@@ -488,16 +486,16 @@ const cyberStyles = `
     border-radius: 50px;
   }
   .cyber-modal-close:hover {
-    background: #111115;
-    color: #ffffff;
-    border-color: #111115;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    background: #ffffff;
+    color: #111115;
+    border-color: #ffffff;
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.15);
   }
   .cyber-modal-content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    color: #111115;
+    color: #ffffff;
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
   .cyber-modal-title {
@@ -505,32 +503,33 @@ const cyberStyles = `
     font-weight: 800;
     letter-spacing: -0.02em;
     text-transform: uppercase;
-    color: #111115;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     padding-bottom: 15px;
     margin-bottom: 15px;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
   }
   .cyber-modal-subtitle {
     font-size: 0.8rem;
     letter-spacing: 0.18em;
-    color: #007352;
+    color: #00ffaa;
     font-weight: 700;
     text-transform: uppercase;
     margin-bottom: 30px;
+    text-shadow: 0 0 5px rgba(0, 255, 170, 0.3);
   }
   .cyber-modal-body {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px dashed rgba(0, 0, 0, 0.15);
+    border: 1px dashed rgba(255, 255, 255, 0.15);
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.03);
   }
   .cyber-modal-placeholder {
     font-size: 0.8rem;
-    color: #4a4a55;
+    color: #8c8c95;
     font-weight: 600;
     letter-spacing: 0.15em;
     text-transform: uppercase;
