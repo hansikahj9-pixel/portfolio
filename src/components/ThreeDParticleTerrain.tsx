@@ -1,7 +1,8 @@
 import { useFrame, Canvas, useThree } from '@react-three/fiber';
-import { useRef, useMemo, useEffect } from 'react';
+import { useRef, useMemo, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import gsap from 'gsap';
+import { Html } from '@react-three/drei';
 
 // ── CUSTOM SHADERS FOR EXACT COLOR, CURVES, AND CIRCULAR 3D MOTION ──
 
@@ -308,25 +309,53 @@ interface LiquidTorusProps {
   scale: [number, number, number];
   phase: number;
   rotation?: [number, number, number];
+  onClick?: () => void;
+  label: string;
+  subLabel: string;
+  coordString: string;
 }
 
-function LiquidTorus({ position, scale, phase, rotation = [-0.74, 0, 0] }: LiquidTorusProps) {
+function LiquidTorus({ 
+  position, 
+  scale, 
+  phase, 
+  rotation = [-0.74, 0, 0],
+  onClick,
+  label,
+  subLabel,
+  coordString
+}: LiquidTorusProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
+  const [hovered, setHovered] = useState(false);
 
   // 1. Torus Uniforms (Static phase config)
   const uniforms = useMemo(() => ({
     uPhase: { value: phase },
   }), [phase]);
 
+  // Set the mouse cursor to a pointer when hovering over a clickable torus
+  useEffect(() => {
+    document.body.style.cursor = hovered ? 'pointer' : 'auto';
+    return () => {
+      document.body.style.cursor = 'auto';
+    };
+  }, [hovered]);
+
   return (
     <mesh 
       ref={meshRef} 
       position={position}
       scale={scale}
-      // Tilted to face the camera pitch exactly parallel
-      // Front facing with no Y or Z phase rotations so all 3 shapes face forward and look identical
       rotation={rotation}
+      onClick={onClick}
+      onPointerOver={(e) => {
+        e.stopPropagation();
+        setHovered(true);
+      }}
+      onPointerOut={() => {
+        setHovered(false);
+      }}
     >
       {/* 
         Torus Geometry:
@@ -345,14 +374,201 @@ function LiquidTorus({ position, scale, phase, rotation = [-0.74, 0, 0] }: Liqui
         depthTest={true}
         side={THREE.DoubleSide}
       />
+      {/* Option A: Centered Holographic HUD label directly inside the torus hole */}
+      <Html center distanceFactor={14}>
+        <div className="cyber-hud-label">
+          <div className="hud-line-top" />
+          <div className="hud-label-content">
+            <span className="hud-bracket">[</span>
+            <span className="hud-title">{label}</span>
+            <span className="hud-bracket">]</span>
+          </div>
+          <span className="hud-sublabel">{subLabel}</span>
+          <span className="hud-coords">{coordString}</span>
+          <div className="hud-line-bottom" />
+        </div>
+      </Html>
     </mesh>
   );
 }
 
 
+const cyberStyles = `
+  .cyber-hud-label {
+    font-family: 'Space Mono', 'Share Tech Mono', 'Courier New', monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    pointer-events: none;
+    user-select: none;
+    text-align: center;
+    width: 250px;
+    padding: 10px;
+  }
+  .hud-label-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.7), 0 0 16px rgba(255, 255, 255, 0.3);
+  }
+  .hud-bracket {
+    color: #00ffaa;
+    font-weight: 400;
+    margin: 0 4px;
+    text-shadow: 0 0 8px rgba(0, 255, 170, 0.8);
+  }
+  .hud-title {
+    color: #ffffff;
+  }
+  .hud-sublabel {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: #a0a0a5;
+    text-transform: uppercase;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  .hud-coords {
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    color: #00ffaa;
+    opacity: 0.8;
+    margin-top: 2px;
+    text-shadow: 0 0 4px rgba(0, 255, 170, 0.4);
+  }
+  .hud-line-top, .hud-line-bottom {
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #00ffaa, transparent);
+    margin: 6px 0;
+    opacity: 0.7;
+    box-shadow: 0 0 4px #00ffaa;
+  }
+
+  /* Slide-out Collapsible Panel styles */
+  .cyber-drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .cyber-drawer-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .cyber-drawer {
+    position: fixed;
+    top: 0;
+    right: -480px;
+    width: 480px;
+    height: 100vh;
+    background: rgba(8, 8, 10, 0.85);
+    backdrop-filter: blur(25px);
+    border-left: 1px solid rgba(0, 255, 170, 0.15);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(0, 255, 170, 0.03);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    box-sizing: border-box;
+    transition: right 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  @media (max-width: 600px) {
+    .cyber-drawer {
+      width: 100vw;
+      right: -100vw;
+    }
+  }
+  .cyber-drawer.active {
+    right: 0;
+  }
+  .cyber-drawer-close {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background: transparent;
+    border: 1px solid rgba(0, 255, 170, 0.3);
+    color: #00ffaa;
+    font-family: monospace;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(0, 255, 170, 0.1);
+  }
+  .cyber-drawer-close:hover {
+    background: rgba(0, 255, 170, 0.1);
+    border-color: #00ffaa;
+    box-shadow: 0 0 12px rgba(0, 255, 170, 0.4);
+    text-shadow: 0 0 5px #00ffaa;
+  }
+  .cyber-drawer-content {
+    margin-top: 60px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    color: #ffffff;
+    font-family: 'Space Mono', monospace;
+  }
+  .cyber-drawer-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+  .cyber-drawer-subtitle {
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    color: #00ffaa;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    text-shadow: 0 0 5px rgba(0, 255, 170, 0.3);
+  }
+  .cyber-drawer-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.01);
+  }
+  .cyber-drawer-placeholder {
+    font-size: 0.75rem;
+    color: #505055;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+`;
+
 export default function ThreeDParticleTerrain() {
+  const [selectedProject, setSelectedProject] = useState<{ label: string; subLabel: string } | null>(null);
+
   return (
     <div className="td-canvas-wrapper" style={{ pointerEvents: 'auto' }}>
+      <style dangerouslySetInnerHTML={{ __html: cyberStyles }} />
       <Canvas
         // Camera positioned at the 3D perspective angle looking down the sloped grid
         camera={{ position: [0, -15, 17], fov: 55, near: 0.1, far: 60 }}
@@ -367,12 +583,16 @@ export default function ThreeDParticleTerrain() {
         <ParticleGridMesh />
         
         {/* ── 3 identical front-facing monumental static chrome-silver toruses (zero overlap, 100% opaque) ── */}
-        {/* Top Torus: Scaled to 1.11 and rotated to -0.895 to perfectly compensate for perspective, looking identical on screen */}
+        {/* Top Torus: Scaled and rotated to match the other two shapes exactly as requested */}
         <LiquidTorus 
           position={[0.0, 6.2, 3.5]} 
           scale={[1.11, 1.11, 1.11]} 
           phase={1.5} 
           rotation={[-0.895, 0, 0]} 
+          onClick={() => setSelectedProject({ label: "VALKNUT // KNOTWORK", subLabel: "NORDIC COLLECTION SCHEMA" })}
+          label="VALKNUT // KNOTWORK"
+          subLabel="NORDIC COLLECTION SCHEMA"
+          coordString="COORD.60.1281_N_18.6435_E"
         />
         
         {/* Bottom Left Torus: Positioned higher at Y=-4.0 to prevent screen cutoff, pushed to Z=3.5 to render strictly on top */}
@@ -381,6 +601,10 @@ export default function ThreeDParticleTerrain() {
           scale={[0.88, 0.88, 0.88]} 
           phase={1.5} 
           rotation={[-0.553, 0, 0]} 
+          onClick={() => setSelectedProject({ label: "VITRAIL // GLAZING", subLabel: "STAINED GLASS SPECTRUM" })}
+          label="VITRAIL // GLAZING"
+          subLabel="STAINED GLASS SPECTRUM"
+          coordString="COORD.48.8566_N_2.3522_E"
         />
         
         {/* Bottom Right Torus: Positioned higher at Y=-4.0 to prevent screen cutoff, pushed to Z=3.5 to render strictly on top */}
@@ -389,8 +613,30 @@ export default function ThreeDParticleTerrain() {
           scale={[0.88, 0.88, 0.88]} 
           phase={1.5} 
           rotation={[-0.553, 0, 0]} 
+          onClick={() => setSelectedProject({ label: "CHROME // SHELL", subLabel: "LIQUID METALLIC CHASSIS" })}
+          label="CHROME // SHELL"
+          subLabel="LIQUID METALLIC CHASSIS"
+          coordString="COORD.35.6762_N_139.6503_E"
         />
       </Canvas>
+
+      {/* Sleek slide-out side panel */}
+      <div 
+        className={`cyber-drawer-overlay ${selectedProject ? 'active' : ''}`}
+        onClick={() => setSelectedProject(null)}
+      />
+      <div className={`cyber-drawer ${selectedProject ? 'active' : ''}`}>
+        <button className="cyber-drawer-close" onClick={() => setSelectedProject(null)}>
+          [ CLOSE_ ]
+        </button>
+        <div className="cyber-drawer-content">
+          <div className="cyber-drawer-title">{selectedProject?.label}</div>
+          <div className="cyber-drawer-subtitle">{selectedProject?.subLabel}</div>
+          <div className="cyber-drawer-body">
+            <span className="cyber-drawer-placeholder">// SECURE_CONTENT_LOCK_ACTIVE</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
