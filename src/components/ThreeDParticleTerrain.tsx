@@ -102,8 +102,8 @@ const particleFragmentShader = `
     float core = smoothstep(0.18, 0.0, dist) * 0.65;
     vec3 finalColor = mix(vColor, vec3(1.0), core);
     
-    // Decreased background animation opacity by 46.6% (alpha * 0.48 instead of 0.90) so shapes are highly visible
-    gl_FragColor = vec4(finalColor, alpha * 0.48);
+    // Decreased background animation opacity by an additional 40% (alpha * 0.28 instead of 0.48) so shapes are highly visible
+    gl_FragColor = vec4(finalColor, alpha * 0.28);
   }
 `;
 
@@ -333,8 +333,9 @@ function LiquidTorus({ position, scale, phase, rotation = [-0.74, 0, 0] }: Liqui
         vertexShader={torusVertexShader}
         fragmentShader={torusFragmentShader}
         uniforms={uniforms}
-        transparent={true}
+        transparent={false}
         depthWrite={true}
+        depthTest={true}
         side={THREE.DoubleSide}
       />
     </mesh>
@@ -359,25 +360,25 @@ export default function ThreeDParticleTerrain() {
         <ParticleGridMesh />
         
         {/* ── 3 identical front-facing monumental static chrome-silver toruses (zero overlap, 100% opaque) ── */}
-        {/* Top Torus: Scaled and rotated to match the other two shapes exactly as requested */}
+        {/* Top Torus: Scaled to 1.11 and rotated to -0.895 to perfectly compensate for perspective, looking identical on screen */}
         <LiquidTorus 
-          position={[0.0, 6.2, 0.0]} 
+          position={[0.0, 6.2, 3.5]} 
+          scale={[1.11, 1.11, 1.11]} 
+          phase={1.5} 
+          rotation={[-0.895, 0, 0]} 
+        />
+        
+        {/* Bottom Left Torus: Positioned higher at Y=-4.0 to prevent screen cutoff, pushed to Z=3.5 to render strictly on top */}
+        <LiquidTorus 
+          position={[-8.8, -4.0, 3.5]} 
           scale={[0.88, 0.88, 0.88]} 
           phase={1.5} 
           rotation={[-0.553, 0, 0]} 
         />
         
-        {/* Bottom Left Torus: Positioned higher at Y=-4.0 to prevent screen cutoff, rotation remains standard */}
+        {/* Bottom Right Torus: Positioned higher at Y=-4.0 to prevent screen cutoff, pushed to Z=3.5 to render strictly on top */}
         <LiquidTorus 
-          position={[-8.8, -4.0, 0.0]} 
-          scale={[0.88, 0.88, 0.88]} 
-          phase={1.5} 
-          rotation={[-0.553, 0, 0]} 
-        />
-        
-        {/* Bottom Right Torus: Positioned higher at Y=-4.0 to prevent screen cutoff, rotation remains standard */}
-        <LiquidTorus 
-          position={[8.8, -4.0, 0.0]} 
+          position={[8.8, -4.0, 3.5]} 
           scale={[0.88, 0.88, 0.88]} 
           phase={1.5} 
           rotation={[-0.553, 0, 0]} 
