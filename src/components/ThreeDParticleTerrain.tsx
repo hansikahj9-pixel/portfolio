@@ -359,26 +359,26 @@ export default function ThreeDParticleTerrain() {
         <ParticleGridMesh />
         
         {/* ── 3 identical front-facing monumental static chrome-silver toruses (zero overlap, 100% opaque) ── */}
-        {/* Top Torus: Positioned high at Y=7.8, X-rotation set to match the other two shapes exactly */}
+        {/* Top Torus: Scaled and rotated to perfectly compensate for perspective, looking identical on screen */}
         <LiquidTorus 
-          position={[0.0, 7.8, 0.0]} 
-          scale={[0.94, 0.94, 0.94]} 
+          position={[0.0, 6.2, 0.0]} 
+          scale={[1.11, 1.11, 1.11]} 
+          phase={1.5} 
+          rotation={[-0.88, 0, 0]} 
+        />
+        
+        {/* Bottom Left Torus: Positioned higher at Y=-4.0 to prevent screen cutoff, rotation remains standard */}
+        <LiquidTorus 
+          position={[-8.8, -4.0, 0.0]} 
+          scale={[0.88, 0.88, 0.88]} 
           phase={1.5} 
           rotation={[-0.553, 0, 0]} 
         />
         
-        {/* Bottom Left Torus: Positioned wide at X=-9.2, Y=-6.8, rotation remains as previous state */}
+        {/* Bottom Right Torus: Positioned higher at Y=-4.0 to prevent screen cutoff, rotation remains standard */}
         <LiquidTorus 
-          position={[-9.2, -6.8, 0.0]} 
-          scale={[0.94, 0.94, 0.94]} 
-          phase={1.5} 
-          rotation={[-0.553, 0, 0]} 
-        />
-        
-        {/* Bottom Right Torus: Positioned wide at X=9.2, Y=-6.8, rotation remains as previous state */}
-        <LiquidTorus 
-          position={[9.2, -6.8, 0.0]} 
-          scale={[0.94, 0.94, 0.94]} 
+          position={[8.8, -4.0, 0.0]} 
+          scale={[0.88, 0.88, 0.88]} 
           phase={1.5} 
           rotation={[-0.553, 0, 0]} 
         />
