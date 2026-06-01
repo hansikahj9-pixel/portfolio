@@ -28,11 +28,11 @@ const particleVertexShader = `
     float wave3 = sin(pos.x * 0.08 + pos.y * 0.08 + uTime * 0.35);
     
     // Interactive mouse/touch displacement (Tactile Cursor-Centric Rising Hills & Ripples)
-    // uMouse is normalized [-1.0, 1.0]. We scale it to match the pos.xy range [-16.0, 16.0].
-    float distToMouse = distance(pos.xy, uMouse * 16.0);
+    // uMouse is normalized [-1.0, 1.0]. We scale it to match the wider pos.xy range [-24.0, 24.0].
+    float distToMouse = distance(pos.xy, uMouse * 24.0);
     
-    // Smooth tapering influence based on distance from the cursor (radius = 6.5 units)
-    float influence = smoothstep(6.5, 0.0, distToMouse);
+    // Smooth tapering influence based on distance from the cursor (radius = 8.5 units)
+    float influence = smoothstep(8.5, 0.0, distToMouse);
     
     // The interactive curves rise up to 2.8 units directly under the cursor/touch
     float mouseRise = influence * 2.8;
@@ -53,7 +53,7 @@ const particleVertexShader = `
     
     // 5. Precise Color Mapping matching the attached gradient image
     float normHeight = (height + 2.5) / 5.0; // Range [0, 1]
-    float normR = r / 22.0;                 // Normalized radius
+    float normR = r / 30.0;                 // Normalized radius
     
     // Palette Definitions
     vec3 colPink = vec3(0.92, 0.25, 0.82);   // Vibrant Magenta / Purple-Pink
@@ -205,9 +205,9 @@ function ParticleGridMesh() {
         const u = i / (gridSize - 1);
         const v = j / (gridSize - 1);
         
-        // Spread coordinates evenly across 2D plane (x: -16 to 16, y: -16 to 16)
-        const x = (u - 0.5) * 32.0;
-        const y = (v - 0.5) * 32.0;
+        // Spread coordinates evenly across a wider 2D plane (x: -24 to 24, y: -24 to 24) to fill the camera view
+        const x = (u - 0.5) * 48.0;
+        const y = (v - 0.5) * 48.0;
         const z = 0.0;
         
         const idx = (i * gridSize + j) * 3;
@@ -300,9 +300,10 @@ interface LiquidTorusProps {
   position: [number, number, number];
   scale: [number, number, number];
   phase: number;
+  rotation?: [number, number, number];
 }
 
-function LiquidTorus({ position, scale, phase }: LiquidTorusProps) {
+function LiquidTorus({ position, scale, phase, rotation = [-0.74, 0, 0] }: LiquidTorusProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
 
@@ -316,16 +317,17 @@ function LiquidTorus({ position, scale, phase }: LiquidTorusProps) {
       ref={meshRef} 
       position={position}
       scale={scale}
-      // Tilted to face the camera pitch exactly parallel (approx -0.74rad pitch)
+      // Tilted to face the camera pitch exactly parallel
       // Front facing with no Y or Z phase rotations so all 3 shapes face forward and look identical
-      rotation={[-0.74, 0, 0]}
+      rotation={rotation}
     >
       {/* 
         Torus Geometry:
-        - Outer radius is thicker (we increase the tube radius to 0.95, and radius to 4.5)
-        - Inner hole diameter is still huge: 2 * (4.5 - 0.95) = 7.10 units!
+        - Torus radius increased to 5.8, tube radius 0.95
+        - Inside radius = 5.8 - 0.95 = 4.85 (a 36.6% increase over 3.55, matching the 35% requirement)
+        - Outer radius = 5.8 + 0.95 = 6.75
       */}
-      <torusGeometry args={[4.5, 0.95, 64, 128]} />
+      <torusGeometry args={[5.8, 0.95, 64, 128]} />
       <shaderMaterial
         ref={materialRef}
         vertexShader={torusVertexShader}
@@ -344,8 +346,8 @@ export default function ThreeDParticleTerrain() {
   return (
     <div className="td-canvas-wrapper" style={{ pointerEvents: 'auto' }}>
       <Canvas
-        // Camera positioned at a 3D perspective looking down the terrain slope
-        camera={{ position: [0, -11, 12], fov: 55, near: 0.1, far: 50 }}
+        // Camera positioned further back to capture the larger spaced-out shapes beautifully
+        camera={{ position: [0, -15, 17], fov: 55, near: 0.1, far: 60 }}
         dpr={Math.min(window.devicePixelRatio, 2)}
         gl={{ 
           antialias: true, 
@@ -357,9 +359,29 @@ export default function ThreeDParticleTerrain() {
         <ParticleGridMesh />
         
         {/* ── 3 identical front-facing monumental static chrome-silver toruses (zero overlap, 100% opaque) ── */}
-        <LiquidTorus position={[0.0, 3.2, 0.0]} scale={[0.72, 0.72, 0.72]} phase={1.5} />
-        <LiquidTorus position={[-4.0, -2.6, 0.0]} scale={[0.72, 0.72, 0.72]} phase={1.5} />
-        <LiquidTorus position={[4.0, -2.6, 0.0]} scale={[0.72, 0.72, 0.72]} phase={1.5} />
+        {/* Top Torus: Positioned at Y=5.0, X-rotation computed for Y=5.0 and Z=17 camera position: -0.866 rad */}
+        <LiquidTorus 
+          position={[0.0, 5.0, 0.0]} 
+          scale={[0.94, 0.94, 0.94]} 
+          phase={1.5} 
+          rotation={[-0.866, 0, 0]} 
+        />
+        
+        {/* Bottom Left Torus: Positioned at X=-6.4, Y=-4.5, X-rotation computed for Y=-4.5: -0.553 rad */}
+        <LiquidTorus 
+          position={[-6.4, -4.5, 0.0]} 
+          scale={[0.94, 0.94, 0.94]} 
+          phase={1.5} 
+          rotation={[-0.553, 0, 0]} 
+        />
+        
+        {/* Bottom Right Torus: Positioned at X=6.4, Y=-4.5, X-rotation computed for Y=-4.5: -0.553 rad */}
+        <LiquidTorus 
+          position={[6.4, -4.5, 0.0]} 
+          scale={[0.94, 0.94, 0.94]} 
+          phase={1.5} 
+          rotation={[-0.553, 0, 0]} 
+        />
       </Canvas>
     </div>
   );
