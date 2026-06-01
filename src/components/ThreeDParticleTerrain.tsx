@@ -106,6 +106,86 @@ const particleFragmentShader = `
   }
 `;
 
+// ── CUSTOM SHADERS FOR ORGANIC IRIDESCENT METALLIC CHROMATIC TORUS ──
+
+const torusVertexShader = `
+  uniform float uTime;
+  varying vec3 vNormal;
+  varying vec3 vViewPosition;
+  varying vec3 vWorldPosition;
+  
+  void main() {
+    // 3D Organic Fluid deformation on Torus geometry
+    // Calculate polar angle on the horizontal plane of the torus tube
+    float angle = atan(position.y, position.x);
+    
+    // Smooth wavy deformation based on trigonometric harmonics and time
+    float wave = sin(angle * 3.0 + uTime * 0.95) * 0.24 
+               + cos(position.z * 2.5 - uTime * 0.7) * 0.16
+               + sin(position.x * 0.6 + position.y * 0.6 + uTime * 0.5) * 0.12;
+               
+    // Displace vertex along its local normal vector to shape irregular curves
+    vec3 displaced = position + normal * wave * 0.68;
+    
+    // standard vertex projection
+    vNormal = normalize(normalMatrix * normal);
+    vec4 worldPos = modelMatrix * vec4(displaced, 1.0);
+    vWorldPosition = worldPos.xyz;
+    vViewPosition = cameraPosition - worldPos.xyz;
+    
+    gl_Position = projectionMatrix * viewMatrix * worldPos;
+  }
+`;
+
+const torusFragmentShader = `
+  varying vec3 vNormal;
+  varying vec3 vViewPosition;
+  varying vec3 vWorldPosition;
+  uniform float uTime;
+  
+  void main() {
+    vec3 normal = normalize(vNormal);
+    vec3 viewDir = normalize(vViewPosition);
+    
+    // 1. Fresnel factor: 1.0 when viewing edge-on (grazing), 0.0 when viewing head-on
+    float fresnel = pow(1.0 - max(0.0, dot(normal, viewDir)), 2.8);
+    
+    // 2. Iridescent/holographic color shift calculations matching metallic glass
+    float shift = uTime * 0.32 + normal.x * 0.45 + normal.y * 0.45 + vWorldPosition.z * 0.06;
+    
+    // Palette matching the user's color system & iridescent screenshot
+    vec3 colPink = vec3(0.92, 0.25, 0.82);   // Vibrant Magenta
+    vec3 colPurple = vec3(0.68, 0.20, 0.95); // Neon Violet / Deep Purple
+    vec3 colGold = vec3(0.96, 0.68, 0.28);   // Warm Golden Orange / Pink-Gold
+    vec3 colMint = vec3(0.38, 0.88, 0.62);   // Soft Mint Green / Pale Teal
+    vec3 colBlue = vec3(0.20, 0.52, 0.95);   // Cyan / Sky Blue (Chromatic reflective glass base)
+    
+    // Smooth multi-layered color blending shifts
+    vec3 baseColor = mix(colBlue, colPink, sin(shift * 1.2) * 0.5 + 0.5);
+    baseColor = mix(baseColor, colPurple, cos(shift * 1.8) * 0.4 + 0.4);
+    baseColor = mix(baseColor, colMint, fresnel * 0.72);
+    baseColor = mix(baseColor, colGold, (1.0 - fresnel) * 0.28);
+    
+    // 3. Specular highlights for glassmorphic/liquid metallic gloss
+    vec3 lightDir = normalize(vec3(0.5, 1.5, 0.8)); // Top-front light
+    vec3 halfDir = normalize(lightDir + viewDir);
+    float spec = pow(max(0.0, dot(normal, halfDir)), 32.0);
+    vec3 specularHighlight = vec3(1.0) * spec * 0.92;
+    
+    // 4. Rim light glowing edges
+    float rim = pow(1.0 - max(0.0, dot(normal, viewDir)), 4.0);
+    vec3 rimLight = vec3(0.98, 0.78, 0.98) * rim * 0.45;
+    
+    // Composite final color
+    vec3 finalColor = baseColor + specularHighlight + rimLight;
+    
+    // Glassmorphic transparency: Higher opacity at grazing edges, translucent center
+    float alpha = smoothstep(0.04, 0.88, fresnel) * 0.82 + 0.18;
+    
+    gl_FragColor = vec4(finalColor, alpha);
+  }
+`;
+
 function ParticleGridMesh() {
   const pointsRef = useRef<THREE.Points>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
@@ -213,6 +293,64 @@ function ParticleGridMesh() {
   );
 }
 
+interface LiquidTorusProps {
+  position: [number, number, number];
+  scale: [number, number, number];
+  phase: number;
+}
+
+function LiquidTorus({ position, scale, phase }: LiquidTorusProps) {
+  const meshRef = useRef<THREE.Mesh>(null);
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
+
+  // 1. Torus Uniforms
+  const uniforms = useMemo(() => ({
+    uTime: { value: 0 },
+  }), []);
+
+  // 2. Continuous float, wobble, and rotation per-frame updates
+  useFrame((state) => {
+    const time = state.clock.elapsedTime;
+    
+    if (materialRef.current) {
+      materialRef.current.uniforms.uTime.value = time;
+    }
+    
+    if (meshRef.current) {
+      // Gentle floating animation
+      meshRef.current.position.y = position[1] + Math.sin(time * 0.52 + phase) * 0.32;
+      meshRef.current.position.x = position[0] + Math.cos(time * 0.38 + phase) * 0.22;
+      
+      // Wobble aligned to face camera looking down from [0, -11, 12] (approx -0.74rad pitch)
+      meshRef.current.rotation.x = -0.74 + Math.sin(time * 0.25 + phase) * 0.12;
+      meshRef.current.rotation.y = Math.cos(time * 0.20 + phase) * 0.12;
+      meshRef.current.rotation.z = time * 0.04 + phase; // Slow rotational spin
+    }
+  });
+
+  return (
+    <mesh ref={meshRef} scale={scale}>
+      {/* 
+        Torus Geometry:
+        - Inner opening / radius is maximized to create ample space in the center for text/images.
+        - Radius = 4.2 (makes it 10x larger than in reference image)
+        - Tube Radius = 0.52 (relatively thin tube for incredibly wide center space)
+        - Segments: high segments for ultimate smooth rendering
+      */}
+      <torusGeometry args={[4.2, 0.52, 64, 128]} />
+      <shaderMaterial
+        ref={materialRef}
+        vertexShader={torusVertexShader}
+        fragmentShader={torusFragmentShader}
+        uniforms={uniforms}
+        transparent={true}
+        depthWrite={true}
+        side={THREE.DoubleSide}
+      />
+    </mesh>
+  );
+}
+
 export default function ThreeDParticleTerrain() {
   return (
     <div className="td-canvas-wrapper" style={{ pointerEvents: 'auto' }}>
@@ -228,6 +366,11 @@ export default function ThreeDParticleTerrain() {
         style={{ width: '100vw', height: '100vh', background: '#000000' }}
       >
         <ParticleGridMesh />
+        
+        {/* ── 3 monumental floating liquid iridescent toruses covering ~80% of the screen ── */}
+        <LiquidTorus position={[-4.2, 3.2, -1.0]} scale={[0.95, 0.95, 0.95]} phase={0.0} />
+        <LiquidTorus position={[4.4, -0.6, 0.5]} scale={[1.2, 1.2, 1.2]} phase={2.1} />
+        <LiquidTorus position={[-3.8, -4.2, 1.2]} scale={[0.9, 0.9, 0.9]} phase={4.5} />
       </Canvas>
     </div>
   );
