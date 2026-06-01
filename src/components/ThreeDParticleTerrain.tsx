@@ -1,5 +1,5 @@
 import { useFrame, Canvas, useThree } from '@react-three/fiber';
-import { useRef, useMemo, useEffect } from 'react';
+import { useRef, useMemo, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import gsap from 'gsap';
 
@@ -40,8 +40,8 @@ const particleVertexShader = `
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
     gl_Position = projectionMatrix * mvPosition;
     
-    // 4. Point Size Depth Attenuation (Spherical sizing based on distance)
-    gl_PointSize = clamp(13.0 * (320.0 / max(0.1, -mvPosition.z)), 1.0, 64.0);
+    // 4. Point Size Depth Attenuation (Refined multiplier for distinct elegant points)
+    gl_PointSize = clamp(2.0 * (320.0 / max(0.1, -mvPosition.z)), 1.0, 16.0);
     
     // 5. Precise Color Mapping matching the attached gradient image
     float normHeight = (height + 2.5) / 5.0; // Range [0, 1]
@@ -189,6 +189,22 @@ function ParticleGridMesh() {
 }
 
 export default function ThreeDParticleTerrain() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    // Delay mounting R3F canvas by 1200ms to allow the 3D page flip transition to fully complete.
+    // This guarantees ResizeObserver measures correct, undistorted landscape viewport bounds.
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!isMounted) {
+    // Render a matching black placeholder to keep visual fluidity during the transition
+    return <div className="td-canvas-wrapper" style={{ background: '#000000', width: '100vw', height: '100vh' }} />;
+  }
+
   return (
     <div className="td-canvas-wrapper" style={{ pointerEvents: 'auto' }}>
       <Canvas
