@@ -9,6 +9,39 @@ import nordicMain from '../assets/nordic_moodboard_main.png';
 import nordicKnots from '../assets/nordic_knots_inspiration.png';
 import nordicMythology from '../assets/nordic_mythology_inspiration.png';
 
+// Import Substance Sampler Fabric Screenshots (Cropped views)
+import fabric190 from '../assets/browswear/Screenshot (190)_cropped.png';
+import fabric191 from '../assets/browswear/Screenshot (191)_cropped.png';
+import fabric193 from '../assets/browswear/Screenshot (193)_cropped.png';
+import fabric195 from '../assets/browswear/Screenshot (195)_cropped.png';
+
+const fabricStudies = [
+  {
+    name: "KNOTWORK MESH (FRONT)",
+    material: "Technical Lightweight Mesh / Spandex Blend",
+    desc: "A technical mesh base displaying a clean front view of interlocking Norse knot lines. The transparency values of the material create an intricate lace-like skin shadow, referencing ancient chainmail armor.",
+    image: fabric190
+  },
+  {
+    name: "KNOTWORK MESH (MACRO)",
+    material: "Laser-cut Mesh / Printed Runic Border Detail",
+    desc: "A macro close-up highlighting the printed runic lines and digital micro-perforations. In Substance 3D Sampler, this was designed by blending an opacity vector map onto a fine woven nylon normal map.",
+    image: fabric191
+  },
+  {
+    name: "EMBOSSED VIKING RELIEF (FRONT)",
+    material: "Heavy Structured Felted Wool",
+    desc: "A front view of the deep indigo boiled wool fabric featuring a high-relief Urnes-style zoomorphic carving. The structural weight enables high-volume outer silhouettes.",
+    image: fabric193
+  },
+  {
+    name: "EMBOSSED VIKING RELIEF (ANGLED)",
+    material: "Structural Carved Wool / Low-Sheen Satin Coating",
+    desc: "An angled close-up demonstrating the depth and texture of the embossed relief carving under localized lighting. Custom height map displacement translates Norse stone reliefs into high-status outerwear panels.",
+    image: fabric195
+  }
+];
+
 const nordicSlides = [
   {
     title: "NORDIC KNOTS",
@@ -27,6 +60,12 @@ const nordicSlides = [
     subtitle: "ATMOSPHERIC MYTHOLOGY",
     desc: "Inspired by the mist-shrouded fjords and the cosmic Yggdrasil. The silhouettes capture the ethereal scale and protective layering of Norse mythological archetypes.",
     image: nordicMythology
+  },
+  {
+    title: "SUBSTANCE SAMPLING",
+    subtitle: "FABRIC DESIGN (ADOBE SUBSTANCE)",
+    desc: "Custom-developed digital fabrics created on Adobe Substance 3D Sampler. The collection features two primary material studies: a lightweight Perforated Knotwork Mesh with printed runic vectors, and a heavy Embossed Viking Relief in deep indigo and black, translating Norse carvings into structured textile reliefs.",
+    image: "fabric_collage"
   }
 ];
 
@@ -776,6 +815,201 @@ const cyberStyles = `
   .nordic-rune-dot:hover {
     color: rgba(197, 160, 89, 0.7);
     text-shadow: 0 0 8px rgba(197, 160, 89, 0.3);
+    position: relative;
+    padding: 60px;
+    z-index: 2;
+    background: #fdfcf7; /* Match solid bone white background */
+    border-right: 1px solid rgba(197, 160, 89, 0.15);
+    box-sizing: border-box;
+  }
+  @media (max-width: 1024px) {
+    .nordic-left-pane {
+      flex: none;
+      padding: 40px;
+      border-right: none;
+      border-top: 1px solid rgba(197, 160, 89, 0.15);
+    }
+  }
+
+  .nordic-right-pane {
+    flex: 1.5;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    background: #f7f5f0; /* Slightly contrasting visual canvas backboard */
+    padding: 50px;
+    box-sizing: border-box;
+  }
+  @media (max-width: 1024px) {
+    .nordic-right-pane {
+      width: 100%;
+      height: 45vh;
+      flex: none;
+      padding: 30px;
+    }
+  }
+
+  /* Photo layout resembling physical print scrapbook */
+  .nordic-mood-img-container {
+    width: 95%;
+    height: 95%;
+    background: #ffffff;
+    border: 12px solid #ffffff;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    transform: rotate(1.2deg);
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nordic-mood-img-container:hover {
+    transform: rotate(0deg) scale(1.01);
+  }
+
+  .nordic-mood-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.95;
+    animation: nordicFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+  @keyframes nordicFadeIn {
+    from {
+      opacity: 0.2;
+      transform: scale(1.03);
+    }
+    to {
+      opacity: 0.95;
+      transform: scale(1);
+    }
+  }
+
+  .nordic-watermark-svg {
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    transform: translateY(-50%);
+    width: 320px;
+    height: 320px;
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+  }
+
+  .nordic-title-wrap {
+    margin-bottom: 30px;
+    border-left: 2px solid rgba(197, 160, 89, 0.35);
+    padding-left: 25px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .nordic-slide-subtitle {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.4em;
+    color: #cca353;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(197, 160, 89, 0.15);
+  }
+
+  .nordic-runic-divider {
+    font-family: monospace, serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.7em;
+    color: rgba(197, 160, 89, 0.4);
+    margin: 14px 0;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .nordic-slide-title {
+    font-family: 'Cinzel', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #232724;
+    line-height: 1.15;
+  }
+  @media (max-width: 768px) {
+    .nordic-slide-title {
+      font-size: 2.2rem;
+    }
+  }
+
+  .nordic-slide-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    line-height: 1.75;
+    color: #4a453d;
+    margin-bottom: 50px;
+    font-weight: 400;
+    z-index: 5;
+    position: relative;
+  }
+  @media (max-width: 768px) {
+    .nordic-slide-desc {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+  }
+
+  .nordic-nav-container {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-top: auto;
+    z-index: 5;
+    position: relative;
+  }
+  @media (max-width: 1024px) {
+    .nordic-nav-container {
+      margin-top: 20px;
+    }
+  }
+
+  .nordic-text-btn {
+    background: transparent;
+    border: none;
+    color: rgba(35, 39, 36, 0.5);
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 8px 12px;
+    user-select: none;
+  }
+  .nordic-text-btn:hover {
+    color: #cca353;
+    text-shadow: 0 0 8px rgba(197, 160, 89, 0.3);
+  }
+
+  .nordic-dots {
+    display: flex;
+    gap: 20px;
+  }
+
+  .nordic-rune-dot {
+    font-size: 1.3rem;
+    font-family: monospace, serif;
+    color: rgba(35, 39, 36, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+  }
+  .nordic-rune-dot:hover {
+    color: rgba(197, 160, 89, 0.7);
+    text-shadow: 0 0 8px rgba(197, 160, 89, 0.3);
   }
   .nordic-rune-dot.active {
     color: #cca353;
@@ -798,16 +1032,186 @@ const cyberStyles = `
     bottom: 25px;
     left: 25px;
   }
+
+  /* Fabric collage layout styling */
+  .nordic-fabric-collage {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    box-sizing: border-box;
+  }
+  
+  .fabric-card {
+    position: absolute;
+    background: #ffffff;
+    border: 8px solid #ffffff;
+    padding-bottom: 24px; /* Space for the label at the bottom */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, outline 0.3s ease;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  
+  .fabric-card:hover {
+    transform: rotate(0deg) scale(1.04);
+    z-index: 9 !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  }
+
+  .fabric-card.active {
+    transform: rotate(0deg) scale(1.08) !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.28);
+    outline: 2px solid #cca353;
+    outline-offset: 4px;
+    z-index: 10 !important;
+  }
+
+  .fabric-card-1 {
+    left: 5%;
+    top: 15%;
+    width: 42%;
+    height: 52%;
+    transform: rotate(-4deg);
+  }
+
+  .fabric-card-2 {
+    left: 45%;
+    top: 5%;
+    width: 38%;
+    height: 48%;
+    transform: rotate(3deg);
+  }
+
+  .fabric-card-3 {
+    left: 12%;
+    top: 48%;
+    width: 44%;
+    height: 48%;
+    transform: rotate(-2deg);
+  }
+
+  .fabric-card-4 {
+    left: 52%;
+    top: 42%;
+    width: 40%;
+    height: 50%;
+    transform: rotate(5deg);
+  }
+
+  .fabric-swatch-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .fabric-swatch-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    border-top: 1px solid rgba(197, 160, 89, 0.15);
+    padding: 4px 0;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #cca353;
+    letter-spacing: 0.12em;
+    user-select: none;
+  }
+
+  /* Left Pane Fabric Study detailed cards */
+  .fabric-study-box {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding: 16px 20px;
+    background: rgba(197, 160, 89, 0.04);
+    border-left: 2px solid #cca353;
+    border-radius: 0 12px 12px 0;
+    animation: slideInText 0.45s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+
+  .fabric-study-type {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    color: #cca353;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .fabric-study-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #232724;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .fabric-study-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    line-height: 1.55;
+    color: #4a453d;
+  }
+
+  .fabric-study-tabs {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .fabric-tab-btn {
+    background: transparent;
+    border: 1px solid rgba(197, 160, 89, 0.35);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: rgba(35, 39, 36, 0.65);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .fabric-tab-btn:hover, .fabric-tab-btn.active {
+    background: #cca353;
+    border-color: #cca353;
+    color: #fdfcf7;
+  }
+
+  @keyframes slideInText {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
 export default function ThreeDParticleTerrain() {
   const [selectedProject, setSelectedProject] = useState<{ label: string; subLabel: string } | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [activeFabricIdx, setActiveFabricIdx] = useState(0);
 
-  // Reset active slide when opening a new project
+  // Reset active slide and fabric index when selected project changes
   useEffect(() => {
     setActiveSlide(0);
+    setActiveFabricIdx(0);
   }, [selectedProject]);
+
+  // Reset active fabric index when active slide changes
+  useEffect(() => {
+    setActiveFabricIdx(0);
+  }, [activeSlide]);
 
   return (
     <div className="td-canvas-wrapper" style={{ pointerEvents: 'auto' }}>
@@ -897,9 +1301,37 @@ export default function ThreeDParticleTerrain() {
                   {nordicSlides[activeSlide].title}
                 </div>
               </div>
-              <p className="nordic-slide-desc">
+              
+              <p className="nordic-slide-desc" style={{ marginBottom: activeSlide === 3 ? '15px' : '50px' }}>
                 {nordicSlides[activeSlide].desc}
               </p>
+              
+              {/* Dynamic Fabric Study Card for Slide 4 */}
+              {activeSlide === 3 && (
+                <div className="fabric-study-box" key={activeFabricIdx}>
+                  <div className="fabric-study-type">
+                    {fabricStudies[activeFabricIdx].material}
+                  </div>
+                  <div className="fabric-study-title">
+                    {fabricStudies[activeFabricIdx].name}
+                  </div>
+                  <div className="fabric-study-desc">
+                    {fabricStudies[activeFabricIdx].desc}
+                  </div>
+                  
+                  <div className="fabric-study-tabs">
+                    {fabricStudies.map((_, idx) => (
+                      <button
+                        key={idx}
+                        className={`fabric-tab-btn ${idx === activeFabricIdx ? 'active' : ''}`}
+                        onClick={() => setActiveFabricIdx(idx)}
+                      >
+                        Study 0{idx + 1}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
               
               <div className="nordic-nav-container">
                 <button 
@@ -910,7 +1342,7 @@ export default function ThreeDParticleTerrain() {
                 </button>
                 <div className="nordic-dots">
                   {nordicSlides.map((_, idx) => {
-                    const slideRunes = ["ᛟ", "ᚦ", "ᚨ"];
+                    const slideRunes = ["ᛟ", "ᚦ", "ᚨ", "ᛞ"];
                     return (
                       <span 
                         key={idx}
@@ -932,14 +1364,33 @@ export default function ThreeDParticleTerrain() {
             </div>
 
             <div className="nordic-right-pane">
-              <div className="nordic-mood-img-container">
-                <img 
-                  src={nordicSlides[activeSlide].image} 
-                  alt={nordicSlides[activeSlide].title}
-                  className="nordic-mood-img"
-                  key={activeSlide}
-                />
-              </div>
+              {nordicSlides[activeSlide].image === "fabric_collage" ? (
+                <div className="nordic-fabric-collage">
+                  {fabricStudies.map((study, idx) => (
+                    <div 
+                      key={idx}
+                      className={`fabric-card fabric-card-${idx + 1} ${idx === activeFabricIdx ? 'active' : ''}`}
+                      onClick={() => setActiveFabricIdx(idx)}
+                      onMouseEnter={() => setActiveFabricIdx(idx)}
+                      style={{ zIndex: idx === activeFabricIdx ? 10 : idx + 1 }}
+                    >
+                      <img src={study.image} alt={study.name} className="fabric-swatch-img" />
+                      <div className="fabric-swatch-label">
+                        Study 0{idx + 1}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="nordic-mood-img-container">
+                  <img 
+                    src={nordicSlides[activeSlide].image} 
+                    alt={nordicSlides[activeSlide].title}
+                    className="nordic-mood-img"
+                    key={activeSlide}
+                  />
+                </div>
+              )}
             </div>
           </div>
         ) : (
