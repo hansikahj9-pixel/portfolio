@@ -9,35 +9,66 @@ import nordicMain from '../assets/nordic_moodboard_main.png';
 import nordicKnots from '../assets/nordic_knots_inspiration.png';
 import nordicMythology from '../assets/nordic_mythology_inspiration.png';
 
-// Import Substance Sampler Fabric Screenshots (Cropped views)
-import fabric190 from '../assets/browswear/Screenshot (190)_cropped.png';
-import fabric191 from '../assets/browswear/Screenshot (191)_cropped.png';
-import fabric193 from '../assets/browswear/Screenshot (193)_cropped.png';
-import fabric195 from '../assets/browswear/Screenshot (195)_cropped.png';
+// Import Substance Sampler Fabric Screenshots (Original viewport views showing interface)
+import fabric106 from '../assets/browswear/Screenshot (106).png';
+import fabric107 from '../assets/browswear/Screenshot (107).png';
+import fabric109 from '../assets/browswear/Screenshot (109).png';
+import fabric111 from '../assets/browswear/Screenshot (111).png';
+import fabric113 from '../assets/browswear/Screenshot (113).png';
+import fabric190 from '../assets/browswear/Screenshot (190).png';
+import fabric193 from '../assets/browswear/Screenshot (193).png';
+import fabric195 from '../assets/browswear/Screenshot (195).png';
 
-const fabricStudies = [
+const fabricExperiments = [
   {
-    name: "KNOTWORK MESH (FRONT)",
-    material: "Technical Lightweight Mesh / Spandex Blend",
-    desc: "A technical mesh base displaying a clean front view of interlocking Norse knot lines. The transparency values of the material create an intricate lace-like skin shadow, referencing ancient chainmail armor.",
+    name: "EXPERIMENT 01: WIREFRAME GRID MESH",
+    material: "Adobe Substance R&D — Structural Opacity Study",
+    desc: "Initial study of a perforated mesh structure with raw geometric openings. Developed to test pattern repeat sizes, vector alignment, and opacity map thresholds for the digital fabric base layer.",
+    image: fabric106
+  },
+  {
+    name: "EXPERIMENT 02: VOLUMETRIC EMBOSS STUDY",
+    material: "Adobe Substance R&D — Height Displacement Test",
+    desc: "High-density height mapping test to push depth boundaries. This R&D file explored displacement limits to ensure Norse carved reliefs remain structural and do not flatten under simulated physics.",
+    image: fabric107
+  },
+  {
+    name: "EXPERIMENT 03: INTERLACING LACE STRUCTURE",
+    material: "Adobe Substance R&D — Crochet & Netting Study",
+    desc: "A hybrid digital material merging organic woodcarving patterns with a micro-net background. Developed to simulate a crocheted or knitted lace effect for secondary flowing panels.",
+    image: fabric109
+  },
+  {
+    name: "EXPERIMENT 04: HORIZONTAL RUNIC VECTORS",
+    material: "Adobe Substance R&D — Normal Map Specifications",
+    desc: "Testing horizontal runic boundaries and linear geometries. Investigated normal map lighting responses to make sure the runic borders catch specular highlights during movement.",
+    image: fabric111
+  },
+  {
+    name: "EXPERIMENT 05: WARM COPPER RELIEF",
+    material: "Adobe Substance R&D — Metallic Sheen & Tone Study",
+    desc: "Sheen and warm metallic reflection testing. Explored earthy copper and brass tones (representing historical Norse metal ornaments) before finalizing the collection's deep woad-indigo palette.",
+    image: fabric113
+  }
+];
+
+const finalFabrics = [
+  {
+    name: "FABRIC 01: PERFORATED KNOTWORK MESH",
+    material: "Lightweight Technical Mesh / Spandex Overlay",
+    desc: "The final Perforated Knotwork Mesh. Designed in Substance by mapping runic vector opacity masks onto a fine woven nylon normal map, producing a lightweight, chainmail-inspired draping layer.",
     image: fabric190
   },
   {
-    name: "KNOTWORK MESH (MACRO)",
-    material: "Laser-cut Mesh / Printed Runic Border Detail",
-    desc: "A macro close-up highlighting the printed runic lines and digital micro-perforations. In Substance 3D Sampler, this was designed by blending an opacity vector map onto a fine woven nylon normal map.",
-    image: fabric191
-  },
-  {
-    name: "EMBOSSED VIKING RELIEF (FRONT)",
-    material: "Heavy Structured Felted Wool",
-    desc: "A front view of the deep indigo boiled wool fabric featuring a high-relief Urnes-style zoomorphic carving. The structural weight enables high-volume outer silhouettes.",
+    name: "FABRIC 02: EMBOSSED VIKING RELIEF (FRONT)",
+    material: "Heavy Boiled Wool / Structural Outerwear Felt",
+    desc: "The final Embossed Viking Relief fabric. Boasts deeply embossed zoomorphic carvings. In Substance 3D Sampler, this was built by blending a custom height-map carving vector into a felted wool texture base.",
     image: fabric193
   },
   {
-    name: "EMBOSSED VIKING RELIEF (ANGLED)",
-    material: "Structural Carved Wool / Low-Sheen Satin Coating",
-    desc: "An angled close-up demonstrating the depth and texture of the embossed relief carving under localized lighting. Custom height map displacement translates Norse stone reliefs into high-status outerwear panels.",
+    name: "FABRIC 03: EMBOSSED VIKING RELIEF (DETAIL)",
+    material: "Boiled Wool / Localized Satin Sheen Coating",
+    desc: "Detailed close-up showing how low-angle specular light catches the raised carved edges. Outlines how custom height map displacements translate ancient Norse carvings into highly tactile garment panels.",
     image: fabric195
   }
 ];
@@ -62,9 +93,15 @@ const nordicSlides = [
     image: nordicMythology
   },
   {
+    title: "SUBSTANCE EXPERIMENTATION",
+    subtitle: "TEXTILE RESEARCH & DEVELOPMENT",
+    desc: "Before finalizing the material palette, I experimented with creating multiple Norse-inspired digital fabrics on Adobe Substance 3D Sampler, exploring runic configurations, height displacement offsets, and metallic sheen levels.",
+    image: "experiment_collage"
+  },
+  {
     title: "SUBSTANCE SAMPLING",
-    subtitle: "FABRIC DESIGN (ADOBE SUBSTANCE)",
-    desc: "Custom-developed digital fabrics created on Adobe Substance 3D Sampler. The collection features two primary material studies: a lightweight Perforated Knotwork Mesh with printed runic vectors, and a heavy Embossed Viking Relief in deep indigo and black, translating Norse carvings into structured textile reliefs.",
+    subtitle: "FINAL MATERIAL PALETTE",
+    desc: "The finalized digital fabrics created on Adobe Substance 3D Sampler. The collection features two primary textile systems: a lightweight Perforated Knotwork Mesh and a heavy-weight Embossed Viking Relief in deep woad indigo.",
     image: "fabric_collage"
   }
 ];
@@ -1044,75 +1081,42 @@ const cyberStyles = `
   .fabric-card {
     position: absolute;
     background: #ffffff;
-    border: 8px solid #ffffff;
-    padding-bottom: 24px; /* Space for the label at the bottom */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    border: 6px solid #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, outline 0.3s ease;
     box-sizing: border-box;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
   }
   
   .fabric-card:hover {
     transform: rotate(0deg) scale(1.04);
     z-index: 9 !important;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.16);
   }
 
   .fabric-card.active {
     transform: rotate(0deg) scale(1.08) !important;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.28);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.22);
     outline: 2px solid #cca353;
     outline-offset: 4px;
     z-index: 10 !important;
   }
 
-  .fabric-card-1 {
-    left: 5%;
-    top: 15%;
-    width: 42%;
-    height: 52%;
-    transform: rotate(-4deg);
-  }
-
-  .fabric-card-2 {
-    left: 45%;
-    top: 5%;
-    width: 38%;
-    height: 48%;
-    transform: rotate(3deg);
-  }
-
-  .fabric-card-3 {
-    left: 12%;
-    top: 48%;
-    width: 44%;
-    height: 48%;
-    transform: rotate(-2deg);
-  }
-
-  .fabric-card-4 {
-    left: 52%;
-    top: 42%;
-    width: 40%;
-    height: 50%;
-    transform: rotate(5deg);
-  }
-
   .fabric-swatch-img {
     width: 100%;
-    height: 100%;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
+    display: block;
   }
 
   .fabric-swatch-label {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
     background: #ffffff;
-    border-top: 1px solid rgba(197, 160, 89, 0.15);
-    padding: 4px 0;
+    border-top: 1px solid rgba(197, 160, 89, 0.12);
+    padding: 6px 0;
     text-align: center;
     font-family: 'Cinzel', serif;
     font-size: 0.65rem;
@@ -1120,6 +1124,64 @@ const cyberStyles = `
     color: #cca353;
     letter-spacing: 0.12em;
     user-select: none;
+  }
+
+  /* Slide 5 Final Fabric Swatches coordinates (Spacious 3-card layout) */
+  .fabric-card-1 {
+    left: 8%;
+    top: 16%;
+    width: 44%;
+    transform: rotate(-3deg);
+  }
+
+  .fabric-card-2 {
+    left: 48%;
+    top: 8%;
+    width: 42%;
+    transform: rotate(2deg);
+  }
+
+  .fabric-card-3 {
+    left: 26%;
+    top: 48%;
+    width: 46%;
+    transform: rotate(-1deg);
+  }
+
+  /* Slide 4 Experiments Swatches coordinates (Tight fanned 5-card layout) */
+  .nordic-experiment-collage .fabric-card-1 {
+    left: 4%;
+    top: 12%;
+    width: 36%;
+    transform: rotate(-5deg);
+  }
+
+  .nordic-experiment-collage .fabric-card-2 {
+    left: 42%;
+    top: 5%;
+    width: 34%;
+    transform: rotate(4deg);
+  }
+
+  .nordic-experiment-collage .fabric-card-3 {
+    left: 6%;
+    top: 46%;
+    width: 38%;
+    transform: rotate(-3deg);
+  }
+
+  .nordic-experiment-collage .fabric-card-4 {
+    left: 54%;
+    top: 42%;
+    width: 36%;
+    transform: rotate(5deg);
+  }
+
+  .nordic-experiment-collage .fabric-card-5 {
+    left: 46%;
+    top: 24%;
+    width: 35%;
+    transform: rotate(-2deg);
   }
 
   /* Left Pane Fabric Study detailed cards */
@@ -1302,31 +1364,58 @@ export default function ThreeDParticleTerrain() {
                 </div>
               </div>
               
-              <p className="nordic-slide-desc" style={{ marginBottom: activeSlide === 3 ? '15px' : '50px' }}>
+              <p className="nordic-slide-desc" style={{ marginBottom: (activeSlide === 3 || activeSlide === 4) ? '15px' : '50px' }}>
                 {nordicSlides[activeSlide].desc}
               </p>
               
-              {/* Dynamic Fabric Study Card for Slide 4 */}
+              {/* Dynamic Fabric Study Card for Slide 4 (Experimentation) */}
               {activeSlide === 3 && (
-                <div className="fabric-study-box" key={activeFabricIdx}>
+                <div className="fabric-study-box" key={`exp-${activeFabricIdx}`}>
                   <div className="fabric-study-type">
-                    {fabricStudies[activeFabricIdx].material}
+                    {fabricExperiments[activeFabricIdx].material}
                   </div>
                   <div className="fabric-study-title">
-                    {fabricStudies[activeFabricIdx].name}
+                    {fabricExperiments[activeFabricIdx].name}
                   </div>
                   <div className="fabric-study-desc">
-                    {fabricStudies[activeFabricIdx].desc}
+                    {fabricExperiments[activeFabricIdx].desc}
                   </div>
                   
                   <div className="fabric-study-tabs">
-                    {fabricStudies.map((_, idx) => (
+                    {fabricExperiments.map((_, idx) => (
                       <button
                         key={idx}
                         className={`fabric-tab-btn ${idx === activeFabricIdx ? 'active' : ''}`}
                         onClick={() => setActiveFabricIdx(idx)}
                       >
-                        Study 0{idx + 1}
+                        Exp 0{idx + 1}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Dynamic Fabric Study Card for Slide 5 (Final Materials) */}
+              {activeSlide === 4 && (
+                <div className="fabric-study-box" key={`final-${activeFabricIdx}`}>
+                  <div className="fabric-study-type">
+                    {finalFabrics[activeFabricIdx].material}
+                  </div>
+                  <div className="fabric-study-title">
+                    {finalFabrics[activeFabricIdx].name}
+                  </div>
+                  <div className="fabric-study-desc">
+                    {finalFabrics[activeFabricIdx].desc}
+                  </div>
+                  
+                  <div className="fabric-study-tabs">
+                    {finalFabrics.map((_, idx) => (
+                      <button
+                        key={idx}
+                        className={`fabric-tab-btn ${idx === activeFabricIdx ? 'active' : ''}`}
+                        onClick={() => setActiveFabricIdx(idx)}
+                      >
+                        Fabric 0{idx + 1}
                       </button>
                     ))}
                   </div>
@@ -1342,7 +1431,7 @@ export default function ThreeDParticleTerrain() {
                 </button>
                 <div className="nordic-dots">
                   {nordicSlides.map((_, idx) => {
-                    const slideRunes = ["ᛟ", "ᚦ", "ᚨ", "ᛞ"];
+                    const slideRunes = ["ᛟ", "ᚦ", "ᚨ", "ᚱ", "ᛞ"];
                     return (
                       <span 
                         key={idx}
@@ -1364,9 +1453,9 @@ export default function ThreeDParticleTerrain() {
             </div>
 
             <div className="nordic-right-pane">
-              {nordicSlides[activeSlide].image === "fabric_collage" ? (
-                <div className="nordic-fabric-collage">
-                  {fabricStudies.map((study, idx) => (
+              {nordicSlides[activeSlide].image === "experiment_collage" ? (
+                <div className="nordic-fabric-collage nordic-experiment-collage">
+                  {fabricExperiments.map((study, idx) => (
                     <div 
                       key={idx}
                       className={`fabric-card fabric-card-${idx + 1} ${idx === activeFabricIdx ? 'active' : ''}`}
@@ -1376,7 +1465,24 @@ export default function ThreeDParticleTerrain() {
                     >
                       <img src={study.image} alt={study.name} className="fabric-swatch-img" />
                       <div className="fabric-swatch-label">
-                        Study 0{idx + 1}
+                        Exp 0{idx + 1}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : nordicSlides[activeSlide].image === "fabric_collage" ? (
+                <div className="nordic-fabric-collage">
+                  {finalFabrics.map((study, idx) => (
+                    <div 
+                      key={idx}
+                      className={`fabric-card fabric-card-${idx + 1} ${idx === activeFabricIdx ? 'active' : ''}`}
+                      onClick={() => setActiveFabricIdx(idx)}
+                      onMouseEnter={() => setActiveFabricIdx(idx)}
+                      style={{ zIndex: idx === activeFabricIdx ? 10 : idx + 1 }}
+                    >
+                      <img src={study.image} alt={study.name} className="fabric-swatch-img" />
+                      <div className="fabric-swatch-label">
+                        Fabric 0{idx + 1}
                       </div>
                     </div>
                   ))}
