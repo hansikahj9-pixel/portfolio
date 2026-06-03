@@ -4,6 +4,32 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import { Html } from '@react-three/drei';
 
+// Import Generated Inspiration Images for Nordic Knots Moodboard
+import nordicMain from '../assets/nordic_moodboard_main.png';
+import nordicKnots from '../assets/nordic_knots_inspiration.png';
+import nordicMythology from '../assets/nordic_mythology_inspiration.png';
+
+const nordicSlides = [
+  {
+    title: "NORDIC KNOTS",
+    subtitle: "THE INSPIRATION",
+    desc: "A mini womenswear collection bridging ancient heritage and modern silhouettes. The garments explore the infinite flow of Nordic knots and the ethereal, structured forms of Norse mythology.",
+    image: nordicMain
+  },
+  {
+    title: "THE TEXTILE CONCEPT",
+    subtitle: "NORDIC KNOTS",
+    desc: "An exploration of endless interlacing lines, representing the threads of fate spun by the Norns. Heavy, tactile fabrics are crafted to mimic the physical curves of ancient runic stone carvings.",
+    image: nordicKnots
+  },
+  {
+    title: "THE SILHOUETTE CONCEPT",
+    subtitle: "NORSE MYTHOLOGY",
+    desc: "Draped, protective, and sculptural silhouettes inspired by the cosmic structure of Yggdrasil, armor plating of Valkyries, and the fluid, mist-shrouded landscapes of the northern realms.",
+    image: nordicMythology
+  }
+];
+
 // ── CUSTOM SHADERS FOR EXACT COLOR, CURVES, AND CIRCULAR 3D MOTION ──
 
 const particleVertexShader = `
@@ -532,10 +558,259 @@ const cyberStyles = `
     letter-spacing: 0.15em;
     text-transform: uppercase;
   }
+
+  /* Nordic Custom Modal Styling */
+  .nordic-modal-content {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    gap: 40px;
+    position: relative;
+    box-sizing: border-box;
+  }
+  @media (max-width: 1024px) {
+    .nordic-modal-content {
+      flex-direction: column-reverse;
+      gap: 20px;
+      overflow-y: auto;
+    }
+  }
+  
+  .nordic-left-pane {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    padding-right: 20px;
+    z-index: 2;
+  }
+  @media (max-width: 1024px) {
+    .nordic-left-pane {
+      flex: none;
+      padding-right: 0;
+      padding-bottom: 20px;
+    }
+  }
+
+  .nordic-right-pane {
+    flex: 1.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.4);
+    aspect-ratio: 16/10;
+  }
+  @media (max-width: 1024px) {
+    .nordic-right-pane {
+      width: 100%;
+      height: 300px;
+      flex: none;
+      aspect-ratio: auto;
+    }
+  }
+
+  .nordic-mood-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.95;
+    animation: nordicFadeIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+  @keyframes nordicFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(1.04);
+    }
+    to {
+      opacity: 0.95;
+      transform: scale(1);
+    }
+  }
+
+  .nordic-rune-bg {
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    transform: translateY(-50%);
+    font-size: 18rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.025);
+    font-family: monospace, serif;
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+    letter-spacing: -0.1em;
+  }
+
+  .nordic-title-wrap {
+    margin-bottom: 25px;
+    border-left: 3px solid rgba(255, 255, 255, 0.3);
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .nordic-slide-subtitle {
+    font-size: 0.85rem;
+    letter-spacing: 0.3em;
+    color: #00ffaa;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px;
+    text-shadow: 0 0 10px rgba(0, 255, 170, 0.25);
+  }
+
+  .nordic-runic-divider {
+    font-family: monospace, serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.6em;
+    color: rgba(255, 255, 255, 0.35);
+    margin: 12px 0;
+    user-select: none;
+    pointer-events: none;
+    text-shadow: 0 0 5px rgba(255,255,255,0.1);
+  }
+
+  .nordic-slide-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: #ffffff;
+    line-height: 1.1;
+  }
+  @media (max-width: 768px) {
+    .nordic-slide-title {
+      font-size: 2rem;
+    }
+  }
+
+  .nordic-slide-desc {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 40px;
+    font-weight: 400;
+    z-index: 2;
+  }
+  @media (max-width: 768px) {
+    .nordic-slide-desc {
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+  }
+
+  .nordic-nav-container {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-top: auto;
+    z-index: 2;
+  }
+  @media (max-width: 1024px) {
+    .nordic-nav-container {
+      margin-top: 20px;
+    }
+  }
+
+  .nordic-arrow-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    font-size: 1rem;
+  }
+
+  .nordic-arrow-btn:hover {
+    background: #ffffff;
+    color: #111115;
+    border-color: #ffffff;
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  .nordic-arrow-btn:active {
+    transform: translateY(0);
+  }
+
+  .nordic-dots {
+    display: flex;
+    gap: 12px;
+  }
+
+  .nordic-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .nordic-dot.active {
+    background: #00ffaa;
+    width: 28px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 255, 170, 0.5);
+  }
+
+  /* Corner graphics inspired by vintage runes/knots */
+  .nordic-corner {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    pointer-events: none;
+    z-index: 10;
+  }
+  .nordic-corner-tl {
+    top: 25px;
+    left: 25px;
+    border-right: none;
+    border-bottom: none;
+  }
+  .nordic-corner-tr {
+    top: 25px;
+    right: 25px;
+    border-left: none;
+    border-bottom: none;
+  }
+  .nordic-corner-bl {
+    bottom: 25px;
+    left: 25px;
+    border-right: none;
+    border-top: none;
+  }
+  .nordic-corner-br {
+    bottom: 25px;
+    right: 25px;
+    border-left: none;
+    border-top: none;
+  }
 `;
 
 export default function ThreeDParticleTerrain() {
   const [selectedProject, setSelectedProject] = useState<{ label: string; subLabel: string } | null>(null);
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  // Reset active slide when opening a new project
+  useEffect(() => {
+    setActiveSlide(0);
+  }, [selectedProject]);
 
   return (
     <div className="td-canvas-wrapper" style={{ pointerEvents: 'auto' }}>
@@ -594,13 +869,76 @@ export default function ThreeDParticleTerrain() {
         <button className="cyber-modal-close" onClick={() => setSelectedProject(null)}>
           ✕
         </button>
-        <div className="cyber-modal-content">
-          <div className="cyber-modal-title">{selectedProject?.label}</div>
-          <div className="cyber-modal-subtitle">{selectedProject?.subLabel}</div>
-          <div className="cyber-modal-body">
-            <span className="cyber-modal-placeholder">// SECURE_CONTENT_LOCK_ACTIVE</span>
+        {selectedProject?.label === "Nordic Knots" ? (
+          <div className="nordic-modal-content">
+            {/* Corner frames inspired by vintage Norse woodcarvings */}
+            <div className="nordic-corner nordic-corner-tl" />
+            <div className="nordic-corner nordic-corner-tr" />
+            <div className="nordic-corner nordic-corner-bl" />
+            <div className="nordic-corner nordic-corner-br" />
+            
+            {/* Runes background watermark */}
+            <div className="nordic-rune-bg">ᛟ ᛉ ᚛</div>
+
+            <div className="nordic-left-pane">
+              <div className="nordic-title-wrap">
+                <div className="nordic-slide-subtitle">
+                  {nordicSlides[activeSlide].subtitle}
+                </div>
+                <div className="nordic-runic-divider">᚛ ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ ᚜</div>
+                <div className="nordic-slide-title">
+                  {nordicSlides[activeSlide].title}
+                </div>
+              </div>
+              <p className="nordic-slide-desc">
+                {nordicSlides[activeSlide].desc}
+              </p>
+              
+              <div className="nordic-nav-container">
+                <button 
+                  className="nordic-arrow-btn"
+                  onClick={() => setActiveSlide((prev) => (prev === 0 ? nordicSlides.length - 1 : prev - 1))}
+                  aria-label="Previous slide"
+                >
+                  ←
+                </button>
+                <div className="nordic-dots">
+                  {nordicSlides.map((_, idx) => (
+                    <div 
+                      key={idx}
+                      className={`nordic-dot ${idx === activeSlide ? 'active' : ''}`}
+                      onClick={() => setActiveSlide(idx)}
+                    />
+                  ))}
+                </div>
+                <button 
+                  className="nordic-arrow-btn"
+                  onClick={() => setActiveSlide((prev) => (prev === nordicSlides.length - 1 ? 0 : prev + 1))}
+                  aria-label="Next slide"
+                >
+                  →
+                </button>
+              </div>
+            </div>
+
+            <div className="nordic-right-pane">
+              <img 
+                src={nordicSlides[activeSlide].image} 
+                alt={nordicSlides[activeSlide].title}
+                className="nordic-mood-img"
+                key={activeSlide}
+              />
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="cyber-modal-content">
+            <div className="cyber-modal-title">{selectedProject?.label}</div>
+            <div className="cyber-modal-subtitle">{selectedProject?.subLabel}</div>
+            <div className="cyber-modal-body">
+              <span className="cyber-modal-placeholder">// SECURE_CONTENT_LOCK_ACTIVE</span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
