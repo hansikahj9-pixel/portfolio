@@ -12,20 +12,20 @@ import nordicMythology from '../assets/nordic_mythology_inspiration.png';
 const nordicSlides = [
   {
     title: "NORDIC KNOTS",
-    subtitle: "THE INSPIRATION",
-    desc: "A mini womenswear collection bridging ancient heritage and modern silhouettes. The garments explore the infinite flow of Nordic knots and the ethereal, structured forms of Norse mythology.",
+    subtitle: "WOMENSWEAR COLLECTION",
+    desc: "A mini womenswear collection where organic fabrics are inspired by interlocking Nordic knots and architectural silhouettes are drawn from Norse mythology.",
     image: nordicMain
   },
   {
-    title: "THE TEXTILE CONCEPT",
-    subtitle: "NORDIC KNOTS",
-    desc: "An exploration of endless interlacing lines, representing the threads of fate spun by the Norns. Heavy, tactile fabrics are crafted to mimic the physical curves of ancient runic stone carvings.",
+    title: "SACRED KNOTWORK",
+    subtitle: "GEOMETRY & CARVINGS",
+    desc: "Drawing inspiration from the endless loops carved into ancient runestones. The physical structure of these interlocking knots guides the directional flow of the collection's draping.",
     image: nordicKnots
   },
   {
-    title: "THE SILHOUETTE CONCEPT",
-    subtitle: "NORSE MYTHOLOGY",
-    desc: "Draped, protective, and sculptural silhouettes inspired by the cosmic structure of Yggdrasil, armor plating of Valkyries, and the fluid, mist-shrouded landscapes of the northern realms.",
+    title: "REALMS OF THE NORSE",
+    subtitle: "ATMOSPHERIC MYTHOLOGY",
+    desc: "Inspired by the mist-shrouded fjords and the cosmic Yggdrasil. The silhouettes capture the ethereal scale and protective layering of Norse mythological archetypes.",
     image: nordicMythology
   }
 ];
@@ -408,7 +408,7 @@ function LiquidTorus({
 
 
 const cyberStyles = `
-  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,300&family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
 
   .cyber-hud-label {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -447,7 +447,7 @@ const cyberStyles = `
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.45);
     z-index: 999;
     opacity: 0;
     pointer-events: none;
@@ -466,27 +466,25 @@ const cyberStyles = `
     height: 85vh;
     max-width: 1600px;
     max-height: 1000px;
-    background: rgba(217, 217, 217, 0.20);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: #fdfcf7; /* Premium Bone-White Parchment Paper */
+    border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 40px;
-    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 35px 80px rgba(0, 0, 0, 0.25);
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    padding: 40px;
+    padding: 0; /* Full bleed layout */
+    overflow: hidden;
     box-sizing: border-box;
     opacity: 0;
     pointer-events: none;
     transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.45s ease;
   }
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     .cyber-modal {
       width: 92vw;
-      height: 82vh;
-      padding: 30px;
-      border-radius: 20px;
+      height: 85vh;
+      border-radius: 24px;
     }
   }
   .cyber-modal.active {
@@ -496,60 +494,63 @@ const cyberStyles = `
   }
   .cyber-modal-close {
     position: absolute;
-    top: 30px;
-    right: 30px;
-    background: transparent;
-    border: none;
-    color: #ffffff;
-    font-size: 1.8rem;
+    top: 25px;
+    right: 25px;
+    background: rgba(35, 39, 36, 0.04);
+    border: 1px solid rgba(35, 39, 36, 0.1);
+    color: #232724;
+    font-size: 1.5rem;
     cursor: pointer;
     line-height: 1;
     transition: all 0.3s ease;
     border-radius: 50%;
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1100;
   }
   .cyber-modal-close:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(35, 39, 36, 0.1);
+    color: #cca353;
+    border-color: rgba(197, 160, 89, 0.3);
   }
   .cyber-modal-content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    color: #ffffff;
+    color: #232724;
     font-family: 'Plus Jakarta Sans', sans-serif;
+    padding: 50px;
+    box-sizing: border-box;
   }
   .cyber-modal-title {
     font-size: 2.2rem;
     font-weight: 800;
     letter-spacing: -0.02em;
     text-transform: uppercase;
-    color: #ffffff;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    color: #232724;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     padding-bottom: 15px;
     margin-bottom: 15px;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
   }
   .cyber-modal-subtitle {
     font-size: 0.8rem;
     letter-spacing: 0.18em;
-    color: #00ffaa;
+    color: #cca353;
     font-weight: 700;
     text-transform: uppercase;
     margin-bottom: 30px;
-    text-shadow: 0 0 5px rgba(0, 255, 170, 0.3);
   }
   .cyber-modal-body {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px dashed rgba(255, 255, 255, 0.15);
+    border: 1px dashed rgba(0, 0, 0, 0.1);
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(0, 0, 0, 0.02);
   }
   .cyber-modal-placeholder {
     font-size: 0.8rem;
@@ -559,62 +560,81 @@ const cyberStyles = `
     text-transform: uppercase;
   }
 
-  /* Nordic Custom Modal Styling */
+  /* Nordic Custom Modal Styling (Scrapbook, full bleed) */
   .nordic-modal-content {
     display: flex;
     flex-direction: row;
     width: 100%;
     height: 100%;
-    gap: 40px;
     position: relative;
     box-sizing: border-box;
   }
   @media (max-width: 1024px) {
     .nordic-modal-content {
       flex-direction: column-reverse;
-      gap: 20px;
       overflow-y: auto;
     }
   }
   
   .nordic-left-pane {
-    flex: 1.2;
+    flex: 1.1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     position: relative;
-    padding-right: 20px;
+    padding: 60px;
     z-index: 2;
+    background: #fdfcf7; /* Match solid bone white background */
+    border-right: 1px solid rgba(197, 160, 89, 0.15);
+    box-sizing: border-box;
   }
   @media (max-width: 1024px) {
     .nordic-left-pane {
       flex: none;
-      padding-right: 0;
-      padding-bottom: 20px;
+      padding: 40px;
+      border-right: none;
+      border-top: 1px solid rgba(197, 160, 89, 0.15);
     }
   }
 
   .nordic-right-pane {
     flex: 1.5;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     z-index: 2;
     overflow: hidden;
-    border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    background: rgba(0, 0, 0, 0.2);
-    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.4);
-    aspect-ratio: 16/10;
+    background: #f7f5f0; /* Slightly contrasting visual canvas backboard */
+    padding: 50px;
+    box-sizing: border-box;
   }
   @media (max-width: 1024px) {
     .nordic-right-pane {
       width: 100%;
-      height: 300px;
+      height: 45vh;
       flex: none;
-      aspect-ratio: auto;
+      padding: 30px;
     }
+  }
+
+  /* Photo layout resembling physical print scrapbook */
+  .nordic-mood-img-container {
+    width: 95%;
+    height: 95%;
+    background: #ffffff;
+    border: 12px solid #ffffff;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    transform: rotate(1.2deg);
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nordic-mood-img-container:hover {
+    transform: rotate(0deg) scale(1.01);
   }
 
   .nordic-mood-img {
@@ -622,12 +642,12 @@ const cyberStyles = `
     height: 100%;
     object-fit: cover;
     opacity: 0.95;
-    animation: nordicFadeIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation: nordicFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   }
   @keyframes nordicFadeIn {
     from {
-      opacity: 0;
-      transform: scale(1.04);
+      opacity: 0.2;
+      transform: scale(1.03);
     }
     to {
       opacity: 0.95;
@@ -635,84 +655,86 @@ const cyberStyles = `
     }
   }
 
-  .nordic-rune-bg {
+  .nordic-watermark-svg {
     position: absolute;
     top: 50%;
     left: 5%;
     transform: translateY(-50%);
-    font-size: 18rem;
-    font-weight: 800;
-    color: rgba(255, 255, 255, 0.025);
-    font-family: monospace, serif;
+    width: 320px;
+    height: 320px;
     pointer-events: none;
     user-select: none;
     z-index: 1;
-    letter-spacing: -0.1em;
   }
 
   .nordic-title-wrap {
-    margin-bottom: 25px;
-    border-left: 3px solid rgba(255, 255, 255, 0.3);
-    padding-left: 20px;
+    margin-bottom: 30px;
+    border-left: 2px solid rgba(197, 160, 89, 0.35);
+    padding-left: 25px;
     position: relative;
+    z-index: 5;
   }
 
   .nordic-slide-subtitle {
-    font-size: 0.85rem;
-    letter-spacing: 0.3em;
-    color: #00ffaa;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.4em;
+    color: #cca353;
     text-transform: uppercase;
     font-weight: 700;
-    margin-bottom: 6px;
-    text-shadow: 0 0 10px rgba(0, 255, 170, 0.25);
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(197, 160, 89, 0.15);
   }
 
   .nordic-runic-divider {
     font-family: monospace, serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.6em;
-    color: rgba(255, 255, 255, 0.35);
-    margin: 12px 0;
+    font-size: 0.85rem;
+    letter-spacing: 0.7em;
+    color: rgba(197, 160, 89, 0.4);
+    margin: 14px 0;
     user-select: none;
     pointer-events: none;
-    text-shadow: 0 0 5px rgba(255,255,255,0.1);
   }
 
   .nordic-slide-title {
-    font-size: 2.8rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
+    font-family: 'Cinzel', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
-    color: #ffffff;
-    line-height: 1.1;
+    color: #232724;
+    line-height: 1.15;
   }
   @media (max-width: 768px) {
     .nordic-slide-title {
-      font-size: 2rem;
+      font-size: 2.2rem;
     }
   }
 
   .nordic-slide-desc {
-    font-size: 1.05rem;
-    line-height: 1.65;
-    color: rgba(255, 255, 255, 0.85);
-    margin-bottom: 40px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    line-height: 1.75;
+    color: #4a453d;
+    margin-bottom: 50px;
     font-weight: 400;
-    z-index: 2;
+    z-index: 5;
+    position: relative;
   }
   @media (max-width: 768px) {
     .nordic-slide-desc {
-      font-size: 0.95rem;
-      margin-bottom: 20px;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
     }
   }
 
   .nordic-nav-container {
     display: flex;
     align-items: center;
-    gap: 25px;
+    gap: 30px;
     margin-top: auto;
-    z-index: 2;
+    z-index: 5;
+    position: relative;
   }
   @media (max-width: 1024px) {
     .nordic-nav-container {
@@ -720,86 +742,61 @@ const cyberStyles = `
     }
   }
 
-  .nordic-arrow-btn {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #ffffff;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .nordic-text-btn {
+    background: transparent;
+    border: none;
+    color: rgba(35, 39, 36, 0.5);
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
     cursor: pointer;
-    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-    font-size: 1rem;
+    transition: all 0.3s ease;
+    padding: 8px 12px;
+    user-select: none;
   }
-
-  .nordic-arrow-btn:hover {
-    background: #ffffff;
-    color: #111115;
-    border-color: #ffffff;
-    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
-  }
-  
-  .nordic-arrow-btn:active {
-    transform: translateY(0);
+  .nordic-text-btn:hover {
+    color: #cca353;
+    text-shadow: 0 0 8px rgba(197, 160, 89, 0.3);
   }
 
   .nordic-dots {
     display: flex;
-    gap: 12px;
+    gap: 20px;
   }
 
-  .nordic-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.25);
+  .nordic-rune-dot {
+    font-size: 1.3rem;
+    font-family: monospace, serif;
+    color: rgba(35, 39, 36, 0.3);
     cursor: pointer;
     transition: all 0.3s ease;
+    user-select: none;
   }
-
-  .nordic-dot.active {
-    background: #00ffaa;
-    width: 28px;
-    border-radius: 4px;
-    box-shadow: 0 0 10px rgba(0, 255, 170, 0.5);
+  .nordic-rune-dot:hover {
+    color: rgba(197, 160, 89, 0.7);
+    text-shadow: 0 0 8px rgba(197, 160, 89, 0.3);
+  }
+  .nordic-rune-dot.active {
+    color: #cca353;
+    font-weight: bold;
+    text-shadow: 0 0 15px rgba(197, 160, 89, 0.7);
+    transform: scale(1.15);
   }
 
   /* Corner graphics inspired by vintage runes/knots */
-  .nordic-corner {
+  .nordic-corner-svg {
     position: absolute;
-    width: 30px;
-    height: 30px;
-    border: 1.5px solid rgba(255, 255, 255, 0.25);
     pointer-events: none;
     z-index: 10;
   }
   .nordic-corner-tl {
     top: 25px;
     left: 25px;
-    border-right: none;
-    border-bottom: none;
-  }
-  .nordic-corner-tr {
-    top: 25px;
-    right: 25px;
-    border-left: none;
-    border-bottom: none;
   }
   .nordic-corner-bl {
     bottom: 25px;
     left: 25px;
-    border-right: none;
-    border-top: none;
-  }
-  .nordic-corner-br {
-    bottom: 25px;
-    right: 25px;
-    border-left: none;
-    border-top: none;
   }
 `;
 
@@ -872,13 +869,23 @@ export default function ThreeDParticleTerrain() {
         {selectedProject?.label === "Nordic Knots" ? (
           <div className="nordic-modal-content">
             {/* Corner frames inspired by vintage Norse woodcarvings */}
-            <div className="nordic-corner nordic-corner-tl" />
-            <div className="nordic-corner nordic-corner-tr" />
-            <div className="nordic-corner nordic-corner-bl" />
-            <div className="nordic-corner nordic-corner-br" />
+            <svg className="nordic-corner-svg nordic-corner-tl" width="50" height="50" viewBox="0 0 50 50" fill="none" stroke="#cca353" strokeWidth="1.5">
+              <path d="M 5 35 L 5 5 L 35 5" opacity="0.6"/>
+              <path d="M 10 30 L 10 10 L 30 10" opacity="0.3"/>
+              <circle cx="10" cy="10" r="2.5" fill="#cca353" opacity="0.5"/>
+            </svg>
+            <svg className="nordic-corner-svg nordic-corner-bl" width="50" height="50" viewBox="0 0 50 50" fill="none" stroke="#cca353" strokeWidth="1.5">
+              <path d="M 5 15 L 5 45 L 35 45" opacity="0.6"/>
+              <path d="M 10 20 L 10 40 L 30 40" opacity="0.3"/>
+              <circle cx="10" cy="40" r="2.5" fill="#cca353" opacity="0.5"/>
+            </svg>
             
-            {/* Runes background watermark */}
-            <div className="nordic-rune-bg">ᛟ ᛉ ᚛</div>
+            {/* Runes background Valknut watermark */}
+            <svg className="nordic-watermark-svg" viewBox="0 0 100 100" fill="none" stroke="rgba(74, 93, 78, 0.03)" strokeWidth="1.2">
+              <path d="M 50 15 L 80 70 L 20 70 Z" />
+              <path d="M 35 30 L 65 85 L 10 50 Z" />
+              <path d="M 65 30 L 90 50 L 35 85 Z" />
+            </svg>
 
             <div className="nordic-left-pane">
               <div className="nordic-title-wrap">
@@ -896,38 +903,43 @@ export default function ThreeDParticleTerrain() {
               
               <div className="nordic-nav-container">
                 <button 
-                  className="nordic-arrow-btn"
+                  className="nordic-text-btn"
                   onClick={() => setActiveSlide((prev) => (prev === 0 ? nordicSlides.length - 1 : prev - 1))}
-                  aria-label="Previous slide"
                 >
-                  ←
+                  ᚛ PREV
                 </button>
                 <div className="nordic-dots">
-                  {nordicSlides.map((_, idx) => (
-                    <div 
-                      key={idx}
-                      className={`nordic-dot ${idx === activeSlide ? 'active' : ''}`}
-                      onClick={() => setActiveSlide(idx)}
-                    />
-                  ))}
+                  {nordicSlides.map((_, idx) => {
+                    const slideRunes = ["ᛟ", "ᚦ", "ᚨ"];
+                    return (
+                      <span 
+                        key={idx}
+                        className={`nordic-rune-dot ${idx === activeSlide ? 'active' : ''}`}
+                        onClick={() => setActiveSlide(idx)}
+                      >
+                        {slideRunes[idx]}
+                      </span>
+                    );
+                  })}
                 </div>
                 <button 
-                  className="nordic-arrow-btn"
+                  className="nordic-text-btn"
                   onClick={() => setActiveSlide((prev) => (prev === nordicSlides.length - 1 ? 0 : prev + 1))}
-                  aria-label="Next slide"
                 >
-                  →
+                  NEXT ᚜
                 </button>
               </div>
             </div>
 
             <div className="nordic-right-pane">
-              <img 
-                src={nordicSlides[activeSlide].image} 
-                alt={nordicSlides[activeSlide].title}
-                className="nordic-mood-img"
-                key={activeSlide}
-              />
+              <div className="nordic-mood-img-container">
+                <img 
+                  src={nordicSlides[activeSlide].image} 
+                  alt={nordicSlides[activeSlide].title}
+                  className="nordic-mood-img"
+                  key={activeSlide}
+                />
+              </div>
             </div>
           </div>
         ) : (
