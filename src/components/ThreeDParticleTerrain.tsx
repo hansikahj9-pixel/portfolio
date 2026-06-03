@@ -407,11 +407,11 @@ const cyberStyles = `
     letter-spacing: -0.01em;
     text-transform: uppercase;
     color: #ffffff;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.3);
-    transition: text-shadow 0.4s ease;
+    text-shadow: none;
+    transition: transform 0.4s ease;
   }
   .cyber-hud-label.hovered .hud-title {
-    text-shadow: 0 0 15px rgba(255, 255, 255, 1.0), 0 0 35px rgba(0, 255, 170, 0.6);
+    transform: scale(1.05);
   }
 
   /* Centered Glassmorphic Modal styles */
@@ -435,21 +435,21 @@ const cyberStyles = `
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -46%) scale(0.96);
-    width: 84vw;
-    height: 84vh;
+    transform: translate(-50%, -50%) scale(0.96);
+    width: 85vw;
+    height: 85vh;
     max-width: 1600px;
     max-height: 1000px;
-    background: rgba(255, 255, 255, 0.14);
-    backdrop-filter: blur(35px) saturate(180%);
-    -webkit-backdrop-filter: blur(35px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    border-radius: 28px;
-    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    background: rgba(217, 217, 217, 0.20);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 40px;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    padding: 50px;
+    padding: 40px;
     box-sizing: border-box;
     opacity: 0;
     pointer-events: none;
@@ -470,26 +470,24 @@ const cyberStyles = `
   }
   .cyber-modal-close {
     position: absolute;
-    top: 35px;
-    right: 35px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    top: 30px;
+    right: 30px;
+    background: transparent;
+    border: none;
     color: #ffffff;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 700;
-    padding: 8px 20px;
+    font-size: 1.8rem;
     cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-    border-radius: 50px;
+    line-height: 1;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .cyber-modal-close:hover {
-    background: #ffffff;
-    color: #111115;
-    border-color: #ffffff;
-    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.15);
   }
   .cyber-modal-content {
     flex: 1;
@@ -594,7 +592,7 @@ export default function ThreeDParticleTerrain() {
       />
       <div className={`cyber-modal ${selectedProject ? 'active' : ''}`}>
         <button className="cyber-modal-close" onClick={() => setSelectedProject(null)}>
-          [ CLOSE ]
+          ✕
         </button>
         <div className="cyber-modal-content">
           <div className="cyber-modal-title">{selectedProject?.label}</div>
