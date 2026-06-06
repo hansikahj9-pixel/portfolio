@@ -8,7 +8,6 @@ import { motion } from 'framer-motion';
 // Import Generated Inspiration Images for Nordic Knots Moodboard
 import nordicMain from '../assets/nordic_moodboard_main.png';
 import nordicKnots from '../assets/nordic_knots_inspiration.png';
-import nordicMythology from '../assets/nordic_mythology_inspiration.png';
 
 // Import Substance Sampler Fabric Screenshots (Original viewport views showing interface)
 import fabric106 from '../assets/browswear/Screenshot (106).png';
@@ -664,23 +663,31 @@ const cyberStyles = `
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    background: #0d0f0e; /* Deep charcoal basalt stone */
+    background: #090e1a; /* Deep Woad Indigo base */
     background-image: 
-      radial-gradient(circle at 50% 30%, rgba(197, 160, 89, 0.05) 0%, rgba(0, 0, 0, 0) 70%),
-      linear-gradient(rgba(13, 15, 14, 0.98), rgba(13, 15, 14, 0.98));
+      /* Distressed Grain Overlay */
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E"),
+      /* Intricate Runic Knotwork Mesh */
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpath d='M60 0 L120 60 L60 120 L0 60 Z' fill='none' stroke='rgba(197, 160, 89, 0.025)' stroke-width='0.75'/%3E%3Ccircle cx='60' cy='60' r='10' fill='none' stroke='rgba(34, 139, 115, 0.02)' stroke-width='0.5'/%3E%3Cpath d='M60 20 L100 60 L60 100 L20 60 Z' fill='none' stroke='rgba(197, 160, 89, 0.012)' stroke-width='0.5'/%3E%3C/svg%3E"),
+      /* Dynamic Aurora Borealis Gradient Blends */
+      radial-gradient(circle at 80% 15%, rgba(46, 196, 182, 0.15) 0%, rgba(0, 0, 0, 0) 55%),
+      radial-gradient(circle at 15% 45%, rgba(138, 79, 255, 0.12) 0%, rgba(0, 0, 0, 0) 65%),
+      radial-gradient(circle at 75% 75%, rgba(34, 139, 115, 0.14) 0%, rgba(0, 0, 0, 0) 50%),
+      radial-gradient(circle at 20% 90%, rgba(255, 184, 0, 0.06) 0%, rgba(0, 0, 0, 0) 45%),
+      linear-gradient(135deg, #090e1a 0%, #0c1824 35%, #152535 70%, #0b111e 100%);
     color: #e5e4de; /* Bone white text */
     padding: 80px 80px 120px 80px;
     box-sizing: border-box;
     position: relative;
     scrollbar-width: thin;
-    scrollbar-color: rgba(197, 160, 89, 0.2) rgba(0, 0, 0, 0.2);
+    scrollbar-color: rgba(197, 160, 89, 0.25) rgba(9, 14, 26, 0.2);
   }
 
   .nordic-scroll-page::-webkit-scrollbar {
     width: 8px;
   }
   .nordic-scroll-page::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(9, 14, 26, 0.2);
   }
   .nordic-scroll-page::-webkit-scrollbar-thumb {
     background: rgba(197, 160, 89, 0.2);
@@ -705,7 +712,7 @@ const cyberStyles = `
     font-size: 1.1rem;
     pointer-events: none;
     user-select: none;
-    z-index: 1;
+    z-index: 3;
     writing-mode: vertical-rl;
     text-orientation: upright;
     letter-spacing: 0.6em;
@@ -717,17 +724,128 @@ const cyberStyles = `
     right: 20px;
   }
 
-  /* Watermark icon background */
-  .nordic-scroll-watermark {
+  /* Rotating Astrolabe Background Graphics */
+  .nordic-bg-graphics-container {
     position: absolute;
-    top: 5%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 600px;
-    height: 600px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .nordic-astrolabe {
+    position: absolute;
+    transform-origin: center center;
     pointer-events: none;
     user-select: none;
+  }
+  .nordic-astrolabe.outer {
+    width: 900px;
+    height: 900px;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: spinAstrolabeCW 160s linear infinite;
+  }
+  .nordic-astrolabe.inner {
+    width: 600px;
+    height: 600px;
+    top: 50%;
+    left: 15%;
+    transform: translate(-50%, -50%);
+    animation: spinAstrolabeCCW 120s linear infinite;
+  }
+  .nordic-astrolabe.bottom-right {
+    width: 750px;
+    height: 750px;
+    top: 80%;
+    left: 85%;
+    transform: translate(-50%, -50%);
+    animation: spinAstrolabeCW 200s linear infinite;
+  }
+  .runic-text {
+    font-family: monospace, serif;
+    font-size: 8px;
+    fill: rgba(197, 160, 89, 0.08);
+    letter-spacing: 2.5px;
+  }
+  .runic-text.second {
+    fill: rgba(46, 196, 182, 0.06);
+  }
+  @keyframes spinAstrolabeCW {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+  @keyframes spinAstrolabeCCW {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(-360deg); }
+  }
+
+  /* Full-Bleed Overlay Layout Styles */
+  .nordic-full-bleed-section {
+    position: relative;
+    width: 100%;
+    height: 660px;
+    border-radius: 28px;
+    overflow: hidden;
+    margin-bottom: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 80px;
+    box-sizing: border-box;
+    box-shadow: 0 35px 80px rgba(0, 0, 0, 0.55);
+    z-index: 2;
+  }
+  .nordic-full-bleed-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     z-index: 1;
+    opacity: 0.95;
+    transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .nordic-full-bleed-section:hover .nordic-full-bleed-bg {
+    transform: scale(1.04);
+  }
+  .nordic-full-bleed-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(9, 14, 26, 0.5) 0%, rgba(9, 14, 26, 0.8) 100%);
+    z-index: 2;
+  }
+  .nordic-full-bleed-content {
+    position: relative;
+    z-index: 3;
+    max-width: 800px;
+    text-align: center;
+    color: #fdfcf7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .nordic-full-bleed-content.left-aligned {
+    text-align: left;
+    align-items: flex-start;
+    margin-right: auto;
+    margin-left: 20px;
+    max-width: 580px;
+    background: rgba(9, 14, 26, 0.72);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(197, 160, 89, 0.25);
+    padding: 55px;
+    border-radius: 24px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
   }
 
   .nordic-scroll-hero {
@@ -805,6 +923,7 @@ const cyberStyles = `
     opacity: 0.95;
     display: block;
   }
+
 
   /* Scrolling layout sections */
   .nordic-scroll-section {
@@ -1313,10 +1432,10 @@ const cyberStyles = `
 
   /* Override modal colors for Dark theme */
   .nordic-dark-theme {
-    background: #0d0f0e !important;
-    border: 1px solid rgba(197, 160, 89, 0.25) !important;
+    background: linear-gradient(135deg, #090e1a 0%, #0c1824 40%, #152535 100%) !important;
+    border: 2px solid rgba(197, 160, 89, 0.35) !important;
     border-radius: 40px !important;
-    box-shadow: 0 35px 80px rgba(0, 0, 0, 0.65) !important;
+    box-shadow: 0 35px 80px rgba(0, 0, 0, 0.75), inset 0 0 60px rgba(197, 160, 89, 0.05) !important;
   }
 
   .nordic-dark-theme .cyber-modal-close {
@@ -1418,77 +1537,87 @@ export default function ThreeDParticleTerrain() {
               ᛟᚦᚨᚱᛞᛗᛚᛝᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛝᛟᛞ
             </div>
 
-            {/* Background Valknut watermark */}
-            <svg className="nordic-scroll-watermark" viewBox="0 0 100 100" fill="none" stroke="rgba(197, 160, 89, 0.02)" strokeWidth="0.8">
-              <path d="M 50 15 L 80 70 L 20 70 Z" />
-              <path d="M 35 30 L 65 85 L 10 50 Z" />
-              <path d="M 65 30 L 90 50 L 35 85 Z" />
-            </svg>
+            {/* Rotating Astrolabe Background Graphics */}
+            <div className="nordic-bg-graphics-container">
+              {/* Outer Ring Astrolabe */}
+              <svg className="nordic-astrolabe outer" viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(197, 160, 89, 0.03)" strokeWidth="0.5" strokeDasharray="3, 5" />
+                <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(46, 196, 182, 0.02)" strokeWidth="0.8" />
+                <path id="rune-path-1" d="M 100,20 A 80,80 0 1,1 99.9,20" fill="none" />
+                <text className="runic-text">
+                  <textPath href="#rune-path-1" startOffset="0%">
+                    ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛝᛟᛞᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛝᛟᛞ
+                  </textPath>
+                </text>
+                <path d="M 100 20 L 100 180 M 20 100 L 180 100 M 43.4 43.4 L 156.6 156.6 M 43.4 156.6 L 156.6 43.4" stroke="rgba(197, 160, 89, 0.015)" strokeWidth="0.5" fill="none" />
+              </svg>
 
-            {/* Section 1: Hero */}
+              {/* Inner Ring Astrolabe with Concentric Triangles */}
+              <svg className="nordic-astrolabe inner" viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="60" fill="none" stroke="rgba(197, 160, 89, 0.025)" strokeWidth="0.5" />
+                <path id="rune-path-2" d="M 100,40 A 60,60 0 1,0 99.9,40" fill="none" />
+                <text className="runic-text second">
+                  <textPath href="#rune-path-2" startOffset="0%">
+                    ᛟᚦᚨᚱᛞᛗᛚᛝᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛝᛟᛞ
+                  </textPath>
+                </text>
+                <path d="M 100 55 L 140 120 L 60 120 Z" stroke="rgba(46, 196, 182, 0.015)" strokeWidth="0.8" fill="none" />
+                <path d="M 100 145 L 60 80 L 140 80 Z" stroke="rgba(197, 160, 89, 0.015)" strokeWidth="0.8" fill="none" />
+              </svg>
+
+              {/* Bottom Right Supporting Astrolabe */}
+              <svg className="nordic-astrolabe bottom-right" viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="75" fill="none" stroke="rgba(197, 160, 89, 0.02)" strokeWidth="0.5" />
+                <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(197, 160, 89, 0.01)" strokeWidth="0.5" strokeDasharray="5, 10" />
+                <path id="rune-path-3" d="M 100,25 A 75,75 0 1,1 99.9,25" fill="none" />
+                <text className="runic-text">
+                  <textPath href="#rune-path-3" startOffset="0%">
+                    ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛝᛟᛞᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾ
+                  </textPath>
+                </text>
+              </svg>
+            </div>
+
+            {/* Section 1: Hero (Full-Bleed Cover Layout) */}
             <motion.div 
-              className="nordic-scroll-hero"
+              className="nordic-full-bleed-section"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <div className="nordic-scroll-header">
+              <img src={nordicMain} alt="Nordic Knots Hero" className="nordic-full-bleed-bg" />
+              <div className="nordic-full-bleed-overlay" />
+              
+              <div className="nordic-full-bleed-content">
                 <div className="nordic-slide-subtitle">WOMENSWEAR COLLECTION</div>
                 <div className="nordic-runic-divider">᚛ ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ ᚜</div>
                 <h1 className="nordic-scroll-main-title">NORDIC KNOTS</h1>
-              </div>
-              <p className="nordic-scroll-lead">
-                A mini womenswear collection where organic fabrics are inspired by interlocking Nordic knots and architectural silhouettes are drawn from Norse mythology.
-              </p>
-              <div className="nordic-hero-img-frame">
-                <img src={nordicMain} alt="Nordic Knots Hero" className="nordic-hero-img" />
+                <div className="nordic-runic-divider">᚛ ᛟ ᚦ ᚨ ᚱ ᛞ ᛗ ᛚ ᛝ ᚜</div>
+                <p className="nordic-scroll-lead">
+                  A mini womenswear collection where organic fabrics are inspired by interlocking Nordic knots and architectural silhouettes are drawn from Norse mythology.
+                </p>
               </div>
             </motion.div>
 
-            {/* Section 2: Sacred Knotwork */}
+            {/* Section 2: Sacred Knotwork (Full-Bleed Glassmorphic Card Layout) */}
             <motion.div 
-              className="nordic-scroll-section"
+              className="nordic-full-bleed-section"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8 }}
             >
-              <div className="nordic-section-left">
+              <img src={nordicKnots} alt="Sacred Knotwork" className="nordic-full-bleed-bg" />
+              <div className="nordic-full-bleed-overlay" />
+              
+              <div className="nordic-full-bleed-content left-aligned">
                 <div className="nordic-slide-subtitle">GEOMETRY & CARVINGS</div>
                 <h2 className="nordic-section-title">SACRED KNOTWORK</h2>
                 <div className="nordic-runic-divider">᚛ ᚦ ᚨ ᚱ ᚜</div>
                 <p className="nordic-section-desc">
                   Drawing inspiration from the endless loops carved into ancient runestones. The physical structure of these interlocking knots guides the directional flow of the collection's draping.
                 </p>
-              </div>
-              <div className="nordic-section-right">
-                <div className="nordic-mood-img-container">
-                  <img src={nordicKnots} alt="Sacred Knotwork" className="nordic-mood-img" />
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Section 3: Realms of the Norse */}
-            <motion.div 
-              className="nordic-scroll-section reversed"
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="nordic-section-left">
-                <div className="nordic-slide-subtitle">ATMOSPHERIC MYTHOLOGY</div>
-                <h2 className="nordic-section-title">REALMS OF THE NORSE</h2>
-                <div className="nordic-runic-divider">᚛ ᛞ ᛗ ᛚ ᚜</div>
-                <p className="nordic-section-desc">
-                  Inspired by the mist-shrouded fjords and the cosmic Yggdrasil. The silhouettes capture the ethereal scale and protective layering of Norse mythological archetypes.
-                </p>
-              </div>
-              <div className="nordic-section-right">
-                <div className="nordic-mood-img-container">
-                  <img src={nordicMythology} alt="Realms of the Norse" className="nordic-mood-img" />
-                </div>
               </div>
             </motion.div>
 
