@@ -3,6 +3,7 @@ import { useRef, useMemo, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { Html } from '@react-three/drei';
+import { motion } from 'framer-motion';
 
 // Import Generated Inspiration Images for Nordic Knots Moodboard
 import nordicMain from '../assets/nordic_moodboard_main.png';
@@ -19,13 +20,21 @@ import fabric190 from '../assets/browswear/Screenshot (190).png';
 import fabric193 from '../assets/browswear/Screenshot (193).png';
 import fabric195 from '../assets/browswear/Screenshot (195).png';
 
-// Import Looks Colorways Screenshots
+// Import Looks Turnarounds (Original Browzwear turnaround models)
 import look6 from '../assets/browswear/6.jpg';
 import look7 from '../assets/browswear/7.jpg';
 import look9 from '../assets/browswear/9.jpg';
 import look10 from '../assets/browswear/10.jpg';
 import look11 from '../assets/browswear/11.jpg';
 import look12 from '../assets/browswear/12.jpg';
+
+// Import Looks Photoshoots (The custom photoshoot layouts created by Hansika)
+import look6_1 from '../assets/browswear/6.1.png';
+import look7_1 from '../assets/browswear/7.1.png';
+import look8_1 from '../assets/browswear/8.1.png';
+import look9_1 from '../assets/browswear/9.1.png';
+import look10_1 from '../assets/browswear/10.1.png';
+import look11_1 from '../assets/browswear/11.1.png';
 
 const fabricExperiments = [
   {
@@ -81,66 +90,42 @@ const finalFabrics = [
   }
 ];
 
-const nordicSlides = [
+const nordicScrollLooks = [
   {
-    title: "NORDIC KNOTS",
-    subtitle: "WOMENSWEAR COLLECTION",
-    desc: "A mini womenswear collection where organic fabrics are inspired by interlocking Nordic knots and architectural silhouettes are drawn from Norse mythology.",
-    image: nordicMain
-  },
-  {
-    title: "SACRED KNOTWORK",
-    subtitle: "GEOMETRY & CARVINGS",
-    desc: "Drawing inspiration from the endless loops carved into ancient runestones. The physical structure of these interlocking knots guides the directional flow of the collection's draping.",
-    image: nordicKnots
-  },
-  {
-    title: "REALMS OF THE NORSE",
-    subtitle: "ATMOSPHERIC MYTHOLOGY",
-    desc: "Inspired by the mist-shrouded fjords and the cosmic Yggdrasil. The silhouettes capture the ethereal scale and protective layering of Norse mythological archetypes.",
-    image: nordicMythology
-  },
-  {
-    title: "SUBSTANCE EXPERIMENTATION",
-    subtitle: "TEXTILE RESEARCH & DEVELOPMENT",
-    desc: "Before finalizing the material palette, I experimented with creating multiple Norse-inspired digital fabrics on Adobe Substance 3D Sampler, exploring runic configurations, height displacement offsets, and metallic sheen levels.",
-    image: "experiment_collage"
-  },
-  {
-    title: "SUBSTANCE SAMPLING",
-    subtitle: "FINAL MATERIAL PALETTE",
-    desc: "The finalized digital fabrics created on Adobe Substance 3D Sampler. The collection features two primary textile systems: a lightweight Perforated Knotwork Mesh and a heavy-weight Embossed Viking Relief in deep woad indigo.",
-    image: "fabric_collage"
-  },
-  {
+    num: "I",
     title: "LOOK 01: THE KNOTWORK DRAPE",
     subtitle: "GARMENT STYLING & COLORWAYS",
     desc: "An asymmetrical draped dress featuring interlocking panel vectors. The organic knot lines guide the drape lines across the bodice, creating a fluid silhouette that shifts dynamically with movement.",
-    image: "look_collage",
-    imageLeft: look6,
     tagLeft: "WOAD INDIGO / SLATE CHARCOAL",
-    imageRight: look7,
-    tagRight: "CRIMSON MADDER RED"
+    shootLeft: look6_1,
+    turnLeft: look6,
+    tagRight: "CRIMSON MADDER RED",
+    shootRight: look7_1,
+    turnRight: look7
   },
   {
+    num: "II",
     title: "LOOK 02: VALKYRIE SHIELD BODICE",
     subtitle: "STRUCTURED ACTIVE WEAR",
     desc: "A structured bodice garment referencing historical Norse protective armor. Layered shoulder straps and wrapped waist panels provide structural support while maintaining flexibility.",
-    image: "look_collage",
-    imageLeft: look9,
     tagLeft: "ICE FJORD BLUE / SLATE TEAL",
-    imageRight: look10,
-    tagRight: "CRIMSON MADDER RED"
+    shootLeft: look8_1,
+    turnLeft: look9,
+    tagRight: "CRIMSON MADDER RED",
+    shootRight: look9_1,
+    turnRight: look10
   },
   {
+    num: "III",
     title: "LOOK 03: URNES CARVED COAT",
     subtitle: "OUTERWEAR & SHELL SYSTEMS",
     desc: "A heavy relief-paneled outerwear coat utilizing the custom Embossed Viking Relief fabric. High-volume shoulder contours and mesh-insert panels reference the scaling of Norse mythological archetypes.",
-    image: "look_collage",
-    imageLeft: look11,
     tagLeft: "VIKING NAVY / FJORD BLUE",
-    imageRight: look12,
-    tagRight: "WEATHERED BONE / MIST GREY"
+    shootLeft: look10_1,
+    turnLeft: look11,
+    tagRight: "WEATHERED BONE / MIST GREY",
+    shootRight: look11_1,
+    turnRight: look12
   }
 ];
 
@@ -674,119 +659,85 @@ const cyberStyles = `
     text-transform: uppercase;
   }
 
-  /* Nordic Custom Modal Styling (Scrapbook, full bleed) */
-  .nordic-modal-content {
-    display: flex;
-    flex-direction: row;
+  /* ── NORDIC SCROLL PAGE STYLING ── */
+  .nordic-scroll-page {
     width: 100%;
     height: 100%;
-    position: relative;
+    overflow-y: auto;
+    background: #0d0f0e; /* Deep charcoal basalt stone */
+    background-image: 
+      radial-gradient(circle at 50% 30%, rgba(197, 160, 89, 0.05) 0%, rgba(0, 0, 0, 0) 70%),
+      linear-gradient(rgba(13, 15, 14, 0.98), rgba(13, 15, 14, 0.98));
+    color: #e5e4de; /* Bone white text */
+    padding: 80px 80px 120px 80px;
     box-sizing: border-box;
+    position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(197, 160, 89, 0.2) rgba(0, 0, 0, 0.2);
   }
-  @media (max-width: 1024px) {
-    .nordic-modal-content {
-      flex-direction: column-reverse;
-      overflow-y: auto;
-    }
+
+  .nordic-scroll-page::-webkit-scrollbar {
+    width: 8px;
   }
-  
-  .nordic-left-pane {
-    flex: 1.1;
+  .nordic-scroll-page::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+  }
+  .nordic-scroll-page::-webkit-scrollbar-thumb {
+    background: rgba(197, 160, 89, 0.2);
+    border-radius: 4px;
+  }
+  .nordic-scroll-page::-webkit-scrollbar-thumb:hover {
+    background: rgba(197, 160, 89, 0.4);
+  }
+
+  /* Fixed runes borders */
+  .nordic-side-border {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    position: relative;
-    padding: 60px;
-    z-index: 2;
-    background: #fdfcf7; /* Match solid bone white background */
-    border-right: 1px solid rgba(197, 160, 89, 0.15);
-    box-sizing: border-box;
-  }
-  @media (max-width: 1024px) {
-    .nordic-left-pane {
-      flex: none;
-      padding: 40px;
-      border-right: none;
-      border-top: 1px solid rgba(197, 160, 89, 0.15);
-    }
-  }
-
-  .nordic-right-pane {
-    flex: 1.5;
-    height: 100%;
-    display: flex;
+    justify-content: space-around;
     align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 2;
-    overflow: hidden;
-    background: #f7f5f0; /* Slightly contrasting visual canvas backboard */
-    padding: 50px;
-    box-sizing: border-box;
+    color: rgba(197, 160, 89, 0.06);
+    font-family: monospace, serif;
+    font-size: 1.1rem;
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    letter-spacing: 0.6em;
   }
-  @media (max-width: 1024px) {
-    .nordic-right-pane {
-      width: 100%;
-      height: 45vh;
-      flex: none;
-      padding: 30px;
-    }
+  .nordic-side-border.left {
+    left: 20px;
   }
-
-  /* Photo layout resembling physical print scrapbook */
-  .nordic-mood-img-container {
-    width: 95%;
-    height: 95%;
-    background: #ffffff;
-    border: 12px solid #ffffff;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    transform: rotate(1.2deg);
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .nordic-mood-img-container:hover {
-    transform: rotate(0deg) scale(1.01);
+  .nordic-side-border.right {
+    right: 20px;
   }
 
-  .nordic-mood-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.95;
-    animation: nordicFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  }
-  @keyframes nordicFadeIn {
-    from {
-      opacity: 0.2;
-      transform: scale(1.03);
-    }
-    to {
-      opacity: 0.95;
-      transform: scale(1);
-    }
-  }
-
-  .nordic-watermark-svg {
+  /* Watermark icon background */
+  .nordic-scroll-watermark {
     position: absolute;
-    top: 50%;
-    left: 5%;
-    transform: translateY(-50%);
-    width: 320px;
-    height: 320px;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
     pointer-events: none;
     user-select: none;
     z-index: 1;
   }
 
-  .nordic-title-wrap {
-    margin-bottom: 30px;
-    border-left: 2px solid rgba(197, 160, 89, 0.35);
-    padding-left: 25px;
+  .nordic-scroll-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 120px;
     position: relative;
-    z-index: 5;
+    z-index: 2;
   }
 
   .nordic-slide-subtitle {
@@ -810,95 +761,145 @@ const cyberStyles = `
     pointer-events: none;
   }
 
-  .nordic-slide-title {
+  .nordic-scroll-main-title {
     font-family: 'Cinzel', serif;
-    font-size: 3rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #232724;
-    line-height: 1.15;
-  }
-  @media (max-width: 768px) {
-    .nordic-slide-title {
-      font-size: 2.2rem;
-    }
+    color: #cca353;
+    text-shadow: 0 0 30px rgba(197, 160, 89, 0.15);
+    line-height: 1.1;
+    margin-top: 10px;
   }
 
-  .nordic-slide-desc {
+  .nordic-scroll-lead {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.25rem;
-    line-height: 1.75;
-    color: #4a453d;
-    margin-bottom: 50px;
-    font-weight: 400;
-    z-index: 5;
-    position: relative;
-  }
-  @media (max-width: 768px) {
-    .nordic-slide-desc {
-      font-size: 1.1rem;
-      margin-bottom: 30px;
-    }
+    font-size: 1.5rem;
+    line-height: 1.6;
+    color: #cca353;
+    opacity: 0.85;
+    max-width: 900px;
+    margin: 20px auto 40px auto;
   }
 
-  .nordic-nav-container {
+  .nordic-hero-img-frame {
+    background: #ffffff;
+    border: 16px solid #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+    max-width: 1000px;
+    width: 90%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    transform: rotate(-0.5deg);
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .nordic-hero-img-frame:hover {
+    transform: rotate(0deg) scale(1.01);
+  }
+  .nordic-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.95;
+    display: block;
+  }
+
+  /* Scrolling layout sections */
+  .nordic-scroll-section {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    gap: 30px;
-    margin-top: auto;
-    z-index: 5;
+    justify-content: space-between;
+    gap: 80px;
+    margin-bottom: 150px;
     position: relative;
+    z-index: 2;
+    width: 100%;
+  }
+  .nordic-scroll-section.reversed {
+    flex-direction: row-reverse;
   }
   @media (max-width: 1024px) {
-    .nordic-nav-container {
-      margin-top: 20px;
+    .nordic-scroll-section, .nordic-scroll-section.reversed {
+      flex-direction: column;
+      gap: 40px;
+      margin-bottom: 100px;
     }
   }
 
-  .nordic-text-btn {
-    background: transparent;
-    border: none;
-    color: rgba(35, 39, 36, 0.5);
-    font-family: 'Cinzel', serif;
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    padding: 8px 12px;
-    user-select: none;
+  .nordic-section-left {
+    flex: 1;
+    max-width: 550px;
   }
-  .nordic-text-btn:hover {
-    color: #cca353;
-    text-shadow: 0 0 8px rgba(197, 160, 89, 0.3);
-  }
-
-  .nordic-dots {
+  .nordic-section-right {
+    flex: 1.2;
     display: flex;
-    gap: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+  @media (max-width: 1024px) {
+    .nordic-section-left, .nordic-section-right {
+      max-width: 100%;
+      width: 100%;
+    }
   }
 
-  .nordic-rune-dot {
-    font-size: 1.3rem;
-    font-family: monospace, serif;
-    color: rgba(35, 39, 36, 0.3);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    user-select: none;
-  }
-  .nordic-rune-dot:hover {
-    color: rgba(197, 160, 89, 0.7);
-    text-shadow: 0 0 8px rgba(197, 160, 89, 0.3);
-  }
-  .nordic-rune-dot.active {
+  .nordic-section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
     color: #cca353;
-    font-weight: bold;
-    text-shadow: 0 0 15px rgba(197, 160, 89, 0.7);
-    transform: scale(1.15);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.2;
+    margin-top: 10px;
+    margin-bottom: 20px;
   }
 
-  /* Corner graphics inspired by vintage runes/knots */
+  .nordic-section-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    line-height: 1.7;
+    color: #d1cfc7;
+    margin-bottom: 30px;
+  }
+
+  .nordic-mood-img-container {
+    width: 95%;
+    height: 95%;
+    background: #ffffff;
+    border: 12px solid #ffffff;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    transform: rotate(1.2deg);
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nordic-mood-img-container:hover {
+    transform: rotate(0deg) scale(1.01);
+  }
+  .nordic-mood-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.95;
+    display: block;
+  }
+
+  /* Collage Section specifics */
+  .nordic-scroll-section.collage-section {
+    align-items: flex-start;
+  }
+  .nordic-scroll-section.collage-section .nordic-section-right {
+    height: 520px;
+    position: relative;
+  }
+
+  /* Corner graphics */
   .nordic-corner-svg {
     position: absolute;
     pointer-events: none;
@@ -926,7 +927,7 @@ const cyberStyles = `
     background: #ffffff;
     border: 6px solid #ffffff;
     border-radius: 4px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     overflow: hidden;
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, outline 0.3s ease;
     box-sizing: border-box;
@@ -938,12 +939,12 @@ const cyberStyles = `
   .fabric-card:hover {
     transform: rotate(0deg) scale(1.04);
     z-index: 9 !important;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.16);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
   }
 
   .fabric-card.active {
     transform: rotate(0deg) scale(1.08) !important;
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
     outline: 2px solid #cca353;
     outline-offset: 4px;
     z-index: 10 !important;
@@ -1031,10 +1032,13 @@ const cyberStyles = `
   .fabric-study-box {
     margin-top: 25px;
     margin-bottom: 25px;
-    padding: 16px 20px;
-    background: rgba(197, 160, 89, 0.04);
-    border-left: 2px solid #cca353;
+    padding: 20px 24px;
+    background: #141615; /* Dark stone card */
+    border-left: 3px solid #cca353;
     border-radius: 0 12px 12px 0;
+    border: 1px solid rgba(197, 160, 89, 0.15);
+    border-left: 3px solid #cca353;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     animation: slideInText 0.45s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   }
 
@@ -1052,34 +1056,34 @@ const cyberStyles = `
     font-family: 'Cinzel', serif;
     font-size: 1.15rem;
     font-weight: 700;
-    color: #232724;
-    margin-bottom: 8px;
+    color: #e5e4de;
+    margin-bottom: 12px;
     letter-spacing: 0.05em;
   }
 
   .fabric-study-desc {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    line-height: 1.55;
-    color: #4a453d;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: #c0beb5;
   }
 
   .fabric-study-tabs {
     display: flex;
     gap: 8px;
-    margin-top: 20px;
+    margin-top: 24px;
     flex-wrap: wrap;
   }
 
   .fabric-tab-btn {
     background: transparent;
-    border: 1px solid rgba(197, 160, 89, 0.35);
+    border: 1px solid rgba(197, 160, 89, 0.3);
     border-radius: 20px;
-    padding: 4px 12px;
+    padding: 6px 14px;
     font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
+    font-size: 0.68rem;
     font-weight: 600;
-    color: rgba(35, 39, 36, 0.65);
+    color: rgba(229, 228, 222, 0.65);
     cursor: pointer;
     transition: all 0.3s ease;
   }
@@ -1087,7 +1091,244 @@ const cyberStyles = `
   .fabric-tab-btn:hover, .fabric-tab-btn.active {
     background: #cca353;
     border-color: #cca353;
-    color: #fdfcf7;
+    color: #0d0f0e;
+    box-shadow: 0 0 12px rgba(197, 160, 89, 0.4);
+  }
+
+  /* ── CONCEPT A: ASYMMETRIC DOSSIER SCROLL LOOKS STYLING ── */
+  .nordic-scroll-look-section {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 180px;
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid rgba(197, 160, 89, 0.15);
+    padding-top: 80px;
+    width: 100%;
+  }
+
+  .nordic-look-header-block {
+    text-align: center;
+    margin-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .nordic-look-bg-num {
+    position: absolute;
+    font-family: 'Cinzel', serif;
+    font-size: 8rem;
+    font-weight: 900;
+    color: rgba(197, 160, 89, 0.03);
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    user-select: none;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .nordic-scroll-look-title {
+    font-family: 'Cinzel', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #cca353;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 10px 0 20px 0;
+    z-index: 2;
+  }
+
+  .nordic-scroll-look-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    line-height: 1.7;
+    color: #d1cfc7;
+    max-width: 850px;
+    margin: 0 auto;
+    z-index: 2;
+  }
+
+  .nordic-look-asymmetric-dossier {
+    display: flex;
+    flex-direction: column;
+    gap: 140px;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .dossier-colorway {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+  }
+
+  .dossier-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #cca353;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    border-bottom: 1px dashed rgba(197, 160, 89, 0.2);
+    padding-bottom: 12px;
+    width: 100%;
+  }
+
+  .dossier-collage-container {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
+    height: 480px;
+    align-items: center;
+  }
+  @media (max-width: 768px) {
+    .dossier-collage-container {
+      flex-direction: column;
+      height: auto;
+      gap: 40px;
+    }
+  }
+
+  .dossier-card {
+    background: #fdfcf7; /* Polaroid paper border */
+    border: 12px solid #fdfcf7;
+    border-bottom: 30px solid #fdfcf7; /* Polaroid writing margin */
+    border-radius: 4px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.55);
+    position: absolute;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, z-index 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+  }
+  @media (max-width: 768px) {
+    .dossier-card {
+      position: relative !important;
+      width: 100% !important;
+      left: auto !important;
+      right: auto !important;
+      top: auto !important;
+      transform: none !important;
+    }
+  }
+
+  .dossier-card:hover {
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75);
+    z-index: 10 !important;
+  }
+
+  .dossier-card.main-photoshoot {
+    width: 62%;
+    z-index: 2;
+  }
+  
+  .left-heavy .dossier-card.main-photoshoot {
+    left: 0;
+    transform: rotate(-1.5deg);
+  }
+  
+  .right-heavy .dossier-card.main-photoshoot {
+    right: 0;
+    transform: rotate(1.5deg);
+  }
+  
+  .dossier-card.main-photoshoot:hover {
+    transform: scale(1.02) rotate(0deg);
+  }
+
+  .dossier-card.detail-turnaround {
+    width: 40%;
+    z-index: 5;
+  }
+  
+  .left-heavy .dossier-card.detail-turnaround {
+    right: 3%;
+    top: 5%;
+    transform: rotate(3deg);
+  }
+
+  .right-heavy .dossier-card.detail-turnaround {
+    left: 3%;
+    top: 5%;
+    transform: rotate(-3deg);
+  }
+
+  .dossier-card.detail-turnaround:hover {
+    transform: scale(1.04) rotate(0deg);
+  }
+
+  /* Tape accent on turnarounds to sell the tactile scrapbook look */
+  .dossier-tape {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-4deg);
+    width: 100px;
+    height: 25px;
+    background: rgba(197, 160, 89, 0.22);
+    backdrop-filter: blur(2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+    z-index: 20;
+    pointer-events: none;
+    border-left: 2px dashed rgba(197, 160, 89, 0.35);
+    border-right: 2px dashed rgba(197, 160, 89, 0.35);
+  }
+
+  .dossier-img-frame {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .dossier-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.94;
+    display: block;
+    transition: opacity 0.3s ease;
+  }
+  .dossier-card:hover .dossier-img {
+    opacity: 1.0;
+  }
+
+  .dossier-caption {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #4a453d;
+    letter-spacing: 0.15em;
+    margin-top: 12px;
+    user-select: none;
+  }
+
+  /* Override modal colors for Dark theme */
+  .nordic-dark-theme {
+    background: #0d0f0e !important;
+    border: 1px solid rgba(197, 160, 89, 0.25) !important;
+    border-radius: 40px !important;
+    box-shadow: 0 35px 80px rgba(0, 0, 0, 0.65) !important;
+  }
+
+  .nordic-dark-theme .cyber-modal-close {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #e5e4de !important;
+  }
+
+  .nordic-dark-theme .cyber-modal-close:hover {
+    background: rgba(197, 160, 89, 0.15) !important;
+    color: #cca353 !important;
+    border-color: rgba(197, 160, 89, 0.5) !important;
   }
 
   @keyframes slideInText {
@@ -1100,151 +1341,18 @@ const cyberStyles = `
       transform: translateY(0);
     }
   }
-
-  /* Slide 6-8 Full page side-by-side looks layout */
-  .nordic-full-pane {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 40px 60px;
-    box-sizing: border-box;
-    background: #fdfcf7; /* Premium Bone-White Parchment Paper */
-    position: relative;
-    justify-content: space-between;
-    overflow-y: auto;
-  }
-  @media (max-width: 1024px) {
-    .nordic-full-pane {
-      padding: 30px;
-    }
-  }
-
-  .nordic-look-header {
-    text-align: center;
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    z-index: 5;
-  }
-
-  .centered-desc {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem;
-    line-height: 1.6;
-    color: #4a453d;
-    max-width: 800px;
-    margin: 10px auto 0;
-    text-align: center;
-  }
-
-  .nordic-look-images-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    width: 100%;
-    flex: 1;
-    margin: 10px 0;
-    position: relative;
-    z-index: 5;
-  }
-  @media (max-width: 768px) {
-    .nordic-look-images-container {
-      flex-direction: column;
-      gap: 20px;
-      margin-bottom: 60px;
-    }
-  }
-
-  .look-image-card {
-    flex: 1;
-    max-width: 46%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: transform 0.4s ease;
-  }
-  @media (max-width: 768px) {
-    .look-image-card {
-      max-width: 90%;
-    }
-  }
-  .look-image-card:hover {
-    transform: scale(1.03);
-  }
-
-  .look-image-frame {
-    background: #ffffff;
-    border: 10px solid #ffffff;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
-    border-radius: 4px;
-    overflow: hidden;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .look-image-card-left .look-image-frame {
-    transform: rotate(-1.5deg);
-    transition: transform 0.4s ease;
-  }
-  .look-image-card-right .look-image-frame {
-    transform: rotate(1.5deg);
-    transition: transform 0.4s ease;
-  }
-  .look-image-card-left:hover .look-image-frame,
-  .look-image-card-right:hover .look-image-frame {
-    transform: rotate(0deg);
-  }
-
-  .look-garment-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.95;
-    display: block;
-  }
-
-  .look-image-tag {
-    margin-top: 10px;
-    font-family: 'Cinzel', serif;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #cca353;
-    letter-spacing: 0.15em;
-    text-align: center;
-    text-transform: uppercase;
-  }
-
-  .full-width-nav {
-    justify-content: center;
-    margin-top: auto;
-    padding-top: 15px;
-    border-top: 1px solid rgba(197, 160, 89, 0.15);
-    width: 100%;
-  }
 `;
 
 export default function ThreeDParticleTerrain() {
   const [selectedProject, setSelectedProject] = useState<{ label: string; subLabel: string } | null>(null);
-  const [activeSlide, setActiveSlide] = useState(0);
-  const [activeFabricIdx, setActiveFabricIdx] = useState(0);
+  const [activeExpIdx, setActiveExpIdx] = useState(0);
+  const [activeFinalIdx, setActiveFinalIdx] = useState(0);
 
-  // Reset active slide and fabric index when selected project changes
+  // Reset indices when selected project changes
   useEffect(() => {
-    setActiveSlide(0);
-    setActiveFabricIdx(0);
+    setActiveExpIdx(0);
+    setActiveFinalIdx(0);
   }, [selectedProject]);
-
-  // Reset active fabric index when active slide changes
-  useEffect(() => {
-    setActiveFabricIdx(0);
-  }, [activeSlide]);
 
   return (
     <div className="td-canvas-wrapper" style={{ pointerEvents: 'auto' }}>
@@ -1262,8 +1370,7 @@ export default function ThreeDParticleTerrain() {
       >
         <ParticleGridMesh />
         
-        {/* ── 3 identical front-facing monumental static chrome-silver toruses (zero overlap, 100% opaque) ── */}
-        {/* Top Torus: Scaled and rotated to match the other two shapes exactly as requested */}
+        {/* ── 3 identical front-facing monumental static chrome-silver toruses ── */}
         <LiquidTorus 
           position={[0.0, 6.2, 3.5]} 
           scale={[1.11, 1.11, 1.11]} 
@@ -1273,7 +1380,6 @@ export default function ThreeDParticleTerrain() {
           label="Nordic Knots"
         />
         
-        {/* Bottom Left Torus: Positioned higher at Y=-4.0 to prevent screen cutoff, pushed to Z=3.5 to render strictly on top */}
         <LiquidTorus 
           position={[-8.8, -4.0, 3.5]} 
           scale={[0.88, 0.88, 0.88]} 
@@ -1283,7 +1389,6 @@ export default function ThreeDParticleTerrain() {
           label="Stained Glass"
         />
         
-        {/* Bottom Right Torus: Positioned higher at Y=-4.0 to prevent screen cutoff, pushed to Z=3.5 to render strictly on top */}
         <LiquidTorus 
           position={[8.8, -4.0, 3.5]} 
           scale={[0.88, 0.88, 0.88]} 
@@ -1299,253 +1404,281 @@ export default function ThreeDParticleTerrain() {
         className={`cyber-modal-overlay ${selectedProject ? 'active' : ''}`}
         onClick={() => setSelectedProject(null)}
       />
-      <div className={`cyber-modal ${selectedProject ? 'active' : ''}`}>
+      <div className={`cyber-modal ${selectedProject ? 'active' : ''} ${selectedProject?.label === "Nordic Knots" ? "nordic-dark-theme" : ""}`}>
         <button className="cyber-modal-close" onClick={() => setSelectedProject(null)}>
           ✕
         </button>
         {selectedProject?.label === "Nordic Knots" ? (
-          activeSlide >= 5 ? (
-            <div className="nordic-full-pane">
-              {/* Corner frames inspired by vintage Norse woodcarvings */}
-              <svg className="nordic-corner-svg nordic-corner-tl" width="50" height="50" viewBox="0 0 50 50" fill="none" stroke="#cca353" strokeWidth="1.5">
-                <path d="M 5 35 L 5 5 L 35 5" opacity="0.6"/>
-                <path d="M 10 30 L 10 10 L 30 10" opacity="0.3"/>
-                <circle cx="10" cy="10" r="2.5" fill="#cca353" opacity="0.5"/>
-              </svg>
-              <svg className="nordic-corner-svg nordic-corner-bl" width="50" height="50" viewBox="0 0 50 50" fill="none" stroke="#cca353" strokeWidth="1.5">
-                <path d="M 5 15 L 5 45 L 35 45" opacity="0.6"/>
-                <path d="M 10 20 L 10 40 L 30 40" opacity="0.3"/>
-                <circle cx="10" cy="40" r="2.5" fill="#cca353" opacity="0.5"/>
-              </svg>
-              
-              <div className="nordic-look-header">
-                <div className="nordic-slide-subtitle">
-                  {nordicSlides[activeSlide].subtitle}
-                </div>
-                <div className="nordic-slide-title">
-                  {nordicSlides[activeSlide].title}
-                </div>
-                <p className="centered-desc">
-                  {nordicSlides[activeSlide].desc}
+          <div className="nordic-scroll-page">
+            {/* Side borders of runes */}
+            <div className="nordic-side-border left">
+              ᛟᚦᚨᚱᛞᛗᛚᛝᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛝᛟᛞ
+            </div>
+            <div className="nordic-side-border right">
+              ᛟᚦᚨᚱᛞᛗᛚᛝᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛝᛟᛞ
+            </div>
+
+            {/* Background Valknut watermark */}
+            <svg className="nordic-scroll-watermark" viewBox="0 0 100 100" fill="none" stroke="rgba(197, 160, 89, 0.02)" strokeWidth="0.8">
+              <path d="M 50 15 L 80 70 L 20 70 Z" />
+              <path d="M 35 30 L 65 85 L 10 50 Z" />
+              <path d="M 65 30 L 90 50 L 35 85 Z" />
+            </svg>
+
+            {/* Section 1: Hero */}
+            <motion.div 
+              className="nordic-scroll-hero"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="nordic-scroll-header">
+                <div className="nordic-slide-subtitle">WOMENSWEAR COLLECTION</div>
+                <div className="nordic-runic-divider">᚛ ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ ᚜</div>
+                <h1 className="nordic-scroll-main-title">NORDIC KNOTS</h1>
+              </div>
+              <p className="nordic-scroll-lead">
+                A mini womenswear collection where organic fabrics are inspired by interlocking Nordic knots and architectural silhouettes are drawn from Norse mythology.
+              </p>
+              <div className="nordic-hero-img-frame">
+                <img src={nordicMain} alt="Nordic Knots Hero" className="nordic-hero-img" />
+              </div>
+            </motion.div>
+
+            {/* Section 2: Sacred Knotwork */}
+            <motion.div 
+              className="nordic-scroll-section"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="nordic-section-left">
+                <div className="nordic-slide-subtitle">GEOMETRY & CARVINGS</div>
+                <h2 className="nordic-section-title">SACRED KNOTWORK</h2>
+                <div className="nordic-runic-divider">᚛ ᚦ ᚨ ᚱ ᚜</div>
+                <p className="nordic-section-desc">
+                  Drawing inspiration from the endless loops carved into ancient runestones. The physical structure of these interlocking knots guides the directional flow of the collection's draping.
                 </p>
               </div>
-
-              <div className="nordic-look-images-container">
-                <div className="look-image-card look-image-card-left">
-                  <div className="look-image-frame">
-                    <img src={nordicSlides[activeSlide].imageLeft} alt="Colorway A" className="look-garment-img" />
-                  </div>
-                  <div className="look-image-tag">
-                    {nordicSlides[activeSlide].tagLeft}
-                  </div>
-                </div>
-                <div className="look-image-card look-image-card-right">
-                  <div className="look-image-frame">
-                    <img src={nordicSlides[activeSlide].imageRight} alt="Colorway B" className="look-garment-img" />
-                  </div>
-                  <div className="look-image-tag">
-                    {nordicSlides[activeSlide].tagRight}
-                  </div>
+              <div className="nordic-section-right">
+                <div className="nordic-mood-img-container">
+                  <img src={nordicKnots} alt="Sacred Knotwork" className="nordic-mood-img" />
                 </div>
               </div>
+            </motion.div>
 
-              <div className="nordic-nav-container full-width-nav">
-                <button 
-                  className="nordic-text-btn"
-                  onClick={() => setActiveSlide((prev) => (prev === 0 ? nordicSlides.length - 1 : prev - 1))}
-                >
-                  ᚛ PREV
-                </button>
-                <div className="nordic-dots">
-                  {nordicSlides.map((_, idx) => {
-                    const slideRunes = ["ᛟ", "ᚦ", "ᚨ", "ᚱ", "ᛞ", "ᛗ", "ᛚ", "ᛝ"];
-                    return (
-                      <span 
-                        key={idx}
-                        className={`nordic-rune-dot ${idx === activeSlide ? 'active' : ''}`}
-                        onClick={() => setActiveSlide(idx)}
-                      >
-                        {slideRunes[idx]}
-                      </span>
-                    );
-                  })}
-                </div>
-                <button 
-                  className="nordic-text-btn"
-                  onClick={() => setActiveSlide((prev) => (prev === nordicSlides.length - 1 ? 0 : prev + 1))}
-                >
-                  NEXT ᚜
-                </button>
+            {/* Section 3: Realms of the Norse */}
+            <motion.div 
+              className="nordic-scroll-section reversed"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="nordic-section-left">
+                <div className="nordic-slide-subtitle">ATMOSPHERIC MYTHOLOGY</div>
+                <h2 className="nordic-section-title">REALMS OF THE NORSE</h2>
+                <div className="nordic-runic-divider">᚛ ᛞ ᛗ ᛚ ᚜</div>
+                <p className="nordic-section-desc">
+                  Inspired by the mist-shrouded fjords and the cosmic Yggdrasil. The silhouettes capture the ethereal scale and protective layering of Norse mythological archetypes.
+                </p>
               </div>
-            </div>
-          ) : (
-            <div className="nordic-modal-content">
-              {/* Corner frames inspired by vintage Norse woodcarvings */}
-              <svg className="nordic-corner-svg nordic-corner-tl" width="50" height="50" viewBox="0 0 50 50" fill="none" stroke="#cca353" strokeWidth="1.5">
-                <path d="M 5 35 L 5 5 L 35 5" opacity="0.6"/>
-                <path d="M 10 30 L 10 10 L 30 10" opacity="0.3"/>
-                <circle cx="10" cy="10" r="2.5" fill="#cca353" opacity="0.5"/>
-              </svg>
-              <svg className="nordic-corner-svg nordic-corner-bl" width="50" height="50" viewBox="0 0 50 50" fill="none" stroke="#cca353" strokeWidth="1.5">
-                <path d="M 5 15 L 5 45 L 35 45" opacity="0.6"/>
-                <path d="M 10 20 L 10 40 L 30 40" opacity="0.3"/>
-                <circle cx="10" cy="40" r="2.5" fill="#cca353" opacity="0.5"/>
-              </svg>
-              
-              {/* Runes background Valknut watermark */}
-              <svg className="nordic-watermark-svg" viewBox="0 0 100 100" fill="none" stroke="rgba(74, 93, 78, 0.03)" strokeWidth="1.2">
-                <path d="M 50 15 L 80 70 L 20 70 Z" />
-                <path d="M 35 30 L 65 85 L 10 50 Z" />
-                <path d="M 65 30 L 90 50 L 35 85 Z" />
-              </svg>
-
-              <div className="nordic-left-pane">
-                <div className="nordic-title-wrap">
-                  <div className="nordic-slide-subtitle">
-                    {nordicSlides[activeSlide].subtitle}
-                  </div>
-                  <div className="nordic-runic-divider">᚛ ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ ᚜</div>
-                  <div className="nordic-slide-title">
-                    {nordicSlides[activeSlide].title}
-                  </div>
+              <div className="nordic-section-right">
+                <div className="nordic-mood-img-container">
+                  <img src={nordicMythology} alt="Realms of the Norse" className="nordic-mood-img" />
                 </div>
-                
-                <p className="nordic-slide-desc" style={{ marginBottom: (activeSlide === 3 || activeSlide === 4) ? '15px' : '50px' }}>
-                  {nordicSlides[activeSlide].desc}
+              </div>
+            </motion.div>
+
+            {/* Section 4: Substance Experimentation (Interactive Collage) */}
+            <motion.div 
+              className="nordic-scroll-section collage-section"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="nordic-section-left">
+                <div className="nordic-slide-subtitle">TEXTILE RESEARCH & DEVELOPMENT</div>
+                <h2 className="nordic-section-title">SUBSTANCE EXPERIMENTATION</h2>
+                <p className="nordic-section-desc">
+                  Before finalizing the material palette, I experimented with creating multiple Norse-inspired digital fabrics on Adobe Substance 3D Sampler, exploring runic configurations, height displacement offsets, and metallic sheen levels.
                 </p>
                 
-                {/* Dynamic Fabric Study Card for Slide 4 (Experimentation) */}
-                {activeSlide === 3 && (
-                  <div className="fabric-study-box" key={`exp-${activeFabricIdx}`}>
-                    <div className="fabric-study-type">
-                      {fabricExperiments[activeFabricIdx].material}
-                    </div>
-                    <div className="fabric-study-title">
-                      {fabricExperiments[activeFabricIdx].name}
-                    </div>
-                    <div className="fabric-study-desc">
-                      {fabricExperiments[activeFabricIdx].desc}
-                    </div>
-                    
-                    <div className="fabric-study-tabs">
-                      {fabricExperiments.map((_, idx) => (
-                        <button
-                          key={idx}
-                          className={`fabric-tab-btn ${idx === activeFabricIdx ? 'active' : ''}`}
-                          onClick={() => setActiveFabricIdx(idx)}
-                        >
-                          Exp 0{idx + 1}
-                        </button>
-                      ))}
-                    </div>
+                <div className="fabric-study-box" key={`exp-${activeExpIdx}`}>
+                  <div className="fabric-study-type">
+                    {fabricExperiments[activeExpIdx].material}
                   </div>
-                )}
-
-                {/* Dynamic Fabric Study Card for Slide 5 (Final Materials) */}
-                {activeSlide === 4 && (
-                  <div className="fabric-study-box" key={`final-${activeFabricIdx}`}>
-                    <div className="fabric-study-type">
-                      {finalFabrics[activeFabricIdx].material}
-                    </div>
-                    <div className="fabric-study-title">
-                      {finalFabrics[activeFabricIdx].name}
-                    </div>
-                    <div className="fabric-study-desc">
-                      {finalFabrics[activeFabricIdx].desc}
-                    </div>
-                    
-                    <div className="fabric-study-tabs">
-                      {finalFabrics.map((_, idx) => (
-                        <button
-                          key={idx}
-                          className={`fabric-tab-btn ${idx === activeFabricIdx ? 'active' : ''}`}
-                          onClick={() => setActiveFabricIdx(idx)}
-                        >
-                          Fabric 0{idx + 1}
-                        </button>
-                      ))}
-                    </div>
+                  <div className="fabric-study-title">
+                    {fabricExperiments[activeExpIdx].name}
                   </div>
-                )}
-                
-                <div className="nordic-nav-container">
-                  <button 
-                    className="nordic-text-btn"
-                    onClick={() => setActiveSlide((prev) => (prev === 0 ? nordicSlides.length - 1 : prev - 1))}
-                  >
-                    ᚛ PREV
-                  </button>
-                  <div className="nordic-dots">
-                    {nordicSlides.map((_, idx) => {
-                      const slideRunes = ["ᛟ", "ᚦ", "ᚨ", "ᚱ", "ᛞ", "ᛗ", "ᛚ", "ᛝ"];
-                      return (
-                        <span 
-                          key={idx}
-                          className={`nordic-rune-dot ${idx === activeSlide ? 'active' : ''}`}
-                          onClick={() => setActiveSlide(idx)}
-                        >
-                          {slideRunes[idx]}
-                        </span>
-                      );
-                    })}
+                  <p className="fabric-study-desc">
+                    {fabricExperiments[activeExpIdx].desc}
+                  </p>
+                  
+                  <div className="fabric-study-tabs">
+                    {fabricExperiments.map((_, idx) => (
+                      <button
+                        key={idx}
+                        className={`fabric-tab-btn ${idx === activeExpIdx ? 'active' : ''}`}
+                        onClick={() => setActiveExpIdx(idx)}
+                      >
+                        Exp 0{idx + 1}
+                      </button>
+                    ))}
                   </div>
-                  <button 
-                    className="nordic-text-btn"
-                    onClick={() => setActiveSlide((prev) => (prev === nordicSlides.length - 1 ? 0 : prev + 1))}
-                  >
-                    NEXT ᚜
-                  </button>
                 </div>
               </div>
-
-              <div className="nordic-right-pane">
-                {nordicSlides[activeSlide].image === "experiment_collage" ? (
-                  <div className="nordic-fabric-collage nordic-experiment-collage">
-                    {fabricExperiments.map((study, idx) => (
-                      <div 
-                        key={idx}
-                        className={`fabric-card fabric-card-${idx + 1} ${idx === activeFabricIdx ? 'active' : ''}`}
-                        onClick={() => setActiveFabricIdx(idx)}
-                        onMouseEnter={() => setActiveFabricIdx(idx)}
-                        style={{ zIndex: idx === activeFabricIdx ? 10 : idx + 1 }}
-                      >
-                        <img src={study.image} alt={study.name} className="fabric-swatch-img" />
-                        <div className="fabric-swatch-label">
-                          Exp 0{idx + 1}
-                        </div>
+              
+              <div className="nordic-section-right">
+                <div className="nordic-fabric-collage nordic-experiment-collage">
+                  {fabricExperiments.map((study, idx) => (
+                    <div 
+                      key={idx}
+                      className={`fabric-card fabric-card-${idx + 1} ${idx === activeExpIdx ? 'active' : ''}`}
+                      onClick={() => setActiveExpIdx(idx)}
+                      onMouseEnter={() => setActiveExpIdx(idx)}
+                      style={{ zIndex: idx === activeExpIdx ? 10 : idx + 1 }}
+                    >
+                      <img src={study.image} alt={study.name} className="fabric-swatch-img" />
+                      <div className="fabric-swatch-label">
+                        Exp 0{idx + 1}
                       </div>
-                    ))}
-                  </div>
-                ) : nordicSlides[activeSlide].image === "fabric_collage" ? (
-                  <div className="nordic-fabric-collage">
-                    {finalFabrics.map((study, idx) => (
-                      <div 
-                        key={idx}
-                        className={`fabric-card fabric-card-${idx + 1} ${idx === activeFabricIdx ? 'active' : ''}`}
-                        onClick={() => setActiveFabricIdx(idx)}
-                        onMouseEnter={() => setActiveFabricIdx(idx)}
-                        style={{ zIndex: idx === activeFabricIdx ? 10 : idx + 1 }}
-                      >
-                        <img src={study.image} alt={study.name} className="fabric-swatch-img" />
-                        <div className="fabric-swatch-label">
-                          Fabric 0{idx + 1}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="nordic-mood-img-container">
-                    <img 
-                      src={nordicSlides[activeSlide].image} 
-                      alt={nordicSlides[activeSlide].title}
-                      className="nordic-mood-img"
-                      key={activeSlide}
-                    />
-                  </div>
-                )}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          )
+            </motion.div>
+
+            {/* Section 5: Substance Sampling (Interactive Collage) */}
+            <motion.div 
+              className="nordic-scroll-section collage-section reversed"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="nordic-section-left">
+                <div className="nordic-slide-subtitle">FINAL MATERIAL PALETTE</div>
+                <h2 className="nordic-section-title">SUBSTANCE SAMPLING</h2>
+                <p className="nordic-section-desc">
+                  The finalized digital fabrics created on Adobe Substance 3D Sampler. The collection features two primary textile systems: a lightweight Perforated Knotwork Mesh and a heavy-weight Embossed Viking Relief in deep woad indigo.
+                </p>
+                
+                <div className="fabric-study-box" key={`final-${activeFinalIdx}`}>
+                  <div className="fabric-study-type">
+                    {finalFabrics[activeFinalIdx].material}
+                  </div>
+                  <div className="fabric-study-title">
+                    {finalFabrics[activeFinalIdx].name}
+                  </div>
+                  <p className="fabric-study-desc">
+                    {finalFabrics[activeFinalIdx].desc}
+                  </p>
+                  
+                  <div className="fabric-study-tabs">
+                    {finalFabrics.map((_, idx) => (
+                      <button
+                        key={idx}
+                        className={`fabric-tab-btn ${idx === activeFinalIdx ? 'active' : ''}`}
+                        onClick={() => setActiveFinalIdx(idx)}
+                      >
+                        Fabric 0{idx + 1}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="nordic-section-right">
+                <div className="nordic-fabric-collage">
+                  {finalFabrics.map((study, idx) => (
+                    <div 
+                      key={idx}
+                      className={`fabric-card fabric-card-${idx + 1} ${idx === activeFinalIdx ? 'active' : ''}`}
+                      onClick={() => setActiveFinalIdx(idx)}
+                      onMouseEnter={() => setActiveFinalIdx(idx)}
+                      style={{ zIndex: idx === activeFinalIdx ? 10 : idx + 1 }}
+                    >
+                      <img src={study.image} alt={study.name} className="fabric-swatch-img" />
+                      <div className="fabric-swatch-label">
+                        Fabric 0{idx + 1}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Sections 6, 7, 8: Looks Dossier (Asymmetric Concept A) */}
+            {nordicScrollLooks.map((look, lookIdx) => (
+              <motion.div 
+                key={lookIdx}
+                className="nordic-scroll-look-section"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+              >
+                <div className="nordic-look-header-block">
+                  <span className="nordic-look-bg-num">{look.num}</span>
+                  <div className="nordic-slide-subtitle">{look.subtitle}</div>
+                  <h2 className="nordic-scroll-look-title">{look.title}</h2>
+                  <p className="nordic-scroll-look-desc">{look.desc}</p>
+                </div>
+                
+                <div className="nordic-look-asymmetric-dossier">
+                  {/* Colorway A (Left Heavy) */}
+                  <div className="dossier-colorway left-heavy">
+                    <div className="dossier-tag">{look.tagLeft}</div>
+                    <div className="dossier-collage-container">
+                      {/* Editorial Photoshoot (Large, dominant) */}
+                      <div className="dossier-card main-photoshoot">
+                        <div className="dossier-img-frame">
+                          <img src={look.shootLeft} alt="Editorial Photoshoot" className="dossier-img" />
+                        </div>
+                        <div className="dossier-caption">EDITORIAL PHOTOSHOOT</div>
+                      </div>
+                      
+                      {/* Turnaround (Smaller, overlapping, tilted with tape) */}
+                      <div className="dossier-card detail-turnaround">
+                        <div className="dossier-tape"></div>
+                        <div className="dossier-img-frame">
+                          <img src={look.turnLeft} alt="3D Turnaround model" className="dossier-img" />
+                        </div>
+                        <div className="dossier-caption">3D MODEL TURNAROUND</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Colorway B (Right Heavy) */}
+                  <div className="dossier-colorway right-heavy">
+                    <div className="dossier-tag">{look.tagRight}</div>
+                    <div className="dossier-collage-container">
+                      {/* Editorial Photoshoot (Large, dominant) */}
+                      <div className="dossier-card main-photoshoot">
+                        <div className="dossier-img-frame">
+                          <img src={look.shootRight} alt="Editorial Photoshoot" className="dossier-img" />
+                        </div>
+                        <div className="dossier-caption">EDITORIAL PHOTOSHOOT</div>
+                      </div>
+                      
+                      {/* Turnaround (Smaller, overlapping, tilted with tape) */}
+                      <div className="dossier-card detail-turnaround">
+                        <div className="dossier-tape"></div>
+                        <div className="dossier-img-frame">
+                          <img src={look.turnRight} alt="3D Turnaround model" className="dossier-img" />
+                        </div>
+                        <div className="dossier-caption">3D MODEL TURNAROUND</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         ) : (
           <div className="cyber-modal-content">
             <div className="cyber-modal-title">{selectedProject?.label}</div>
