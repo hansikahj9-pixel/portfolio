@@ -1093,57 +1093,57 @@ const cyberStyles = `
   .fabric-card-1 {
     left: 4%;
     top: 10%;
-    width: 52%;
+    width: 65%;
     transform: rotate(-3deg);
   }
 
   .fabric-card-2 {
-    left: 46%;
+    left: 42%;
     top: 4%;
-    width: 50%;
+    width: 63%;
     transform: rotate(2deg);
   }
 
   .fabric-card-3 {
-    left: 23%;
-    top: 44%;
-    width: 54%;
+    left: 20%;
+    top: 40%;
+    width: 68%;
     transform: rotate(-1deg);
   }
 
   /* Slide 4 Experiments Swatches coordinates (Tight fanned 5-card layout) */
   .nordic-experiment-collage .fabric-card-1 {
-    left: 3%;
+    left: 0%;
     top: 8%;
-    width: 42%;
+    width: 55%;
     transform: rotate(-5deg);
   }
 
   .nordic-experiment-collage .fabric-card-2 {
-    left: 40%;
+    left: 38%;
     top: 3%;
-    width: 40%;
+    width: 53%;
     transform: rotate(4deg);
   }
 
   .nordic-experiment-collage .fabric-card-3 {
-    left: 4%;
+    left: 2%;
     top: 44%;
-    width: 44%;
+    width: 57%;
     transform: rotate(-3deg);
   }
 
   .nordic-experiment-collage .fabric-card-4 {
-    left: 53%;
+    left: 48%;
     top: 40%;
-    width: 42%;
+    width: 55%;
     transform: rotate(5deg);
   }
 
   .nordic-experiment-collage .fabric-card-5 {
-    left: 42%;
+    left: 36%;
     top: 20%;
-    width: 41%;
+    width: 54%;
     transform: rotate(-2deg);
   }
 
