@@ -31,12 +31,12 @@ export const HeroPinSection: React.FC = () => {
       {/* Hero Content Overlay (Asymmetric & Floating Clean) */}
       <div className="relative z-10 w-full max-w-7xl px-8 md:px-24 text-left pointer-events-none flex flex-col justify-center h-full">
         <h1 
-          className="text-6xl md:text-9xl font-light tracking-[0.12em] uppercase leading-[1.05] select-none"
+          className="text-7xl md:text-[10rem] font-light tracking-[0.08em] leading-[0.95] select-none"
           style={{ fontFamily: "'Cormorant Garamond', serif" }}
         >
-          <span className="chrome-medium block mb-2 text-left">The Art</span>
-          <span className="chrome-dark italic font-extralight lowercase block text-left ml-[10%] my-3 text-4xl md:text-6xl">of</span>
-          <span className="chrome-bright block mt-2 tracking-[0.16em] text-left ml-[20%]">Abstract</span>
+          <span className="chrome-medium block mb-3 text-left">The Art</span>
+          <span className="chrome-dark italic font-extralight block text-left ml-[15%] my-4 text-5xl md:text-8xl">of</span>
+          <span className="chrome-bright block mt-3 tracking-[0.12em] text-left ml-[30%] text-8xl md:text-[12rem]">Abstract</span>
         </h1>
       </div>
 
