@@ -21,106 +21,110 @@ export const AssemblyPinSection: React.FC = () => {
     if (!container || !frontVid || !backVid) return;
 
     let rafId: number;
-    let frontTargetTime = 0;
-    let backTargetTime = 0;
+    let lastTimestamp = 0;
+    let phase: "front" | "back" = "front";
+    let isPlaying = false;
 
-    // Smooth RAF loop to update video currentTime without decoder congestion
-    const renderLoop = () => {
-      if (frontVid && !frontVid.seeking && frontVid.readyState >= 2) {
-        const diff = Math.abs(frontVid.currentTime - frontTargetTime);
-        if (diff > 0.04) {
-          frontVid.currentTime = frontTargetTime;
-        }
-      }
-      if (backVid && !backVid.seeking && backVid.readyState >= 2) {
-        const diff = Math.abs(backVid.currentTime - backTargetTime);
-        if (diff > 0.04) {
-          backVid.currentTime = backTargetTime;
-        }
-      }
-      rafId = requestAnimationFrame(renderLoop);
-    };
-
-    renderLoop();
-
-    const setupAssemblyScroll = () => {
+    const resetSequence = () => {
       const frontDur = frontVid.duration || 10;
       const backDur = backVid.duration || 10;
 
-      frontTargetTime = frontDur;
-      backTargetTime = backDur;
+      phase = "front";
+      if (!frontVid.seeking && frontVid.readyState >= 2) frontVid.currentTime = frontDur;
+      if (!backVid.seeking && backVid.readyState >= 2) backVid.currentTime = backDur;
 
-      const frontProxy = { time: frontDur };
-      const backProxy = { time: backDur };
+      frontVid.style.opacity = "1";
+      backVid.style.opacity = "0";
 
-      // Pinned timeline over 350vh scroll distance
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: container,
-          scroller: "#abstract-scroll-container",
-          start: "top top",
-          end: "+=350%",
-          pin: true,
-          pinType: "transform",
-          scrub: 0.5,
-          anticipatePin: 1,
-          onUpdate: (self) => {
-            if (self.progress < 0.5) {
+      setHudBadgeText("FRONT ANGLE (0° → 180°)");
+      setStatusText("Objects Flying Inward & Locking onto Front Form");
+    };
+
+    // Smooth RAF continuous reverse loop engine
+    const loopStep = (timestamp: number) => {
+      if (!lastTimestamp) lastTimestamp = timestamp;
+      const delta = Math.min((timestamp - lastTimestamp) / 1000, 0.1);
+      lastTimestamp = timestamp;
+
+      if (isPlaying) {
+        const frontDur = frontVid.duration || 10;
+        const backDur = backVid.duration || 10;
+
+        if (phase === "front") {
+          if (!frontVid.seeking && frontVid.readyState >= 2) {
+            let nextTime = frontVid.currentTime - delta;
+            if (nextTime <= 0.05) {
+              // Transition to back video reverse
+              phase = "back";
+              frontVid.currentTime = 0;
+              frontVid.style.opacity = "0";
+              backVid.style.opacity = "1";
+              backVid.currentTime = backDur;
+              setHudBadgeText("BACK ANGLE (180° → 360°)");
+              setStatusText("Tape, Spools & Cardboard Snapping onto Back Form");
+            } else {
+              frontVid.currentTime = nextTime;
+            }
+          }
+        } else if (phase === "back") {
+          if (!backVid.seeking && backVid.readyState >= 2) {
+            let nextTime = backVid.currentTime - delta;
+            if (nextTime <= 0.05) {
+              // Loop back to front video reverse
+              phase = "front";
+              backVid.currentTime = 0;
+              backVid.style.opacity = "0";
+              frontVid.style.opacity = "1";
+              frontVid.currentTime = frontDur;
               setHudBadgeText("FRONT ANGLE (0° → 180°)");
               setStatusText("Objects Flying Inward & Locking onto Front Form");
             } else {
-              setHudBadgeText("BACK ANGLE (180° → 360°)");
-              setStatusText("Tape, Spools & Cardboard Snapping onto Back Form");
+              backVid.currentTime = nextTime;
             }
-          },
-        },
-      });
+          }
+        }
+      }
 
-      // 1. Scrub front.mp4 BACKWARDS (Duration -> 0)
-      tl.to(frontProxy, {
-        time: 0,
-        ease: "none",
-        duration: 2,
-        onUpdate: () => {
-          frontTargetTime = frontProxy.time;
-        },
-      })
-      // 2. Crossfade Front -> Back Video
-      .to(frontVid, { opacity: 0, duration: 0.5 }, "crossfade")
-      .to(backVid, { opacity: 1, duration: 0.5 }, "crossfade")
-      // 3. Scrub back.mp4 BACKWARDS (Duration -> 0)
-      .to(backProxy, {
-        time: 0,
-        ease: "none",
-        duration: 2,
-        onUpdate: () => {
-          backTargetTime = backProxy.time;
-        },
-      });
-
-      ScrollTrigger.refresh();
+      rafId = requestAnimationFrame(loopStep);
     };
 
-    if (frontVid.readyState >= 1 && backVid.readyState >= 1) {
-      setupAssemblyScroll();
-    } else {
-      frontVid.onloadedmetadata = setupAssemblyScroll;
-      backVid.onloadedmetadata = setupAssemblyScroll;
-    }
+    // Auto-trigger sequence when scrolled into view
+    const st = ScrollTrigger.create({
+      trigger: container,
+      scroller: "#abstract-scroll-container",
+      start: "top 80%",
+      end: "bottom top",
+      onEnter: () => {
+        resetSequence();
+        isPlaying = true;
+        lastTimestamp = 0;
+      },
+      onEnterBack: () => {
+        isPlaying = true;
+      },
+      onLeave: () => {
+        isPlaying = false;
+      },
+      onLeaveBack: () => {
+        isPlaying = false;
+      },
+    });
+
+    rafId = requestAnimationFrame(loopStep);
 
     return () => {
       cancelAnimationFrame(rafId);
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+      st.kill();
     };
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-screen bg-zinc-950 overflow-hidden">
+    <div ref={containerRef} className="relative w-full h-screen bg-zinc-950 overflow-hidden py-12">
       {/* HUD Elements & Status Bar */}
       <div className="absolute inset-0 pointer-events-none z-20 flex flex-col justify-between p-8 md:p-16">
         <div className="flex justify-between items-center">
           <span className="text-xs uppercase tracking-[0.3em] text-zinc-400 font-mono">
-            PHASE 02 // REVERSE MOULD ASSEMBLY
+            PHASE 02 // REVERSE MOULD ASSEMBLY (AUTO LOOP)
           </span>
           <span className="text-xs font-mono text-zinc-300 border border-zinc-700 px-4 py-1.5 rounded-full real-glassmorphism">
             {hudBadgeText}

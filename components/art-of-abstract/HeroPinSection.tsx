@@ -21,12 +21,12 @@ export const HeroPinSection: React.FC = () => {
     let rafId: number;
     let targetTime = 0;
 
-    // Smooth RAF loop to update video currentTime without decoder congestion
+    // Smooth lerping RAF loop for ultra-seamless video scrubbing
     const renderLoop = () => {
-      if (video && !video.seeking && video.readyState >= 2) {
-        const diff = Math.abs(video.currentTime - targetTime);
-        if (diff > 0.04) {
-          video.currentTime = targetTime;
+      if (video && video.readyState >= 2) {
+        const diff = targetTime - video.currentTime;
+        if (Math.abs(diff) > 0.01 && !video.seeking) {
+          video.currentTime += diff * 0.12;
         }
       }
       rafId = requestAnimationFrame(renderLoop);
@@ -36,35 +36,35 @@ export const HeroPinSection: React.FC = () => {
 
     const setupHeroScroll = () => {
       const duration = video.duration || 10;
-
       const proxy = { time: 0 };
 
+      // Slower and smoother pinned timeline over 450vh scroll distance
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
           scroller: "#abstract-scroll-container",
           start: "top top",
-          end: "+=250%",
+          end: "+=450%",
           pin: true,
           pinType: "transform",
-          scrub: 0.5,
+          scrub: 1.5, // High dampening for luxurious, smooth scroll feel
           anticipatePin: 1,
         },
       });
 
-      // Scrub proxy time smoothly
+      // Scrub background.mp4 from 0 to video duration smoothly
       tl.to(proxy, {
         time: duration,
         ease: "none",
-        duration: 3,
+        duration: 4,
         onUpdate: () => {
           targetTime = proxy.time;
         },
       });
 
-      // Fade out hero card near the end
+      // Fade out hero glass card smoothly near end of scroll sequence
       if (card) {
-        tl.to(card, { opacity: 0, y: -40, duration: 0.6 }, "-=0.8");
+        tl.to(card, { opacity: 0, y: -40, duration: 1 }, "-=1");
       }
 
       ScrollTrigger.refresh();
@@ -84,7 +84,7 @@ export const HeroPinSection: React.FC = () => {
 
   return (
     <div ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black">
-      {/* Background Video */}
+      {/* Background Video (background.mp4) */}
       <video
         ref={videoRef}
         muted
@@ -95,7 +95,7 @@ export const HeroPinSection: React.FC = () => {
         <source src="/background.mp4" type="video/mp4" />
       </video>
 
-      {/* Hero Content */}
+      {/* Hero Content Overlay */}
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-6 pointer-events-none">
         <div
           ref={cardRef}
