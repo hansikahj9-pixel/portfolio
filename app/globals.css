@@ -19,6 +19,52 @@
     filter: drop-shadow(0px 2px 12px rgba(255, 255, 255, 0.25));
   }
 
+  /* Liquid Platinum/Mercury */
+  .chrome-bright {
+    background: linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #e2e8f0 20%,
+      #94a3b8 40%,
+      #ffffff 60%,
+      #cbd5e1 80%,
+      #f8fafc 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0px 4px 20px rgba(255, 255, 255, 0.45));
+  }
+
+  /* Dappled Medium Chrome */
+  .chrome-medium {
+    background: linear-gradient(
+      135deg,
+      #cbd5e1 0%,
+      #64748b 25%,
+      #f1f5f9 50%,
+      #475569 75%,
+      #cbd5e1 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0px 4px 16px rgba(255, 255, 255, 0.3));
+  }
+
+  /* Liquid Steel/Dark Chrome */
+  .chrome-dark {
+    background: linear-gradient(
+      135deg,
+      #94a3b8 0%,
+      #334155 30%,
+      #e2e8f0 60%,
+      #1e293b 80%,
+      #94a3b8 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0px 4px 12px rgba(255, 255, 255, 0.2));
+  }
+
   /* Real Frosted Obsidian Glassmorphism */
   .real-glassmorphism {
     background: rgba(18, 18, 22, 0.55);

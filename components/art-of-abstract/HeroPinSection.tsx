@@ -32,11 +32,12 @@ export const HeroPinSection: React.FC = () => {
       <div className="relative z-10 p-6 max-w-4xl w-full text-center pointer-events-none">
         <div className="real-glassmorphism chrome-ring-border p-12 md:p-20 rounded-[2rem] backdrop-blur-3xl shadow-2xl transition-all max-w-2xl mx-auto">
           <h1 
-            className="text-5xl md:text-7xl font-extralight tracking-[0.18em] uppercase chrome-silver-text leading-tight"
+            className="text-6xl md:text-8xl font-light tracking-[0.12em] uppercase leading-[1.1] select-none"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}
           >
-            The Art <br className="md:hidden" />
-            <span className="italic font-normal">of</span> Abstract
+            <span className="chrome-medium block mb-2">The Art</span>
+            <span className="chrome-dark italic font-extralight lowercase block text-4xl md:text-5xl my-1">of</span>
+            <span className="chrome-bright block mt-2 tracking-[0.16em]">Abstract</span>
           </h1>
           
           {/* Subtle luxury divider line */}
