@@ -20,6 +20,7 @@ export const PatternSection: React.FC = () => {
 
     const st = ScrollTrigger.create({
       trigger: container,
+      scroller: "#abstract-scroll-container",
       start: "top bottom",
       end: "bottom top",
       scrub: 0.5,
@@ -51,20 +52,20 @@ export const PatternSection: React.FC = () => {
           <span className="text-xs font-mono uppercase tracking-[0.4em] text-zinc-400 mb-3 block">
             PHASE 03 // MARKED PATTERNS & UNPEEL PREVIEW
           </span>
-          <h2 className="text-3xl md:text-5xl font-extralight uppercase chrome-silver-text">
+          <h2 className="text-4xl md:text-6xl font-light uppercase molten-chrome-text">
             Architectural Dissection & Mould Deconstruction
           </h2>
         </motion.div>
 
         {/* Scroll-Triggered Preview Video Player */}
-        <div className="mb-16 w-full h-[50vh] rounded-3xl overflow-hidden real-glassmorphism chrome-ring-border relative flex items-center justify-center">
+        <div className="mb-16 w-full h-[55vh] rounded-3xl overflow-hidden real-glassmorphism chrome-ring-border relative flex items-center justify-center">
           <video
             ref={videoRef}
             src="/background.mp4"
             muted
             playsInline
             preload="auto"
-            className="w-full h-full object-cover opacity-80"
+            className="w-full h-full object-cover opacity-85"
           />
           <div className="absolute bottom-6 left-6 pointer-events-none z-10">
             <span className="text-xs font-mono text-zinc-300 border border-zinc-700 px-4 py-1.5 rounded-full real-glassmorphism">
@@ -80,16 +81,16 @@ export const PatternSection: React.FC = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="real-glassmorphism chrome-ring-border p-8 rounded-2xl flex flex-col justify-between"
+            className="real-glassmorphism chrome-ring-border p-8 rounded-3xl flex flex-col justify-between"
           >
             <div>
               <span className="text-xs font-mono text-zinc-400 block mb-2">01 // MARKED PATTERN LINES</span>
-              <h3 className="text-xl font-light chrome-silver-text mb-4">Precision Tension Strips</h3>
+              <h3 className="text-2xl font-light molten-chrome-text mb-4">Precision Tension Strips</h3>
               <p className="text-sm text-zinc-300 font-light leading-relaxed mb-6">
                 Analyzing seam placement, shrink-wrap compression vectors, and tactile geometry formed across everyday household foundations.
               </p>
             </div>
-            <div className="h-48 rounded-xl border border-zinc-800 bg-zinc-900/60 overflow-hidden relative flex items-center justify-center">
+            <div className="h-48 rounded-2xl border border-zinc-800 bg-zinc-900/60 overflow-hidden relative flex items-center justify-center">
               <svg className="w-full h-full opacity-40" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
@@ -111,16 +112,16 @@ export const PatternSection: React.FC = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="real-glassmorphism chrome-ring-border p-8 rounded-2xl flex flex-col justify-between"
+            className="real-glassmorphism chrome-ring-border p-8 rounded-3xl flex flex-col justify-between"
           >
             <div>
               <span className="text-xs font-mono text-zinc-400 block mb-2">02 // UNPEEL PREVIEW</span>
-              <h3 className="text-xl font-light chrome-silver-text mb-4">Shell Separation & Mould Extraction</h3>
+              <h3 className="text-2xl font-light molten-chrome-text mb-4">Shell Separation & Mould Extraction</h3>
               <p className="text-sm text-zinc-300 font-light leading-relaxed mb-6">
                 Transitioning from raw taped volume to self-supporting fabric structures through careful unpeeling of outer tension shells.
               </p>
             </div>
-            <div className="h-48 rounded-xl border border-zinc-800 bg-zinc-900/60 overflow-hidden relative flex items-center justify-center p-6 text-center">
+            <div className="h-48 rounded-2xl border border-zinc-800 bg-zinc-900/60 overflow-hidden relative flex items-center justify-center p-6 text-center">
               <div className="border border-zinc-700/60 real-glassmorphism px-6 py-4 rounded-xl">
                 <p className="text-xs font-mono text-zinc-300 tracking-wider">
                   TACTILE MOULD RELEASE STATE

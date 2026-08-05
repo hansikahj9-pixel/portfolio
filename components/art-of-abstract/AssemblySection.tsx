@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -18,7 +18,7 @@ export const AssemblySection: React.FC<AssemblySectionProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const frontVideoRef = useRef<HTMLVideoElement>(null);
   const backVideoRef = useRef<HTMLVideoElement>(null);
-  const captionRef = useRef<HTMLDivElement>(null);
+  const [phaseProgress, setPhaseProgress] = useState<string>("0° / 360°");
 
   useEffect(() => {
     const container = containerRef.current;
@@ -27,7 +27,6 @@ export const AssemblySection: React.FC<AssemblySectionProps> = ({
 
     if (!container || !frontVid || !backVid) return;
 
-    // Explicitly pause both videos so they ONLY move on scroll
     frontVid.pause();
     backVid.pause();
 
@@ -38,23 +37,25 @@ export const AssemblySection: React.FC<AssemblySectionProps> = ({
       const frontDur = frontVid.duration || 10;
       const backDur = backVid.duration || 10;
 
-      // Ensure initial frame state
       frontVid.currentTime = frontDur;
       backVid.currentTime = backDur;
 
       ScrollTrigger.create({
         trigger: container,
+        scroller: "#abstract-scroll-container",
         start: "top top",
         end: "+=300%",
         pin: true,
-        scrub: 1.2, // Smooth, luxurious motion delay
+        scrub: 1.2,
         anticipatePin: 1,
         onUpdate: (self) => {
           const progress = self.progress; // 0.0 -> 1.0
 
-          // Keep both videos paused
           frontVid.pause();
           backVid.pause();
+
+          const degrees = Math.round(progress * 360);
+          setPhaseProgress(`${degrees}° / 360°`);
 
           if (progress <= 0.5) {
             // PHASE 1: Scrub Front Video Backwards (0° to 180° assembly)
@@ -75,6 +76,8 @@ export const AssemblySection: React.FC<AssemblySectionProps> = ({
           }
         },
       });
+
+      ScrollTrigger.refresh();
     };
 
     if (frontVid.readyState >= 1 && backVid.readyState >= 1) {
@@ -92,25 +95,33 @@ export const AssemblySection: React.FC<AssemblySectionProps> = ({
   return (
     <div ref={containerRef} className="relative w-full h-screen bg-zinc-950 overflow-hidden">
       {/* Real Glassmorphism HUD Overlay */}
-      <div className="absolute inset-0 pointer-events-none z-20 flex flex-col justify-between p-8 md:p-16">
+      <div className="absolute inset-0 pointer-events-none z-20 flex flex-col justify-between p-6 md:p-14">
         <div className="flex justify-between items-center">
           <span className="text-xs uppercase tracking-[0.3em] text-zinc-400 font-mono">
             PHASE 02 // TACTILE MOULD ASSEMBLY
           </span>
-          <span className="text-xs font-mono text-zinc-300 border border-zinc-700 px-4 py-1.5 rounded-full real-glassmorphism">
-            360° REVERSE SCRUB
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-mono text-zinc-300 border border-zinc-700 px-4 py-1.5 rounded-full real-glassmorphism">
+              {phaseProgress}
+            </span>
+            <span className="text-xs font-mono text-zinc-300 border border-zinc-700 px-4 py-1.5 rounded-full real-glassmorphism">
+              360° REVERSE SCRUB
+            </span>
+          </div>
         </div>
 
         {/* Dynamic Caption Panel */}
-        <div ref={captionRef} className="self-center mb-8 max-w-xl text-center">
-          <div className="real-glassmorphism chrome-ring-border p-6 rounded-2xl backdrop-blur-2xl">
-            <p className="text-xs uppercase tracking-widest text-zinc-400 font-mono mb-1">
+        <div className="self-center mb-8 max-w-2xl text-center">
+          <div className="real-glassmorphism chrome-ring-border p-8 rounded-3xl backdrop-blur-3xl shadow-2xl">
+            <p className="text-xs uppercase tracking-[0.3em] text-zinc-400 font-mono mb-2">
               STRUCTURAL FORMATION
             </p>
-            <h3 className="text-xl md:text-2xl font-light chrome-silver-text">
+            <h3 className="text-2xl md:text-3xl font-light molten-chrome-text mb-2">
               Cardboard, Spools & Paper Cups Magnetically Snapping into Place
             </h3>
+            <p className="text-xs text-zinc-400 font-mono tracking-widest">
+              [REVERSE RECONSTRUCTION MODE — SCROLL TO SCRUB]
+            </p>
           </div>
         </div>
       </div>
