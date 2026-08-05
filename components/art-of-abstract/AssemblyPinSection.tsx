@@ -20,9 +20,38 @@ export const AssemblyPinSection: React.FC = () => {
 
     if (!container || !frontVid || !backVid) return;
 
+    let rafId: number;
+    let frontTargetTime = 0;
+    let backTargetTime = 0;
+
+    // Smooth RAF loop to update video currentTime without decoder congestion
+    const renderLoop = () => {
+      if (frontVid && !frontVid.seeking && frontVid.readyState >= 2) {
+        const diff = Math.abs(frontVid.currentTime - frontTargetTime);
+        if (diff > 0.04) {
+          frontVid.currentTime = frontTargetTime;
+        }
+      }
+      if (backVid && !backVid.seeking && backVid.readyState >= 2) {
+        const diff = Math.abs(backVid.currentTime - backTargetTime);
+        if (diff > 0.04) {
+          backVid.currentTime = backTargetTime;
+        }
+      }
+      rafId = requestAnimationFrame(renderLoop);
+    };
+
+    renderLoop();
+
     const setupAssemblyScroll = () => {
       const frontDur = frontVid.duration || 10;
       const backDur = backVid.duration || 10;
+
+      frontTargetTime = frontDur;
+      backTargetTime = backDur;
+
+      const frontProxy = { time: frontDur };
+      const backProxy = { time: backDur };
 
       // Pinned timeline over 350vh scroll distance
       const tl = gsap.timeline({
@@ -32,7 +61,8 @@ export const AssemblyPinSection: React.FC = () => {
           start: "top top",
           end: "+=350%",
           pin: true,
-          scrub: 0.8,
+          pinType: "transform",
+          scrub: 0.5,
           anticipatePin: 1,
           onUpdate: (self) => {
             if (self.progress < 0.5) {
@@ -47,20 +77,28 @@ export const AssemblyPinSection: React.FC = () => {
       });
 
       // 1. Scrub front.mp4 BACKWARDS (Duration -> 0)
-      tl.fromTo(
-        frontVid,
-        { currentTime: frontDur },
-        { currentTime: 0, ease: "none", duration: 2 }
-      )
+      tl.to(frontProxy, {
+        time: 0,
+        ease: "none",
+        duration: 2,
+        onUpdate: () => {
+          frontTargetTime = frontProxy.time;
+        },
+      })
       // 2. Crossfade Front -> Back Video
       .to(frontVid, { opacity: 0, duration: 0.5 }, "crossfade")
       .to(backVid, { opacity: 1, duration: 0.5 }, "crossfade")
       // 3. Scrub back.mp4 BACKWARDS (Duration -> 0)
-      .fromTo(
-        backVid,
-        { currentTime: backDur },
-        { currentTime: 0, ease: "none", duration: 2 }
-      );
+      .to(backProxy, {
+        time: 0,
+        ease: "none",
+        duration: 2,
+        onUpdate: () => {
+          backTargetTime = backProxy.time;
+        },
+      });
+
+      ScrollTrigger.refresh();
     };
 
     if (frontVid.readyState >= 1 && backVid.readyState >= 1) {
@@ -71,6 +109,7 @@ export const AssemblyPinSection: React.FC = () => {
     }
 
     return () => {
+      cancelAnimationFrame(rafId);
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);

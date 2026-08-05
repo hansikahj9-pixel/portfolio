@@ -18,10 +18,27 @@ export const HeroPinSection: React.FC = () => {
 
     if (!container || !video) return;
 
+    let rafId: number;
+    let targetTime = 0;
+
+    // Smooth RAF loop to update video currentTime without decoder congestion
+    const renderLoop = () => {
+      if (video && !video.seeking && video.readyState >= 2) {
+        const diff = Math.abs(video.currentTime - targetTime);
+        if (diff > 0.04) {
+          video.currentTime = targetTime;
+        }
+      }
+      rafId = requestAnimationFrame(renderLoop);
+    };
+
+    renderLoop();
+
     const setupHeroScroll = () => {
       const duration = video.duration || 10;
 
-      // Pinned timeline over 250vh scroll distance
+      const proxy = { time: 0 };
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
@@ -29,22 +46,28 @@ export const HeroPinSection: React.FC = () => {
           start: "top top",
           end: "+=250%",
           pin: true,
-          scrub: 0.8, // Smooth connection to scroll wheel
+          pinType: "transform",
+          scrub: 0.5,
           anticipatePin: 1,
         },
       });
 
-      // Scrub background.mp4 from 0 to video duration
-      tl.fromTo(
-        video,
-        { currentTime: 0 },
-        { currentTime: duration, ease: "none", duration: 3 }
-      );
+      // Scrub proxy time smoothly
+      tl.to(proxy, {
+        time: duration,
+        ease: "none",
+        duration: 3,
+        onUpdate: () => {
+          targetTime = proxy.time;
+        },
+      });
 
-      // Fade out the hero glass card near the end of the video sequence
+      // Fade out hero card near the end
       if (card) {
         tl.to(card, { opacity: 0, y: -40, duration: 0.6 }, "-=0.8");
       }
+
+      ScrollTrigger.refresh();
     };
 
     if (video.readyState >= 1) {
@@ -54,13 +77,14 @@ export const HeroPinSection: React.FC = () => {
     }
 
     return () => {
+      cancelAnimationFrame(rafId);
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
 
   return (
     <div ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black">
-      {/* Background Video (background.mp4) */}
+      {/* Background Video */}
       <video
         ref={videoRef}
         muted
@@ -71,7 +95,7 @@ export const HeroPinSection: React.FC = () => {
         <source src="/background.mp4" type="video/mp4" />
       </video>
 
-      {/* Hero Glassmorphism Content Overlay */}
+      {/* Hero Content */}
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-6 pointer-events-none">
         <div
           ref={cardRef}
