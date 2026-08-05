@@ -82,6 +82,8 @@ export default function ProjectList({ onHover }: ProjectListProps) {
                 navigate('/visual-merchandising');
               } else if (project.name === '3D Design') {
                 navigate('/3d-design');
+              } else if (project.name === 'The Art of Abstract') {
+                navigate('/the-art-of-abstract');
               }
             }}
             onMouseEnter={(e) =>
