@@ -23,13 +23,10 @@ export const HeroPinSection: React.FC = () => {
         muted
         playsInline
         preload="auto"
-        className="absolute inset-0 w-full h-full object-cover opacity-50 pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover scale-105 opacity-50 pointer-events-none"
       >
         <source src="/background.mp4" type="video/mp4" />
       </video>
-
-      {/* Watermark Mask covering bottom-right corner without video crop/zoom */}
-      <div className="absolute bottom-0 right-0 w-24 h-24 bg-black pointer-events-none z-10" />
 
       {/* Hero Content Overlay (Asymmetric & Floating Clean) */}
       <div className="relative z-10 w-full max-w-7xl px-8 md:px-24 text-left pointer-events-none flex flex-col justify-center h-full">

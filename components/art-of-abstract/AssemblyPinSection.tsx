@@ -101,7 +101,7 @@ export const AssemblyPinSection: React.FC = () => {
           muted
           playsInline
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-700 pointer-events-none"
+          className="absolute inset-0 w-full h-full object-cover scale-105 opacity-100 transition-opacity duration-700 pointer-events-none"
         >
           <source src="/front.mp4" type="video/mp4" />
         </video>
@@ -112,13 +112,10 @@ export const AssemblyPinSection: React.FC = () => {
           muted
           playsInline
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700 pointer-events-none"
+          className="absolute inset-0 w-full h-full object-cover scale-105 opacity-0 transition-opacity duration-700 pointer-events-none"
         >
           <source src="/back.mp4" type="video/mp4" />
         </video>
-
-        {/* Watermark Mask covering bottom-right corner without video crop/zoom */}
-        <div className="absolute bottom-0 right-0 w-24 h-24 bg-zinc-950 pointer-events-none z-10" />
       </div>
     </div>
   );
