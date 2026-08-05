@@ -93,15 +93,15 @@ export const AssemblyPinSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Video Stage Frame */}
-      <div className="relative w-full h-full flex items-center justify-center">
+      {/* Video Stage Frame (overflow-hidden to mask bottom-right watermarks) */}
+      <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
         {/* Front Video (front.mp4) */}
         <video
           ref={frontVideoRef}
           muted
           playsInline
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-700"
+          className="absolute w-[104%] h-[104%] -left-[2%] -top-[2%] object-cover opacity-100 transition-opacity duration-700 pointer-events-none"
         >
           <source src="/front.mp4" type="video/mp4" />
         </video>
@@ -112,7 +112,7 @@ export const AssemblyPinSection: React.FC = () => {
           muted
           playsInline
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700"
+          className="absolute w-[104%] h-[104%] -left-[2%] -top-[2%] object-cover opacity-0 transition-opacity duration-700 pointer-events-none"
         >
           <source src="/back.mp4" type="video/mp4" />
         </video>

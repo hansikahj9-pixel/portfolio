@@ -16,14 +16,14 @@ export const HeroPinSection: React.FC = () => {
         <span>←</span> BACK TO WORKS
       </button>
 
-      {/* Native Auto-Looping Background Video */}
+      {/* Native Auto-Looping Background Video (cropped 4% to hide bottom-right watermark) */}
       <video
         autoPlay
         loop
         muted
         playsInline
         preload="auto"
-        className="absolute inset-0 w-full h-full object-cover opacity-50 pointer-events-none"
+        className="absolute w-[104%] h-[104%] -left-[2%] -top-[2%] object-cover opacity-50 pointer-events-none"
       >
         <source src="/background.mp4" type="video/mp4" />
       </video>
