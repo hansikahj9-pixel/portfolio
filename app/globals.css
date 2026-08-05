@@ -1,0 +1,32 @@
+/* Liquid Metallic Chrome Silver Text Gradient */
+.chrome-silver-text {
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #f4f4f5 15%,
+    #a1a1aa 35%,
+    #ffffff 50%,
+    #52525b 70%,
+    #e4e4e7 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0px 2px 10px rgba(255, 255, 255, 0.2));
+}
+
+/* Metallic Ring Shiny Border */
+.chrome-ring-border {
+  position: relative;
+  border: 1px solid transparent;
+  background: 
+    linear-gradient(180deg, rgba(18, 18, 20, 0.6), rgba(9, 9, 11, 0.8)) padding-box,
+    linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.05) 40%, rgba(255, 255, 255, 0.4) 100%) border-box;
+}
+
+/* Real High-End Glassmorphism */
+.real-glassmorphism {
+  background: rgba(18, 18, 22, 0.45);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+}
