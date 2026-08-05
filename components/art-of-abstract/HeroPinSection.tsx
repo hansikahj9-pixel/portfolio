@@ -28,25 +28,16 @@ export const HeroPinSection: React.FC = () => {
         <source src="/background.mp4" type="video/mp4" />
       </video>
 
-      {/* Hero Content Overlay */}
-      <div className="relative z-10 p-6 max-w-4xl w-full text-center pointer-events-none">
-        <div className="real-glassmorphism chrome-ring-border p-12 md:p-20 rounded-[2rem] backdrop-blur-3xl shadow-2xl transition-all max-w-2xl mx-auto">
-          <h1 
-            className="text-6xl md:text-8xl font-light tracking-[0.12em] uppercase leading-[1.1] select-none"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
-          >
-            <span className="chrome-medium block mb-2">The Art</span>
-            <span className="chrome-dark italic font-extralight lowercase block text-4xl md:text-5xl my-1">of</span>
-            <span className="chrome-bright block mt-2 tracking-[0.16em]">Abstract</span>
-          </h1>
-          
-          {/* Subtle luxury divider line */}
-          <div className="w-16 h-[1px] bg-gradient-to-r from-transparent via-zinc-400 to-transparent mx-auto mt-8 mb-4 opacity-50" />
-          
-          <span className="text-[10px] tracking-[0.6em] text-zinc-400 uppercase font-mono block">
-            STUDY N° 04
-          </span>
-        </div>
+      {/* Hero Content Overlay (Asymmetric & Floating Clean) */}
+      <div className="relative z-10 w-full max-w-7xl px-8 md:px-24 text-left pointer-events-none flex flex-col justify-center h-full">
+        <h1 
+          className="text-6xl md:text-9xl font-light tracking-[0.12em] uppercase leading-[1.05] select-none"
+          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+        >
+          <span className="chrome-medium block mb-2 text-left">The Art</span>
+          <span className="chrome-dark italic font-extralight lowercase block text-left ml-[10%] my-3 text-4xl md:text-6xl">of</span>
+          <span className="chrome-bright block mt-2 tracking-[0.16em] text-left ml-[20%]">Abstract</span>
+        </h1>
       </div>
 
       {/* Elegant scroll indicator */}

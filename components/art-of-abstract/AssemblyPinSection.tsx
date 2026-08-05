@@ -80,11 +80,11 @@ export const AssemblyPinSection: React.FC = () => {
           </span>
         </div>
 
-        {/* Dynamic Glass Status Banner */}
-        <div className="self-center mb-6 max-w-xl text-center">
+        {/* Asymmetric Left-Aligned Glass Status Banner */}
+        <div className="self-start ml-4 md:ml-12 mb-6 max-w-lg text-left">
           <div className="real-glassmorphism chrome-ring-border px-8 py-5 rounded-2xl">
             <h3 
-              className="text-xl md:text-2xl font-light italic text-zinc-200 tracking-wide"
+              className="text-lg md:text-xl font-light italic text-zinc-300 tracking-wide"
               style={{ fontFamily: "'Cormorant Garamond', serif" }}
             >
               {statusText}
