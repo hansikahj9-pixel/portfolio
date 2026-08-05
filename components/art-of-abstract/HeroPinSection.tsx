@@ -1,10 +1,21 @@
 "use client";
 
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export const HeroPinSection: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black flex items-center justify-center">
+      {/* Floating Exit Button for Premium UX */}
+      <button
+        onClick={() => navigate("/")}
+        className="absolute top-8 left-8 z-30 flex items-center gap-3 px-5 py-2.5 rounded-full text-xs font-mono tracking-widest text-zinc-300 real-glassmorphism chrome-ring-border hover:text-white transition-all cursor-pointer pointer-events-auto"
+      >
+        <span>←</span> BACK TO WORKS
+      </button>
+
       {/* Native Auto-Looping Background Video */}
       <video
         autoPlay
@@ -12,24 +23,35 @@ export const HeroPinSection: React.FC = () => {
         muted
         playsInline
         preload="auto"
-        className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover opacity-50 pointer-events-none"
       >
         <source src="/background.mp4" type="video/mp4" />
       </video>
 
       {/* Hero Content Overlay */}
-      <div className="relative z-10 p-6 max-w-3xl w-full text-center">
-        <div className="real-glassmorphism chrome-ring-border p-10 md:p-16 rounded-3xl backdrop-blur-3xl shadow-2xl transition-all">
-          <span className="text-xs font-mono uppercase tracking-[0.4em] text-zinc-400 mb-4 block">
-            VISUAL STUDY // HANSIKA JAIN
-          </span>
-          <h1 className="text-4xl md:text-7xl font-extralight tracking-tight uppercase chrome-silver-text mb-6">
-            THE ART OF ABSTRACT
+      <div className="relative z-10 p-6 max-w-4xl w-full text-center pointer-events-none">
+        <div className="real-glassmorphism chrome-ring-border p-12 md:p-20 rounded-[2rem] backdrop-blur-3xl shadow-2xl transition-all max-w-2xl mx-auto">
+          <h1 
+            className="text-5xl md:text-7xl font-extralight tracking-[0.18em] uppercase chrome-silver-text leading-tight"
+            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          >
+            The Art <br className="md:hidden" />
+            <span className="italic font-normal">of</span> Abstract
           </h1>
-          <p className="text-sm md:text-base text-zinc-300 font-light tracking-wide max-w-xl mx-auto leading-relaxed">
-            Ambient tape and plastic visual study. High-end glassmorphism and metallic chrome silver aesthetic.
-          </p>
+          
+          {/* Subtle luxury divider line */}
+          <div className="w-16 h-[1px] bg-gradient-to-r from-transparent via-zinc-400 to-transparent mx-auto mt-8 mb-4 opacity-50" />
+          
+          <span className="text-[10px] tracking-[0.6em] text-zinc-400 uppercase font-mono block">
+            STUDY N° 04
+          </span>
         </div>
+      </div>
+
+      {/* Elegant scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 opacity-60">
+        <span className="text-[9px] font-mono tracking-[0.4em] text-zinc-500 uppercase">SCROLL</span>
+        <div className="w-[1px] h-12 bg-gradient-to-b from-zinc-500 to-transparent animate-pulse" />
       </div>
     </div>
   );

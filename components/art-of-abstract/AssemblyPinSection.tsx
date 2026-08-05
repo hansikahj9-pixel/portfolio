@@ -5,8 +5,8 @@ import React, { useEffect, useRef, useState } from "react";
 export const AssemblyPinSection: React.FC = () => {
   const frontVideoRef = useRef<HTMLVideoElement>(null);
   const backVideoRef = useRef<HTMLVideoElement>(null);
-  const [hudBadgeText, setHudBadgeText] = useState("FRONT ANGLE (0° → 180°)");
-  const [statusText, setStatusText] = useState("Objects Flying Inward & Locking onto Front Form");
+  const [hudBadgeText, setHudBadgeText] = useState("FRONT ANGLE");
+  const [statusText, setStatusText] = useState("Objects flying inward to resolve front form");
 
   useEffect(() => {
     const frontVid = frontVideoRef.current;
@@ -26,8 +26,8 @@ export const AssemblyPinSection: React.FC = () => {
 
       const handleFrontEnd = () => {
         // Transition to back video
-        setHudBadgeText("BACK ANGLE (180° → 360°)");
-        setStatusText("Tape, Spools & Cardboard Snapping onto Back Form");
+        setHudBadgeText("REVERSE ANGLE");
+        setStatusText("Assembly elements snap onto reverse structure");
 
         backVid.currentTime = 0;
         frontVid.style.opacity = "0";
@@ -37,8 +37,8 @@ export const AssemblyPinSection: React.FC = () => {
 
       const handleBackEnd = () => {
         // Transition back to front video
-        setHudBadgeText("FRONT ANGLE (0° → 180°)");
-        setStatusText("Objects Flying Inward & Locking onto Front Form");
+        setHudBadgeText("FRONT ANGLE");
+        setStatusText("Objects flying inward to resolve front form");
 
         frontVid.currentTime = 0;
         backVid.style.opacity = "0";
@@ -72,18 +72,21 @@ export const AssemblyPinSection: React.FC = () => {
       {/* HUD Elements & Status Bar */}
       <div className="absolute inset-0 pointer-events-none z-20 flex flex-col justify-between p-8 md:p-16">
         <div className="flex justify-between items-center">
-          <span className="text-xs uppercase tracking-[0.3em] text-zinc-400 font-mono">
-            PHASE 02 // COMBINED MOULD ASSEMBLY (AUTO LOOP)
+          <span className="text-[10px] uppercase tracking-[0.4em] text-zinc-500 font-mono">
+            PHASE 02 // MOULD ASSEMBLY
           </span>
-          <span className="text-xs font-mono text-zinc-300 border border-zinc-700 px-4 py-1.5 rounded-full real-glassmorphism">
+          <span className="text-[9px] font-mono tracking-widest text-zinc-400 border border-zinc-800/80 px-4 py-1.5 rounded-full real-glassmorphism">
             {hudBadgeText}
           </span>
         </div>
 
         {/* Dynamic Glass Status Banner */}
         <div className="self-center mb-6 max-w-xl text-center">
-          <div className="real-glassmorphism chrome-ring-border p-6 rounded-2xl">
-            <h3 className="text-lg md:text-xl font-light chrome-silver-text">
+          <div className="real-glassmorphism chrome-ring-border px-8 py-5 rounded-2xl">
+            <h3 
+              className="text-xl md:text-2xl font-light italic text-zinc-200 tracking-wide"
+              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            >
               {statusText}
             </h3>
           </div>
@@ -98,7 +101,7 @@ export const AssemblyPinSection: React.FC = () => {
           muted
           playsInline
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-500"
+          className="absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-700"
         >
           <source src="/front.mp4" type="video/mp4" />
         </video>
@@ -109,7 +112,7 @@ export const AssemblyPinSection: React.FC = () => {
           muted
           playsInline
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500"
+          className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700"
         >
           <source src="/back.mp4" type="video/mp4" />
         </video>
