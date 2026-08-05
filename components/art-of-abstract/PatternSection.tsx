@@ -1,15 +1,45 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const PatternSection: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const vid = videoRef.current;
+    if (!container || !vid) return;
+
+    vid.pause();
+
+    const st = ScrollTrigger.create({
+      trigger: container,
+      start: "top bottom",
+      end: "bottom top",
+      scrub: 0.5,
+      onUpdate: (self) => {
+        if (vid.duration) {
+          vid.pause();
+          vid.currentTime = self.progress * vid.duration;
+        }
+      },
+    });
+
+    return () => st.kill();
+  }, []);
+
   return (
-    <section className="relative w-full min-h-screen bg-black py-24 px-6 md:px-16 flex flex-col justify-center items-center overflow-hidden">
-      {/* Background Accent Grid / Glow */}
+    <section ref={containerRef} className="relative w-full min-h-screen bg-black py-24 px-6 md:px-16 flex flex-col justify-center items-center overflow-hidden">
+      {/* Background Accent Grid */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)] pointer-events-none" />
 
-      <div className="relative z-10 max-w-5xl w-full">
+      <div className="relative z-10 max-w-6xl w-full">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -25,6 +55,23 @@ export const PatternSection: React.FC = () => {
             Architectural Dissection & Mould Deconstruction
           </h2>
         </motion.div>
+
+        {/* Scroll-Triggered Preview Video Player */}
+        <div className="mb-16 w-full h-[50vh] rounded-3xl overflow-hidden real-glassmorphism chrome-ring-border relative flex items-center justify-center">
+          <video
+            ref={videoRef}
+            src="/background.mp4"
+            muted
+            playsInline
+            preload="auto"
+            className="w-full h-full object-cover opacity-80"
+          />
+          <div className="absolute bottom-6 left-6 pointer-events-none z-10">
+            <span className="text-xs font-mono text-zinc-300 border border-zinc-700 px-4 py-1.5 rounded-full real-glassmorphism">
+              SCROLL SCRUB // DECONSTRUCTION PREVIEW
+            </span>
+          </div>
+        </div>
 
         {/* Grid of Pattern & Mould Analysis Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

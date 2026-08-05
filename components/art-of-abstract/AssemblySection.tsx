@@ -27,37 +27,54 @@ export const AssemblySection: React.FC<AssemblySectionProps> = ({
 
     if (!container || !frontVid || !backVid) return;
 
+    // Explicitly pause both videos so they ONLY move on scroll
+    frontVid.pause();
+    backVid.pause();
+
     const initScrubber = () => {
+      frontVid.pause();
+      backVid.pause();
+
       const frontDur = frontVid.duration || 10;
       const backDur = backVid.duration || 10;
 
-      // Master Timeline pinned for 300vh scroll height
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: container,
-          start: "top top",
-          end: "+=300%",
-          pin: true,
-          scrub: 1.2, // Smooth, luxurious motion delay
-          anticipatePin: 1,
+      // Ensure initial frame state
+      frontVid.currentTime = frontDur;
+      backVid.currentTime = backDur;
+
+      ScrollTrigger.create({
+        trigger: container,
+        start: "top top",
+        end: "+=300%",
+        pin: true,
+        scrub: 1.2, // Smooth, luxurious motion delay
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          const progress = self.progress; // 0.0 -> 1.0
+
+          // Keep both videos paused
+          frontVid.pause();
+          backVid.pause();
+
+          if (progress <= 0.5) {
+            // PHASE 1: Scrub Front Video Backwards (0° to 180° assembly)
+            const norm1 = progress / 0.5; // 0.0 -> 1.0
+            if (frontVid.duration) {
+              frontVid.currentTime = frontDur * (1 - norm1);
+            }
+            frontVid.style.opacity = "1";
+            backVid.style.opacity = "0";
+          } else {
+            // PHASE 2: Scrub Back Video Backwards (180° to 360° assembly)
+            const norm2 = (progress - 0.5) / 0.5; // 0.0 -> 1.0
+            if (backVid.duration) {
+              backVid.currentTime = backDur * (1 - norm2);
+            }
+            frontVid.style.opacity = "0";
+            backVid.style.opacity = "1";
+          }
         },
       });
-
-      // PHASE 1: Scrub Front Video Backwards (0° to 180° assembly)
-      tl.fromTo(
-        frontVid,
-        { currentTime: frontDur },
-        { currentTime: 0, ease: "none", duration: 2 }
-      )
-      // PHASE 2: Crossfade Front -> Back Video
-      .to(frontVid, { opacity: 0, duration: 0.6 }, "crossfade")
-      .to(backVid, { opacity: 1, duration: 0.6 }, "crossfade")
-      // PHASE 3: Scrub Back Video Backwards (180° to 360° assembly)
-      .fromTo(
-        backVid,
-        { currentTime: backDur },
-        { currentTime: 0, ease: "none", duration: 2 }
-      );
     };
 
     if (frontVid.readyState >= 1 && backVid.readyState >= 1) {
@@ -107,7 +124,7 @@ export const AssemblySection: React.FC<AssemblySectionProps> = ({
           muted
           playsInline
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity"
+          className="absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-300"
         />
 
         {/* Back Video (180° - 360°) */}
@@ -117,7 +134,7 @@ export const AssemblySection: React.FC<AssemblySectionProps> = ({
           muted
           playsInline
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity"
+          className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300"
         />
       </div>
     </div>

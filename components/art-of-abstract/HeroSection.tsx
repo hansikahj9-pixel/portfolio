@@ -1,7 +1,11 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface HeroSectionProps {
   bgVideoSrc: string;
@@ -9,6 +13,7 @@ interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ bgVideoSrc }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -20,20 +25,58 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ bgVideoSrc }) => {
   const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
+  // SCROLL TRIGGER: Video ONLY plays / scrubs when user scrolls!
+  useEffect(() => {
+    const container = containerRef.current;
+    const vid = videoRef.current;
+    if (!container || !vid) return;
+
+    // Explicitly pause video so it ONLY updates on scroll
+    vid.pause();
+
+    const initScrollScrubber = () => {
+      vid.pause();
+      const dur = vid.duration || 10;
+
+      ScrollTrigger.create({
+        trigger: container,
+        start: "top top",
+        end: "bottom top",
+        scrub: 0.5,
+        onUpdate: (self) => {
+          if (vid.duration) {
+            vid.pause();
+            vid.currentTime = self.progress * dur;
+          }
+        },
+      });
+    };
+
+    if (vid.readyState >= 1) {
+      initScrollScrubber();
+    } else {
+      vid.onloadedmetadata = initScrollScrubber;
+    }
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
+  }, []);
+
   return (
     <div ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black flex items-center justify-center">
-      {/* Background Video with Framer Motion Lens Blur */}
+      {/* Background Video with Framer Motion Lens Blur & Scroll Scrubber */}
       <motion.div
         style={{ filter: videoBlur, scale: videoScale }}
         className="absolute inset-0 w-full h-full pointer-events-none"
       >
         <video
+          ref={videoRef}
           src={bgVideoSrc}
-          autoPlay
-          loop
           muted
           playsInline
-          className="w-full h-full object-cover opacity-60"
+          preload="auto"
+          className="w-full h-full object-cover opacity-70"
         />
       </motion.div>
 
