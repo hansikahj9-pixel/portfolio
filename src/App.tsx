@@ -12,7 +12,6 @@ import MonolithRoute from './routes/MonolithRoute';
 import ShakespeareRoute from './routes/ShakespeareRoute';
 import VisualMerchandisingRoute from './routes/VisualMerchandisingRoute';
 import ThreeDDesignRoute from './routes/ThreeDDesignRoute';
-import ArtOfAbstractRoute from './routes/ArtOfAbstractRoute';
 import CustomCursor from './components/CustomCursor';
 import MotionPageFlip from './components/MotionPageFlip';
 import AxiomeGlobalNav from './components/AxiomeGlobalNav';
@@ -43,7 +42,6 @@ function App() {
             <Route path="/vision" element={<MotionPageFlip locationKey="/vision"><MonolithRoute /></MotionPageFlip>} />
             <Route path="/visual-merchandising" element={<MotionPageFlip locationKey="/visual-merchandising"><VisualMerchandisingRoute /></MotionPageFlip>} />
             <Route path="/3d-design" element={<ThreeDDesignRoute />} />
-            <Route path="/the-art-of-abstract" element={<ArtOfAbstractRoute />} />
 
             {/* ── Legacy Redirects ── */}
             <Route path="/axiome/process" element={<Navigate to="/process" replace />} />
