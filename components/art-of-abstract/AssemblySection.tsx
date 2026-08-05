@@ -18,62 +18,93 @@ export const AssemblySection: React.FC<AssemblySectionProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const frontVideoRef = useRef<HTMLVideoElement>(null);
   const backVideoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
   const [phaseProgress, setPhaseProgress] = useState<string>("0° / 360°");
 
   useEffect(() => {
     const container = containerRef.current;
     const frontVid = frontVideoRef.current;
     const backVid = backVideoRef.current;
+    const canvas = canvasRef.current;
 
-    if (!container || !frontVid || !backVid) return;
+    if (!container || !frontVid || !backVid || !canvas) return;
 
     frontVid.pause();
     backVid.pause();
 
+    const ctx = canvas.getContext("2d");
+
+    let animFrameId: number;
+    let targetProgress = 0;
+    let currentProgress = 0;
+
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    const render = () => {
+      // Smooth lerp dampening for butter-smooth, ultra-deliberate scroll motion
+      currentProgress += (targetProgress - currentProgress) * 0.05;
+
+      const degrees = Math.round(currentProgress * 360);
+      setPhaseProgress(`${degrees}° / 360°`);
+
+      if (ctx) {
+        const frontDur = frontVid.duration || 10;
+        const backDur = backVid.duration || 10;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (currentProgress <= 0.5) {
+          // PHASE 1: Front Video Reverse Scrub (0° to 180°)
+          const norm1 = currentProgress / 0.5; // 0 -> 1
+          if (frontVid.duration) {
+            frontVid.currentTime = frontDur * (1 - norm1);
+          }
+          try {
+            ctx.globalAlpha = 1;
+            ctx.drawImage(frontVid, 0, 0, canvas.width, canvas.height);
+          } catch {
+            // ignore draw errors during seek
+          }
+        } else {
+          // PHASE 2: Back Video Reverse Scrub (180° to 360°)
+          const norm2 = (currentProgress - 0.5) / 0.5; // 0 -> 1
+          if (backVid.duration) {
+            backVid.currentTime = backDur * (1 - norm2);
+          }
+          try {
+            ctx.globalAlpha = 1;
+            ctx.drawImage(backVid, 0, 0, canvas.width, canvas.height);
+          } catch {
+            // ignore draw errors during seek
+          }
+        }
+      }
+
+      animFrameId = requestAnimationFrame(render);
+    };
+
     const initScrubber = () => {
       frontVid.pause();
       backVid.pause();
-
-      const frontDur = frontVid.duration || 10;
-      const backDur = backVid.duration || 10;
-
-      frontVid.currentTime = frontDur;
-      backVid.currentTime = backDur;
+      render();
 
       ScrollTrigger.create({
         trigger: container,
         scroller: "#abstract-scroll-container",
         start: "top top",
-        end: "+=300%",
+        end: "+=350%",
         pin: true,
-        scrub: 1.2,
+        scrub: 1.5, // Slowed down speed for luxurious smooth control
         anticipatePin: 1,
         onUpdate: (self) => {
-          const progress = self.progress; // 0.0 -> 1.0
-
-          frontVid.pause();
-          backVid.pause();
-
-          const degrees = Math.round(progress * 360);
-          setPhaseProgress(`${degrees}° / 360°`);
-
-          if (progress <= 0.5) {
-            // PHASE 1: Scrub Front Video Backwards (0° to 180° assembly)
-            const norm1 = progress / 0.5; // 0.0 -> 1.0
-            if (frontVid.duration) {
-              frontVid.currentTime = frontDur * (1 - norm1);
-            }
-            frontVid.style.opacity = "1";
-            backVid.style.opacity = "0";
-          } else {
-            // PHASE 2: Scrub Back Video Backwards (180° to 360° assembly)
-            const norm2 = (progress - 0.5) / 0.5; // 0.0 -> 1.0
-            if (backVid.duration) {
-              backVid.currentTime = backDur * (1 - norm2);
-            }
-            frontVid.style.opacity = "0";
-            backVid.style.opacity = "1";
-          }
+          targetProgress = self.progress;
         },
       });
 
@@ -88,12 +119,32 @@ export const AssemblySection: React.FC<AssemblySectionProps> = ({
     }
 
     return () => {
+      cancelAnimationFrame(animFrameId);
+      window.removeEventListener("resize", handleResize);
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
 
   return (
     <div ref={containerRef} className="relative w-full h-screen bg-zinc-950 overflow-hidden">
+      {/* Offscreen Video Elements */}
+      <video
+        ref={frontVideoRef}
+        src={frontVideoSrc}
+        muted
+        playsInline
+        preload="auto"
+        className="hidden"
+      />
+      <video
+        ref={backVideoRef}
+        src={backVideoSrc}
+        muted
+        playsInline
+        preload="auto"
+        className="hidden"
+      />
+
       {/* Real Glassmorphism HUD Overlay */}
       <div className="absolute inset-0 pointer-events-none z-20 flex flex-col justify-between p-6 md:p-14">
         <div className="flex justify-between items-center">
@@ -105,7 +156,7 @@ export const AssemblySection: React.FC<AssemblySectionProps> = ({
               {phaseProgress}
             </span>
             <span className="text-xs font-mono text-zinc-300 border border-zinc-700 px-4 py-1.5 rounded-full real-glassmorphism">
-              360° REVERSE SCRUB
+              360° REVERSE COMBINED STAGE
             </span>
           </div>
         </div>
@@ -116,36 +167,18 @@ export const AssemblySection: React.FC<AssemblySectionProps> = ({
             <p className="text-xs uppercase tracking-[0.3em] text-zinc-400 font-mono mb-2">
               STRUCTURAL FORMATION
             </p>
-            <h3 className="text-2xl md:text-3xl font-light molten-chrome-text mb-2">
+            <h3 className="text-2xl md:text-3xl font-light molten-chrome-text">
               Cardboard, Spools & Paper Cups Magnetically Snapping into Place
             </h3>
-            <p className="text-xs text-zinc-400 font-mono tracking-widest">
-              [REVERSE RECONSTRUCTION MODE — SCROLL TO SCRUB]
-            </p>
           </div>
         </div>
       </div>
 
-      {/* Video Container Stage */}
+      {/* Single Unified Canvas Stage (Zero Blanking / Zero Flicker) */}
       <div className="relative w-full h-full flex items-center justify-center">
-        {/* Front Video (0° - 180°) */}
-        <video
-          ref={frontVideoRef}
-          src={frontVideoSrc}
-          muted
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-300"
-        />
-
-        {/* Back Video (180° - 360°) */}
-        <video
-          ref={backVideoRef}
-          src={backVideoSrc}
-          muted
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300"
+        <canvas
+          ref={canvasRef}
+          className="w-full h-full object-cover"
         />
       </div>
     </div>

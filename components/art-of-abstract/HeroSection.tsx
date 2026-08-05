@@ -14,28 +14,56 @@ interface HeroSectionProps {
 export const HeroSection: React.FC<HeroSectionProps> = ({ bgVideoSrc }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   });
 
-  // Camera Lens Blur & Scale effect on scroll
   const videoBlur = useTransform(scrollYProgress, [0, 1], ["blur(0px)", "blur(24px)"]);
   const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
-  // SCROLL TRIGGER: Video ONLY plays / scrubs when user scrolls inside #abstract-scroll-container!
   useEffect(() => {
     const container = containerRef.current;
     const vid = videoRef.current;
-    if (!container || !vid) return;
+    const canvas = canvasRef.current;
+    if (!container || !vid || !canvas) return;
 
     vid.pause();
+    const ctx = canvas.getContext("2d");
+
+    let animFrameId: number;
+    let targetProgress = 0;
+    let currentProgress = 0;
+
+    const render = () => {
+      // Smooth lerp dampening (slower, butter-smooth motion)
+      currentProgress += (targetProgress - currentProgress) * 0.06;
+
+      if (vid.duration && ctx) {
+        vid.currentTime = currentProgress * vid.duration;
+        try {
+          ctx.drawImage(vid, 0, 0, canvas.width, canvas.height);
+        } catch {
+          // ignore seek frame draw errors
+        }
+      }
+      animFrameId = requestAnimationFrame(render);
+    };
+
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
 
     const initScrollScrubber = () => {
       vid.pause();
-      const dur = vid.duration || 10;
+      render();
 
       ScrollTrigger.create({
         trigger: container,
@@ -44,10 +72,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ bgVideoSrc }) => {
         end: "bottom top",
         scrub: 0.5,
         onUpdate: (self) => {
-          if (vid.duration) {
-            vid.pause();
-            vid.currentTime = self.progress * dur;
-          }
+          targetProgress = self.progress;
         },
       });
 
@@ -61,26 +86,34 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ bgVideoSrc }) => {
     }
 
     return () => {
+      cancelAnimationFrame(animFrameId);
+      window.removeEventListener("resize", handleResize);
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
 
   return (
     <div ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black flex flex-col items-center justify-center">
-      {/* Background Video with Framer Motion Lens Blur & Scroll Scrubber */}
+      {/* Offscreen Video Element */}
+      <video
+        ref={videoRef}
+        src={bgVideoSrc}
+        muted
+        playsInline
+        preload="auto"
+        className="hidden"
+      />
+
+      {/* Canvas Video Stage (Zero Blanking / Zero Flicker) */}
       <motion.div
         style={{ filter: videoBlur, scale: videoScale }}
         className="absolute inset-0 w-full h-full pointer-events-none"
       >
-        <video
-          ref={videoRef}
-          src={bgVideoSrc}
-          muted
-          playsInline
-          preload="auto"
-          className="w-full h-full object-cover opacity-70"
+        <canvas
+          ref={canvasRef}
+          className="w-full h-full object-cover opacity-75"
         />
-        {/* Dark Editorial Radial Gradient Overlay */}
+        {/* Dark Editorial Radial Overlay */}
         <div className="absolute inset-0 bg-radial from-transparent via-black/40 to-black/90 pointer-events-none" />
       </motion.div>
 
@@ -98,22 +131,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ bgVideoSrc }) => {
         </div>
 
         {/* Massive Molten Chrome Silver Ring Heading */}
-        <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[10.5rem] font-light tracking-tighter uppercase leading-none molten-chrome-text mb-6 drop-shadow-2xl">
+        <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[10.5rem] font-light tracking-tighter uppercase leading-none molten-chrome-text drop-shadow-2xl">
           THE ART OF ABSTRACT
         </h1>
-
-        {/* Editorial Subhead */}
-        <p className="text-sm sm:text-base md:text-lg text-zinc-300 font-light tracking-widest max-w-3xl mx-auto leading-relaxed uppercase font-mono">
-          Raw object placement // Shrink-wrap tension // Masking tape moulding // Fabric duality
-        </p>
-
-        {/* Scroll Callout */}
-        <div className="mt-12 flex flex-col items-center gap-2 opacity-80">
-          <span className="text-[10px] font-mono tracking-[0.3em] text-zinc-400 uppercase">
-            SCROLL TO UNVEIL 360° MOULD ASSEMBLY
-          </span>
-          <div className="w-[1px] h-10 bg-gradient-to-b from-zinc-400 to-transparent animate-bounce" />
-        </div>
       </motion.div>
     </div>
   );

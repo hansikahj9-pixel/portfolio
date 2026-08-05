@@ -10,13 +10,42 @@ gsap.registerPlugin(ScrollTrigger);
 export const PatternSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const container = containerRef.current;
     const vid = videoRef.current;
-    if (!container || !vid) return;
+    const canvas = canvasRef.current;
+    if (!container || !vid || !canvas) return;
 
     vid.pause();
+    const ctx = canvas.getContext("2d");
+
+    let animFrameId: number;
+    let targetProgress = 0;
+    let currentProgress = 0;
+
+    const handleResize = () => {
+      canvas.width = canvas.parentElement?.clientWidth || window.innerWidth;
+      canvas.height = canvas.parentElement?.clientHeight || 500;
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    const render = () => {
+      currentProgress += (targetProgress - currentProgress) * 0.05;
+
+      if (vid.duration && ctx) {
+        vid.currentTime = currentProgress * vid.duration;
+        try {
+          ctx.drawImage(vid, 0, 0, canvas.width, canvas.height);
+        } catch {
+          // ignore seek frame draw errors
+        }
+      }
+      animFrameId = requestAnimationFrame(render);
+    };
 
     const st = ScrollTrigger.create({
       trigger: container,
@@ -25,18 +54,31 @@ export const PatternSection: React.FC = () => {
       end: "bottom top",
       scrub: 0.5,
       onUpdate: (self) => {
-        if (vid.duration) {
-          vid.pause();
-          vid.currentTime = self.progress * vid.duration;
-        }
+        targetProgress = self.progress;
       },
     });
 
-    return () => st.kill();
+    render();
+
+    return () => {
+      cancelAnimationFrame(animFrameId);
+      window.removeEventListener("resize", handleResize);
+      st.kill();
+    };
   }, []);
 
   return (
     <section ref={containerRef} className="relative w-full min-h-screen bg-black py-24 px-6 md:px-16 flex flex-col justify-center items-center overflow-hidden">
+      {/* Offscreen Video Element */}
+      <video
+        ref={videoRef}
+        src="/background.mp4"
+        muted
+        playsInline
+        preload="auto"
+        className="hidden"
+      />
+
       {/* Background Accent Grid */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)] pointer-events-none" />
 
@@ -57,14 +99,10 @@ export const PatternSection: React.FC = () => {
           </h2>
         </motion.div>
 
-        {/* Scroll-Triggered Preview Video Player */}
+        {/* Scroll-Triggered Preview Canvas Video Player */}
         <div className="mb-16 w-full h-[55vh] rounded-3xl overflow-hidden real-glassmorphism chrome-ring-border relative flex items-center justify-center">
-          <video
-            ref={videoRef}
-            src="/background.mp4"
-            muted
-            playsInline
-            preload="auto"
+          <canvas
+            ref={canvasRef}
             className="w-full h-full object-cover opacity-85"
           />
           <div className="absolute bottom-6 left-6 pointer-events-none z-10">
