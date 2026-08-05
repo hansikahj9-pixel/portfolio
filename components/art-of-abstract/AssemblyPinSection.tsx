@@ -18,7 +18,14 @@ export const AssemblyPinSection: React.FC = () => {
     let intervalId: ReturnType<typeof setInterval>;
     let phase: "front" | "back" = "front";
 
-    const startReverseLoop = () => {
+    const startReverseLoop = async () => {
+      frontVid.muted = true;
+      backVid.muted = true;
+
+      // Keep media decoding pipeline active for real-time reverse seeking
+      await frontVid.play().catch(() => {});
+      await backVid.play().catch(() => {});
+
       const frontDur = frontVid.duration || 10;
       const backDur = backVid.duration || 10;
 
@@ -30,7 +37,7 @@ export const AssemblyPinSection: React.FC = () => {
       // 25 FPS smooth reverse playback loop (40ms interval)
       intervalId = setInterval(() => {
         if (phase === "front") {
-          if (frontVid.currentTime <= 0.15) {
+          if (frontVid.currentTime <= 0.2) {
             // Transition to Back Video reverse
             phase = "back";
             frontVid.style.opacity = "0";
@@ -42,7 +49,7 @@ export const AssemblyPinSection: React.FC = () => {
             frontVid.currentTime = Math.max(0, frontVid.currentTime - 0.04);
           }
         } else if (phase === "back") {
-          if (backVid.currentTime <= 0.15) {
+          if (backVid.currentTime <= 0.2) {
             // Transition back to Front Video reverse
             phase = "front";
             backVid.style.opacity = "0";
