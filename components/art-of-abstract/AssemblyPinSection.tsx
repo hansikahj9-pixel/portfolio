@@ -1,10 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export const AssemblyPinSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -14,107 +10,66 @@ export const AssemblyPinSection: React.FC = () => {
   const [statusText, setStatusText] = useState("Objects Flying Inward & Locking onto Front Form");
 
   useEffect(() => {
-    const container = containerRef.current;
     const frontVid = frontVideoRef.current;
     const backVid = backVideoRef.current;
 
-    if (!container || !frontVid || !backVid) return;
+    if (!frontVid || !backVid) return;
 
-    let rafId: number;
-    let lastTimestamp = 0;
+    let intervalId: ReturnType<typeof setInterval>;
     let phase: "front" | "back" = "front";
-    let isPlaying = false;
 
-    const resetSequence = () => {
+    const startReverseLoop = () => {
       const frontDur = frontVid.duration || 10;
       const backDur = backVid.duration || 10;
 
-      phase = "front";
-      if (!frontVid.seeking && frontVid.readyState >= 2) frontVid.currentTime = frontDur;
-      if (!backVid.seeking && backVid.readyState >= 2) backVid.currentTime = backDur;
-
+      frontVid.currentTime = frontDur;
+      backVid.currentTime = backDur;
       frontVid.style.opacity = "1";
       backVid.style.opacity = "0";
 
-      setHudBadgeText("FRONT ANGLE (0° → 180°)");
-      setStatusText("Objects Flying Inward & Locking onto Front Form");
-    };
-
-    // Smooth RAF continuous reverse loop engine
-    const loopStep = (timestamp: number) => {
-      if (!lastTimestamp) lastTimestamp = timestamp;
-      const delta = Math.min((timestamp - lastTimestamp) / 1000, 0.1);
-      lastTimestamp = timestamp;
-
-      if (isPlaying) {
-        const frontDur = frontVid.duration || 10;
-        const backDur = backVid.duration || 10;
-
+      // 25 FPS smooth reverse playback loop (40ms interval)
+      intervalId = setInterval(() => {
         if (phase === "front") {
-          if (!frontVid.seeking && frontVid.readyState >= 2) {
-            let nextTime = frontVid.currentTime - delta;
-            if (nextTime <= 0.05) {
-              // Transition to back video reverse
-              phase = "back";
-              frontVid.currentTime = 0;
-              frontVid.style.opacity = "0";
-              backVid.style.opacity = "1";
-              backVid.currentTime = backDur;
-              setHudBadgeText("BACK ANGLE (180° → 360°)");
-              setStatusText("Tape, Spools & Cardboard Snapping onto Back Form");
-            } else {
-              frontVid.currentTime = nextTime;
-            }
+          if (frontVid.currentTime <= 0.15) {
+            // Transition to Back Video reverse
+            phase = "back";
+            frontVid.style.opacity = "0";
+            backVid.style.opacity = "1";
+            backVid.currentTime = backVid.duration || 10;
+            setHudBadgeText("BACK ANGLE (180° → 360°)");
+            setStatusText("Tape, Spools & Cardboard Snapping onto Back Form");
+          } else {
+            frontVid.currentTime = Math.max(0, frontVid.currentTime - 0.04);
           }
         } else if (phase === "back") {
-          if (!backVid.seeking && backVid.readyState >= 2) {
-            let nextTime = backVid.currentTime - delta;
-            if (nextTime <= 0.05) {
-              // Loop back to front video reverse
-              phase = "front";
-              backVid.currentTime = 0;
-              backVid.style.opacity = "0";
-              frontVid.style.opacity = "1";
-              frontVid.currentTime = frontDur;
-              setHudBadgeText("FRONT ANGLE (0° → 180°)");
-              setStatusText("Objects Flying Inward & Locking onto Front Form");
-            } else {
-              backVid.currentTime = nextTime;
-            }
+          if (backVid.currentTime <= 0.15) {
+            // Transition back to Front Video reverse
+            phase = "front";
+            backVid.style.opacity = "0";
+            frontVid.style.opacity = "1";
+            frontVid.currentTime = frontVid.duration || 10;
+            setHudBadgeText("FRONT ANGLE (0° → 180°)");
+            setStatusText("Objects Flying Inward & Locking onto Front Form");
+          } else {
+            backVid.currentTime = Math.max(0, backVid.currentTime - 0.04);
           }
         }
-      }
-
-      rafId = requestAnimationFrame(loopStep);
+      }, 40);
     };
 
-    // Auto-trigger sequence when scrolled into view
-    const st = ScrollTrigger.create({
-      trigger: container,
-      scroller: "#abstract-scroll-container",
-      start: "top 80%",
-      end: "bottom top",
-      onEnter: () => {
-        resetSequence();
-        isPlaying = true;
-        lastTimestamp = 0;
-      },
-      onEnterBack: () => {
-        isPlaying = true;
-      },
-      onLeave: () => {
-        isPlaying = false;
-      },
-      onLeaveBack: () => {
-        isPlaying = false;
-      },
-    });
-
-    rafId = requestAnimationFrame(loopStep);
+    if (frontVid.readyState >= 1 && backVid.readyState >= 1) {
+      startReverseLoop();
+    } else {
+      frontVid.onloadedmetadata = () => {
+        if (backVid.readyState >= 1) startReverseLoop();
+      };
+      backVid.onloadedmetadata = () => {
+        if (frontVid.readyState >= 1) startReverseLoop();
+      };
+    }
 
     return () => {
-      cancelAnimationFrame(rafId);
-      st.kill();
+      if (intervalId) clearInterval(intervalId);
     };
   }, []);
 
