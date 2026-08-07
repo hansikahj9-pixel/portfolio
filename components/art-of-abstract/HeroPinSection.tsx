@@ -29,33 +29,23 @@ export const HeroPinSection: React.FC = () => {
       </video>
 
       {/* Hero Content Overlay (Asymmetric Figma Typewriter Layout) */}
-      <div className="relative z-10 w-full max-w-7xl px-6 md:px-24 flex flex-col justify-center h-full pointer-events-none select-none">
-        {/* Line 1: "The Art" - Right Aligned / Upper Right */}
-        <div className="w-full flex justify-end pr-[5%] md:pr-[12%]">
-          <h1 
-            className="text-6xl md:text-[8vw] font-normal tracking-tight chrome-bright leading-none"
-            style={{ fontFamily: "'Courier New', Courier, monospace" }}
-          >
+      <div className="relative z-10 w-full max-w-7xl px-6 md:px-24 flex items-center justify-end h-full pointer-events-none select-none">
+        <div 
+          className="flex flex-col text-left max-w-3xl pr-[5%] md:pr-[8%]"
+          style={{ fontFamily: "'Courier New', Courier, monospace" }}
+        >
+          {/* "The Art" - Bold Monospace */}
+          <h1 className="text-6xl md:text-[8vw] font-bold chrome-bright leading-[0.85] tracking-tight">
             The Art
           </h1>
-        </div>
-
-        {/* Line 2: "of" - Aligned under the right side of "The Art" */}
-        <div className="w-full flex justify-end pr-[8%] md:pr-[16%] -my-1 md:-my-3">
-          <span 
-            className="text-5xl md:text-[6vw] font-normal chrome-medium leading-none"
-            style={{ fontFamily: "'Courier New', Courier, monospace" }}
-          >
+          
+          {/* "of" - Lowercase, nested below "Art" */}
+          <span className="text-5xl md:text-[6vw] font-normal chrome-medium leading-[0.85] self-end mr-[8%] md:mr-[12%] my-1 md:my-2">
             of
           </span>
-        </div>
-
-        {/* Line 3: "Abstract" - Aligned towards the center-left */}
-        <div className="w-full flex justify-start pl-[5%] md:pl-[20%]">
-          <h1 
-            className="text-6xl md:text-[8vw] font-normal tracking-tight chrome-bright leading-none"
-            style={{ fontFamily: "'Courier New', Courier, monospace" }}
-          >
+          
+          {/* "Abstract" - Shifted left to overlap stagger */}
+          <h1 className="text-6xl md:text-[8vw] font-bold chrome-bright leading-[0.85] tracking-tight -ml-[10%] md:-ml-[20%]">
             Abstract
           </h1>
         </div>
