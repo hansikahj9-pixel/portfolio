@@ -7,7 +7,7 @@ export const HeroPinSection: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-black flex items-center justify-center">
+    <div className="relative w-full h-screen overflow-hidden bg-[#192020] flex items-center justify-center">
       {/* Floating Exit Button for Premium UX */}
       <button
         onClick={() => navigate("/")}
@@ -16,39 +16,58 @@ export const HeroPinSection: React.FC = () => {
         <span>←</span> BACK TO WORKS
       </button>
 
-      {/* Native Auto-Looping Background Video */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
-        className="absolute inset-0 w-full h-full object-cover scale-105 opacity-50 pointer-events-none"
-      >
-        <source src="/background.mp4" type="video/mp4" />
-      </video>
-
-      {/* Hero Content Overlay (Asymmetric Figma Typewriter Layout) */}
-      <div className="relative z-10 w-full max-w-7xl px-6 md:px-24 flex items-center justify-end h-full pointer-events-none select-none">
-        <div 
-          className="flex flex-col text-left max-w-3xl pr-[5%] md:pr-[8%]"
-          style={{ fontFamily: "'Courier New', Courier, monospace" }}
+      {/* Figma Letterboxed Video Crop Container (Y: 70px to 936px -> top: 6.8vh, height: 84.6vh) */}
+      <div className="absolute top-[6.8vh] left-0 w-full h-[84.6vh] overflow-hidden bg-black pointer-events-none">
+        {/* Native Auto-Looping Background Video (scaled slightly to hide watermark) */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover scale-105 opacity-55"
         >
-          {/* "The Art" - Bold Monospace */}
-          <h1 className="text-6xl md:text-[8vw] font-bold chrome-bright leading-[0.85] tracking-tight">
-            The Art
-          </h1>
-          
-          {/* "of" - Lowercase, nested below "Art" */}
-          <span className="text-5xl md:text-[6vw] font-normal chrome-medium leading-[0.85] self-end mr-[8%] md:mr-[12%] my-1 md:my-2">
-            of
-          </span>
-          
-          {/* "Abstract" - Shifted left to overlap stagger */}
-          <h1 className="text-6xl md:text-[8vw] font-bold chrome-bright leading-[0.85] tracking-tight -ml-[10%] md:-ml-[20%]">
-            Abstract
-          </h1>
-        </div>
+          <source src="/background.mp4" type="video/mp4" />
+        </video>
+      </div>
+
+      {/* Hero Content Overlay (Exact Figma X:281 Y:301 Scale & Color Dodge Blend Mode) */}
+      <div 
+        className="absolute left-[19.5%] top-[29.4%] w-[73.7%] h-[41.1%] flex flex-col text-left pointer-events-none select-none z-20 mix-blend-color-dodge"
+        style={{ fontFamily: "'Life Savers', serif" }}
+      >
+        {/* "The Art" - Bold + Responsive Stroke Outline */}
+        <h1 
+          className="text-[9vw] font-bold text-[#DADADA] leading-[0.8] tracking-tight"
+          style={{
+            WebkitTextStroke: "calc(4px + 0.6vw) #000000",
+            paintOrder: "stroke fill"
+          }}
+        >
+          The Art
+        </h1>
+        
+        {/* "of" - Lowercase, nested below "Art" */}
+        <span 
+          className="text-[7.5vw] font-normal text-[#DADADA] leading-[0.8] self-end mr-[18%] -my-2"
+          style={{
+            WebkitTextStroke: "calc(3px + 0.5vw) #000000",
+            paintOrder: "stroke fill"
+          }}
+        >
+          of
+        </span>
+        
+        {/* "Abstract" - Shifted left to overlap stagger */}
+        <h1 
+          className="text-[9vw] font-bold text-[#DADADA] leading-[0.8] tracking-tight -ml-[8%]"
+          style={{
+            WebkitTextStroke: "calc(4px + 0.6vw) #000000",
+            paintOrder: "stroke fill"
+          }}
+        >
+          Abstract
+        </h1>
       </div>
 
       {/* Elegant scroll indicator */}
