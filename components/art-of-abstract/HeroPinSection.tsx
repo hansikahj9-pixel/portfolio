@@ -8,13 +8,16 @@ export const HeroPinSection: React.FC = () => {
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-[#192020] flex items-center justify-center">
-      {/* Floating Exit Button for Premium UX */}
-      <button
-        onClick={() => navigate("/")}
-        className="absolute top-8 left-8 z-30 flex items-center gap-3 px-5 py-2.5 rounded-full text-xs font-mono tracking-widest text-zinc-300 real-glassmorphism chrome-ring-border hover:text-white transition-all cursor-pointer pointer-events-auto"
-      >
-        <span>←</span> BACK TO WORKS
-      </button>
+      {/* Top Left Back Navigation Link matching other pages */}
+      <div className="absolute top-8 left-8 z-30 pointer-events-auto">
+        <button
+          onClick={() => navigate("/")}
+          className="axiome-back-link cursor-pointer border-none bg-transparent outline-none pointer-events-auto"
+        >
+          <span className="axiome-back-arrow">←</span>
+          BACK TO WORKS
+        </button>
+      </div>
 
       {/* Figma Letterboxed Video Crop Container (Y: 70px to 936px -> top: 6.8vh, height: 84.6vh) */}
       <div className="absolute top-[6.8vh] left-0 w-full h-[84.6vh] overflow-hidden bg-black pointer-events-none">
@@ -39,40 +42,52 @@ export const HeroPinSection: React.FC = () => {
           className="w-full max-w-[1062px] flex flex-col items-end text-right mix-blend-color-dodge"
           style={{ fontFamily: "'Life Savers', serif" }}
         >
-          {/* "The Art" - Bold + Exact Figma Spacing */}
+          {/* "The Art" - Bold + Glass Refraction Bevel Style + Line Spacing 240 */}
           <h1 
-            className="font-bold text-[#DADADA] tracking-normal"
+            className="font-bold tracking-normal"
             style={{
               fontSize: "clamp(2rem, 15.97vw, 230px)",
-              lineHeight: "1.1739",
+              lineHeight: "1.0435",
+              background: "linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(218, 218, 218, 0.65) 50%, rgba(255, 255, 255, 0.95) 75%, rgba(160, 160, 160, 0.5) 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
               WebkitTextStroke: "calc(4px + 0.6vw) #000000",
-              paintOrder: "stroke fill"
+              paintOrder: "stroke fill",
+              textShadow: "1px 1px 0px rgba(255, 255, 255, 0.55), -1px -1px 0px rgba(0, 0, 0, 0.35), 0px 8px 16px rgba(0, 0, 0, 0.4)"
             }}
           >
             The Art
           </h1>
           
-          {/* "of" - Bold + Exact Figma Spacing */}
+          {/* "of" - Bold + Glass Refraction Bevel Style + Line Spacing 240 */}
           <span 
-            className="font-bold text-[#DADADA] tracking-normal"
+            className="font-bold tracking-normal"
             style={{
               fontSize: "clamp(2rem, 15.97vw, 230px)",
-              lineHeight: "1.1739",
+              lineHeight: "1.0435",
+              background: "linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(218, 218, 218, 0.65) 50%, rgba(255, 255, 255, 0.95) 75%, rgba(160, 160, 160, 0.5) 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
               WebkitTextStroke: "calc(4px + 0.6vw) #000000",
-              paintOrder: "stroke fill"
+              paintOrder: "stroke fill",
+              textShadow: "1px 1px 0px rgba(255, 255, 255, 0.55), -1px -1px 0px rgba(0, 0, 0, 0.35), 0px 8px 16px rgba(0, 0, 0, 0.4)"
             }}
           >
             of
           </span>
           
-          {/* "Abstract" - Bold + Exact Figma Spacing */}
+          {/* "Abstract" - Bold + Glass Refraction Bevel Style + Line Spacing 240 */}
           <h1 
-            className="font-bold text-[#DADADA] tracking-normal"
+            className="font-bold tracking-normal"
             style={{
               fontSize: "clamp(2rem, 15.97vw, 230px)",
-              lineHeight: "1.1739",
+              lineHeight: "1.0435",
+              background: "linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(218, 218, 218, 0.65) 50%, rgba(255, 255, 255, 0.95) 75%, rgba(160, 160, 160, 0.5) 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
               WebkitTextStroke: "calc(4px + 0.6vw) #000000",
-              paintOrder: "stroke fill"
+              paintOrder: "stroke fill",
+              textShadow: "1px 1px 0px rgba(255, 255, 255, 0.55), -1px -1px 0px rgba(0, 0, 0, 0.35), 0px 8px 16px rgba(0, 0, 0, 0.4)"
             }}
           >
             Abstract
