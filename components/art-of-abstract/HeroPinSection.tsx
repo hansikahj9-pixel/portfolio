@@ -33,41 +33,51 @@ export const HeroPinSection: React.FC = () => {
 
       {/* Hero Content Overlay (Exact Figma X:281 Y:301 Scale & Color Dodge Blend Mode) */}
       <div 
-        className="absolute left-[19.5%] top-[29.4%] w-[73.7%] h-[41.1%] flex flex-col text-left pointer-events-none select-none z-20 mix-blend-color-dodge"
-        style={{ fontFamily: "'Life Savers', serif" }}
+        className="absolute inset-0 flex items-center justify-center p-6 md:p-16 z-20 pointer-events-none select-none"
       >
-        {/* "The Art" - Bold + Responsive Stroke Outline */}
-        <h1 
-          className="text-[9vw] font-bold text-[#DADADA] leading-[0.8] tracking-tight"
-          style={{
-            WebkitTextStroke: "calc(4px + 0.6vw) #000000",
-            paintOrder: "stroke fill"
-          }}
+        <div 
+          className="w-full max-w-[1062px] flex flex-col items-end text-right mix-blend-color-dodge"
+          style={{ fontFamily: "'Life Savers', serif" }}
         >
-          The Art
-        </h1>
-        
-        {/* "of" - Lowercase, nested below "Art" */}
-        <span 
-          className="text-[7.5vw] font-normal text-[#DADADA] leading-[0.8] self-end mr-[18%] -my-2"
-          style={{
-            WebkitTextStroke: "calc(3px + 0.5vw) #000000",
-            paintOrder: "stroke fill"
-          }}
-        >
-          of
-        </span>
-        
-        {/* "Abstract" - Shifted left to overlap stagger */}
-        <h1 
-          className="text-[9vw] font-bold text-[#DADADA] leading-[0.8] tracking-tight -ml-[8%]"
-          style={{
-            WebkitTextStroke: "calc(4px + 0.6vw) #000000",
-            paintOrder: "stroke fill"
-          }}
-        >
-          Abstract
-        </h1>
+          {/* "The Art" - Bold + Exact Figma Spacing */}
+          <h1 
+            className="font-bold text-[#DADADA] tracking-normal"
+            style={{
+              fontSize: "clamp(2rem, 15.97vw, 230px)",
+              lineHeight: "1.1739",
+              WebkitTextStroke: "calc(4px + 0.6vw) #000000",
+              paintOrder: "stroke fill"
+            }}
+          >
+            The Art
+          </h1>
+          
+          {/* "of" - Bold + Exact Figma Spacing */}
+          <span 
+            className="font-bold text-[#DADADA] tracking-normal"
+            style={{
+              fontSize: "clamp(2rem, 15.97vw, 230px)",
+              lineHeight: "1.1739",
+              WebkitTextStroke: "calc(4px + 0.6vw) #000000",
+              paintOrder: "stroke fill"
+            }}
+          >
+            of
+          </span>
+          
+          {/* "Abstract" - Bold + Exact Figma Spacing */}
+          <h1 
+            className="font-bold text-[#DADADA] tracking-normal"
+            style={{
+              fontSize: "clamp(2rem, 15.97vw, 230px)",
+              lineHeight: "1.1739",
+              WebkitTextStroke: "calc(4px + 0.6vw) #000000",
+              paintOrder: "stroke fill"
+            }}
+          >
+            Abstract
+          </h1>
+        </div>
       </div>
 
       {/* Elegant scroll indicator */}
