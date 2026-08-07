@@ -80,3 +80,4 @@ export const HeroPinSection: React.FC = () => {
 };
 
 export default HeroPinSection;
+// Vercel rebuild trigger
