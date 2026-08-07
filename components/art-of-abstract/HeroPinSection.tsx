@@ -28,16 +28,37 @@ export const HeroPinSection: React.FC = () => {
         <source src="/background.mp4" type="video/mp4" />
       </video>
 
-      {/* Hero Content Overlay (Asymmetric & Floating Clean) */}
-      <div className="relative z-10 w-full max-w-7xl px-8 md:px-24 text-left pointer-events-none flex flex-col justify-center h-full">
-        <h1 
-          className="text-7xl md:text-[10rem] font-light tracking-[0.08em] leading-[0.95] select-none"
-          style={{ fontFamily: "'Cormorant Garamond', serif" }}
-        >
-          <span className="chrome-medium block mb-3 text-left">The Art</span>
-          <span className="chrome-dark italic font-extralight block text-left ml-[15%] my-4 text-5xl md:text-8xl">of</span>
-          <span className="chrome-bright block mt-3 tracking-[0.12em] text-left ml-[30%] text-8xl md:text-[12rem]">Abstract</span>
-        </h1>
+      {/* Hero Content Overlay (Asymmetric Figma Typewriter Layout) */}
+      <div className="relative z-10 w-full max-w-7xl px-6 md:px-24 flex flex-col justify-center h-full pointer-events-none select-none">
+        {/* Line 1: "The Art" - Right Aligned / Upper Right */}
+        <div className="w-full flex justify-end pr-[5%] md:pr-[12%]">
+          <h1 
+            className="text-6xl md:text-[8vw] font-normal tracking-tight chrome-bright leading-none"
+            style={{ fontFamily: "'Courier New', Courier, monospace" }}
+          >
+            The Art
+          </h1>
+        </div>
+
+        {/* Line 2: "of" - Aligned under the right side of "The Art" */}
+        <div className="w-full flex justify-end pr-[8%] md:pr-[16%] -my-1 md:-my-3">
+          <span 
+            className="text-5xl md:text-[6vw] font-normal chrome-medium leading-none"
+            style={{ fontFamily: "'Courier New', Courier, monospace" }}
+          >
+            of
+          </span>
+        </div>
+
+        {/* Line 3: "Abstract" - Aligned towards the center-left */}
+        <div className="w-full flex justify-start pl-[5%] md:pl-[20%]">
+          <h1 
+            className="text-6xl md:text-[8vw] font-normal tracking-tight chrome-bright leading-none"
+            style={{ fontFamily: "'Courier New', Courier, monospace" }}
+          >
+            Abstract
+          </h1>
+        </div>
       </div>
 
       {/* Elegant scroll indicator */}
