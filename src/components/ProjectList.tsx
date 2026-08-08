@@ -12,7 +12,6 @@ const projects: Project[] = [
   { name: 'AXIOME', details: 'SS 2025–2026', color: '#C3C1B9' },
   { name: 'Shakespearean Love', details: 'Collection', color: '#A89F91' },
   { name: '3D Design', details: 'Norse Mythology', color: '#8B8579' },
-  { name: 'The Art of Abstract', details: 'Visual Study', color: '#9C9587' },
   {
     name: 'Fashion Styling',
     details: 'My Mother is a Biker & Stages of Grief',
@@ -82,8 +81,6 @@ export default function ProjectList({ onHover }: ProjectListProps) {
                 navigate('/visual-merchandising');
               } else if (project.name === '3D Design') {
                 navigate('/3d-design');
-              } else if (project.name === 'The Art of Abstract') {
-                navigate('/the-art-of-abstract');
               }
             }}
             onMouseEnter={(e) =>
